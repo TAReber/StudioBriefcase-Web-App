@@ -1,0 +1,77 @@
+﻿@{
+    //<link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Studio Briefcase</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    
+
+</head>
+<body>
+
+    <header class="fixed_header" id="header">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow FG">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Studio Briefcase</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation" onclick="TogglerIconClick()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 flex-sm-grow-0">
+                        <li class="nav_item">
+                            <a class="nav_link" asp-area="" asp-page="/Home/Connect">Connect</a>
+                        </li>
+                        <li class="nav_item">
+                            <a class="nav_link" asp-area="" asp-page="/Home/Tutorials">Tutorials</a>
+                        </li>
+                        <li class="nav_item">
+                            <a class="nav_link" asp-area="" asp-page="/Home/About">About</a>
+                        </li>
+                        <li class="nav_item">
+                            <a class="nav_link" asp-area="" asp-page="/Home/Support">Support</a>
+                        </li>
+                    </ul>
+                    <!--End of Nav Bar Left Side, Begin Right Side Controls-->
+                    <button class="btn btn-outline-secondary ms-auto" button id="toggleColorMode" type="button">TM</button>
+                    <button id="loginButton" class="btn btn-outline-secondary ms-2">Login</button>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+    <main class="flex_content_down d-flex flex-column">
+            @RenderBody()
+    </main>
+
+
+
+    <footer class="border-top footer FG" id="footer">
+        <div class="container">
+            &copy; 2023 - Studio Briefcase - <a class="nav_link" asp-area="" asp-page="/Home/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/ToggleColorScheme.js" type="module"></script>
+    <script src="~/js/DynamicPageLoading.js" type="module"></script>
+    <script src="~/js/CopyToClipboard.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

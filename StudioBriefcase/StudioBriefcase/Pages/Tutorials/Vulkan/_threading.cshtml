@@ -1,0 +1,25 @@
+﻿@page
+@model StudioBriefcase.Pages.Tutorials.Vulkan.threadingModel
+@{
+    Layout = null;
+}
+<div class="container-fluid size_container mt-3 mb-2">
+    <div class="text-center">
+        <h2>Introduction to Vulkan Threading Behavior</h2>
+    </div>
+
+    <div class="mt-5">
+        <p>Many Vulkan Objects are immutable, meaning they never change. These objects are not externally 
+            synchronized because they can only be read from. Some object contain parameters that do change 
+            the objects, we need to make sure that multiple host threads don’t change the object at the 
+            same time. Vulkan contains a list of parameters that need to be Externally Synchronized.
+        </p>
+        <p>
+            Types of Externally Synchronized Parameters: Destroying Objects, managing memory, way events, 
+            Draw calls, Parameters lists. To know if a parameter needs to be Externally Synchronized, 
+            refer the documentation. Parameters marked const are not reliable to determine if it’s a 
+            Externally Synchronized parameter.
+        </p>
+    </div>
+
+</div>
