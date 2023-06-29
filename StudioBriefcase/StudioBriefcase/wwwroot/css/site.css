@@ -57,7 +57,7 @@ a:hover {
     max-width: 300px;
     box-sizing: border-box;
     position: relative;
-    opacity: 0.7;
+    opacity: 1.0;
     transition: opacity 0.1s ease-in-out;
     margin: 0px;
     display: flex;
@@ -67,6 +67,7 @@ a:hover {
 
     .thumbnail_link:hover {
         opacity: 1;
+        
     }
 
         .thumbnail_link:hover .thumbnail_text {
@@ -154,7 +155,7 @@ a:hover {
 
 .size_container {
     height: fit-content;
-    width: 50%;
+    width: 70%;
 }
 
 .nav_link {
@@ -200,3 +201,9 @@ a:hover {
         transform: rotate(90deg);
         transition: transform 0.3s ease-in-out;
     }
+
+.fit_image {
+    padding: 10px;  
+    width:100%;
+    height:auto;
+}

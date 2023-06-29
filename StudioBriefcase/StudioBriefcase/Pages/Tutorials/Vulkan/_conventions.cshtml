@@ -24,7 +24,7 @@
             <li>Prefix: <c-type>VK_STRUCTURE_TYPE_ ...</c-type></li>
             <li>Structure name: Where VkNameOfStructure becomes NAME_OF_STRUCTURE. </li>
         </ul>
-        <p>Example: <c-type>VkDeviceCreateInfo</c-type> is references with <c-type>VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO</c-type></p>
+        <p>Example: <vk><c-type>VkDeviceCreateInfo</c-type></vk> is references with <c-type>VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO</c-type></p>
     </div>
 
 
@@ -35,19 +35,19 @@
         </p>
         <ul>
             <li>
-                <l-dec>typedef</l-dec> struct <c-type>VkOffset2D</c-type> and <c-type>VkOffset3D</c-type>: Struct used to define the relative distance from an origin point.
+                <l-dec>typedef</l-dec> struct <vk><c-type>VkOffset2D</c-type></vk> and <vk><c-type>VkOffset3D</c-type></vk>: Struct used to define the relative distance from an origin point.
                 <ul><li>x, y z components</li></ul>
             </li>
         </ul>
         <ul>
             <li>
-                <l-dec>typedef</l-dec> struct <c-type>VkExtent2D</c-type> and <c-type>VkExtent3D</c-type>: Describes the length a rectangle should extend from the origin point.
+                <l-dec>typedef</l-dec> struct <vk><c-type>VkExtent2D</c-type></vk> and <vk><c-type>VkExtent3D</c-type></vk>: Describes the length a rectangle should extend from the origin point.
                 <ul><li>x, y z components</li></ul>
             </li>
         </ul>
         <ul>
             <li>
-                <l-dec>typedef</l-dec> struct <c-type>VkRect2D</c-type> and <c-type>VkRect3D</c-type>: Defines a rectangular region 2D or 3D space using offset and extent structures.
+                <l-dec>typedef</l-dec> struct <vk><c-type>VkRect2D</c-type></vk>: Defines a rectangular region 2D space using offset and extent structures.
                 <ul><li><c-type>VkOffset</c-type> and <c-type>VkExtent</c-type> components, with respect to 2D and 3D variations.</li></ul>
             </li>
         </ul>

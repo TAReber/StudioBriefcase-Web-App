@@ -11,7 +11,7 @@
     <div class="mt-5">
         <p>Vulkan is a very verbose API and if you have any hope of making anything, you’ll want to what went wrong and when.</p>
         <ul>
-            <li><c-type>VkResult </c-type>is an enumeration type returned by every method in Vulkan. The enumerations can be broken up into two categories: Successful codes and Error codes.
+            <li><vk><c-type>VkResult</c-type></vk> is an enumeration type returned by every method in Vulkan. The enumerations can be broken up into two categories: Successful codes and Error codes.
                 <ul>
                     <li>Success codes are return values that are greater or equal to zero.</li>
                     <li>o	Error Codes are return values that are less than </li>
@@ -19,7 +19,7 @@
             <li><strong>Vulkan Validation Layers</strong>
                 <ul><li>Layers are components that can intercept, modify, extend the behavior of Vulkan API calls. They can be used to debug, profile or validate correct API usage.</li>
                 </ul>
-                <p>The Layers we will concern our selves with are validation layers. The official Vulkan SDK provides a set of validation layers we will use when learning Vulkan. These are optional and can be enabled or disabled in the <c-type>VkInstanceCreateInfo</c-type> structure.</p>
+                <p>The Layers we will concern our selves with are validation layers. The official Vulkan SDK provides a set of validation layers we will use when learning Vulkan. These are optional and can be enabled or disabled in the <vk><c-type>VkInstanceCreateInfo</c-type></vk> structure.</p>
             </li>
         </ul>
         <p>Read about the Return Codes <a href="https://registry.khronos.org/vulkan/specs/1.3/html/chap3.html#fundamentals-returncodes">here</a>,

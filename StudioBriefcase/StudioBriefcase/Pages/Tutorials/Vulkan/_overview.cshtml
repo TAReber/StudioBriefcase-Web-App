@@ -15,6 +15,7 @@
             things we’ll do is study the language and how the workflow of the API itself. Words that are color coded 
             are words that have a special meaning in the API.
         </p>
+        
         <ul>
             <li><c-kw>Document Keyword</c-kw></li>
             <li><c-type>Objects, Structs, Type aliases</c-type></li>
@@ -59,34 +60,34 @@
             are created when method containing the <c-type>vkCmd</c-type> prefix are called.
         <ul>
             <li><strong>Drawing Commands: </strong>Commands used to perform graphics rendering.
-                    <ul><li><c-type>vkCmdDraw</c-type>, <c-type>vkCmdDrawIndexed</c-type> or <c-type>vkCmdDispatch</c-type></li></ul>
+                    <ul><li><vk><c-type>vkCmdDraw</c-type></vk>, <vk><c-type>vkCmdDrawIndexed</c-type></vk> or <vk><c-type>vkCmdDispatch</c-type></vk></li></ul>
             </li>
                 <li><strong>State Commands: </strong>Commands used to configure settings in the rendering state.
-                    <ul><li><c-type>vkCmdSetViewport</c-type>, <c-type>vkCmdScissor</c-type> or <c-type>vkCmdPipeline</c-type></li></ul>
+                    <ul><li><vk><c-type>vkCmdSetViewport</c-type></vk>, <vk><c-type>vkCmdSetScissor</c-type></vk> or <vk><c-type>vkCmdBindPipeline</c-type></vk></li></ul>
                 </li>
                 <li>
                     <strong>Resource Binding Commands: </strong>Commands that bind a resources and data that are used during rendering or compute operations.
-                    <ul><li><c-type>vkCmdBindVertexBuffers</c-type>, <c-type>vkCmdBindIndexBuffer</c-type> or <c-type>vkCmdDescriptionSets</c-type></li></ul>
+                    <ul><li><vk><c-type>vkCmdBindVertexBuffers</c-type></vk>, <vk><c-type>vkCmdBindIndexBuffer</c-type></vk> or <vk><c-type>vkCmdBindDescriptorSets</c-type></vk></li></ul>
                 </li>
                 <li>
                     <strong>Memory Operation Commands: </strong>Memory Management commands for copying data between buffers, clearing memory, resolve multi-sampled images.
-                    <ul><li><c-type>vkCmdCopyBuffer</c-type>, <c-type>vkCmdClearAttachement</c-type> or <c-type>vkCmdResolveImage</c-type></li></ul>
+                    <ul><li><vk><c-type>vkCmdCopyBuffer</c-type></vk>, <vk><c-type>vkCmdClearAttachments</c-type></vk> or <vk><c-type>vkCmdResolveImage</c-type></vk></li></ul>
                 </li>
                 <li>
                     <strong>Synchronization Commands: </strong> Commands used to synchronize access to resources.
-                    <ul><li><c-type>vkCmdPipelineBarrier</c-type>, <c-type>vkCmdSetEven</c-type> or <c-type>vkCmdWaitEvents</c-type></li></ul>
+                    <ul><li><vk><c-type>vkCmdPipelineBarrier</c-type></vk>, <vk><c-type>vkCmdSetEvent</c-type></vk> or <vk><c-type>vkCmdWaitEvents</c-type></vk></li></ul>
                 </li>
         </ul>
         </p>
         <h5 class="mt-5"><strong>Cacheing Instructions in a buffer</strong></h5>
         <p>When instructions are created, they need to be stored in a buffer. This buffer is called a 
-            <c-type>vkCommandBuffer</c-type> and is linked to specific queue in the device’s family.
+            <vk><c-type>VkCommandBuffer</c-type></vk> and is linked to specific queue in the device’s family.
             Once the <c-kw>command</c-kw> buffer is populated with the desired data, the programmer submits the buffer to the
             designated queue.
         </p>
         <h5 class="mt-2"><strong>Submission to <c-kw>Queues</c-kw></strong></h5>
         <p>
-            <c-kw>Queue</c-kw> submission calls occur with methods prefixed with <c-type>vkQueue</c-type>, where it waits for its turn to be
+            <c-kw>Queue</c-kw> submission calls occur with methods prefixed with <vk><c-type>VkQueue</c-type></vk>, where it waits for its turn to be
             processed. The designated <c-kw>queue</c-kw> will then direct the buffer to the <c-kw>device’s</c-kw>  Execution Engine to
             translate, interpret and parse and execute the <c-kw">commands</c-kw>. Once a <c-kw>queue</c-kw> is submitted, the application
             does not need to wait for the GPU to finish and it continue its operation while the queue processes 
@@ -121,12 +122,12 @@
                     interface to the Vulkan API. They are responsible for dispatching API commands 
                     through different layers. They are Opaque, which means the details behind the type 
                     are concealed from the user. Some common dispatchable objects include:
-                    <ul><li><c-type>VkInstance</c-type>, <c-type>VkPhysicalDevice</c-type>, <c-type>VkDevice</c-type> and <c-type>VkQueue</c-type></li></ul>
+                    <ul><li><vk><c-type>VkInstance</c-type></vk>, <vk><c-type>VkPhysicalDevice</c-type></vk>, <vk><c-type>VkDevice</c-type></vk> and <vk><c-type>VkQueue</c-type></vk></li></ul>
                 </li>
                 <li>
                     <strong>Non_Dispatchable: </strong>Objects that 64-bit integer handles used to manage Vulkan Objects
                     that do not have a function pointer table. These include pipelines, descriptor sets, buffers, 
-                    images and more. These have two modes if the privateData feature on <c-type>vkDevice</c-type>
+                    images and more. These have two modes if the privateData feature on <vk><c-type>VkDevice</c-type></vk>
                     is enabled.
                     <ul><li><c-mem>privateData </c-mem> Enabled: Vulkan Objects created on a device must have unique handle that must be reference.</li></ul>
                     <ul><li><c-mem>PrivateData</c-mem> Disabled: Handles may pass data to another handle, rather than being limited to just being referenced.</li></ul>
@@ -142,7 +143,7 @@
     <div class ="mt-5">
         <h4>Object Lifetime</h4>
         <p>Vulkan Objects are entities created or allocated when methods prefixed with <c-type>vkCreate</c-type> and <c-type>vkAllocate</c-type> are called. These objects are immutable. </p>
-        <p>Objects that are created will reserve a heap of memory. Objects that are allocated use resources from an existing pool or heap. These two prefixes are not always mutual pairs like <c-type>vkCreateDescriporPool</c-type> and <c-type>vkAllocateDescriptorSet</c-type>, they can serve different purposes.</p>
+        <p>Objects that are created will reserve a heap of memory. Objects that are allocated use resources from an existing pool or heap. These two prefixes are not always mutual pairs like <vk><c-type>vkCreateDescriptorPool</c-type></vk> and <vk><c-type>vkAllocateDescriptorSets</c-type></vk>, they can serve different purposes.</p>
         <h6>Destorying Vulkan Objects Safely</h6>
         <p>Objects must not be destroyed while they are in use. This is something we’ll learn more about while doing. Or you can refer to Vulkan Documentation in <a href="https://registry.khronos.org/vulkan/specs/1.3/html/chap3.html">chapter 3</a>, to know now.</p>
     </div>

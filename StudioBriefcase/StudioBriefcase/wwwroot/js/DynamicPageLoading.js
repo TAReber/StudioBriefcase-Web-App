@@ -3,7 +3,7 @@
 $(document).ready(function () {
 
     function loadContent(url) {
-        console.log('Loading content from:', url);
+        
         $('#tutorial_content').load(url, function () {
             // Dynamically loading content requires the theme to be dynamically applied to the new page.
             loadStoredTheme();

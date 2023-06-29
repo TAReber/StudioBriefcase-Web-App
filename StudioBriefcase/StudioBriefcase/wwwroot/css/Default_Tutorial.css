@@ -37,9 +37,19 @@
     color: inherit;
 }
 
+.clear_list_style {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 
+vk{
 
+}
 
+vk:hover{
+    cursor: pointer;
+}
 
 .chapter_listElement {
     padding-left: 30px;
