@@ -7,31 +7,29 @@ using System.Security.Claims;
 using System.Text.Json;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-//https://www.youtube.com/watch?v=ZXfuxisC0IA //Israel Quiroz - How to use Azure tutorial
-// Managed Identities
+// https://www.youtube.com/watch?v=ZXfuxisC0IA //Israel Quiroz - How to use Azure tutorial
+// https://www.youtube.com/watch?v=OeYx4vUs1vw Managed Identities
 //TODO: Figure out what to do with production and development code
-// KeyVault ID and Secrets belong to an newly registered application in azure
+
 var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
-var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(new AzureServiceTokenProvider().KeyVaultTokenCallback));
 
-// The New Azure application is added to the keyvault permissions before it can read from the key vault.
-builder.Configuration.AddAzureKeyVault(
-    keyVaultURL.Value!.ToString(), 
-    new DefaultKeyVaultSecretManager());
-//Create a Client with the credentials that can retieve From the vault
+//Method 1 - Needs Azure.Security.KeyVault.Secrets
 var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
+//string test1 = client.GetSecret("test5").Value.Value.ToString();
+//string id = client.GetSecret("GitHub-clientid").Value.Value.ToString();
 
-string id = client.GetSecret("GitHub-clientid").Value.Value.ToString();
-string secret = client.GetSecret("GitHub-clientsecret").Value.Value.ToString();
-
+//Method 2
+builder.Configuration.AddAzureKeyVault(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
+//string? secret = builder.Configuration["test6"];
+//string? secret = builder.Configuration["GitHub-clientsecret"];
 
 builder.Services.AddRazorPages();
+
 //Handles the stages of Transactions to Authenticate github OAuth Account
 //https://www.youtube.com/watch?v=PUXpfr1LzPE&t=2142s Raw Coding - Authenticating with GitHub OAuth tutorial
 builder.Services.AddAuthentication("cookie")
@@ -39,8 +37,9 @@ builder.Services.AddAuthentication("cookie")
     .AddOAuth("github", o =>
 {
     o.SignInScheme = "cookie";
-    o.ClientId = id;
-    o.ClientSecret = secret;
+    o.ClientId = client.GetSecret("GitHub-clientid").Value.Value.ToString(); ;
+    //if(secret != null)
+        o.ClientSecret = client.GetSecret("GitHub-clientid").Value.Value.ToString();
 
     o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
     o.TokenEndpoint = "https://github.com/login/oauth/access_token";
@@ -97,3 +96,4 @@ app.MapGet("/login", (HttpContext ctx) =>
 });
 
 app.Run();
+
