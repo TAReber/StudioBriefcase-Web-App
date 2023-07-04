@@ -91,7 +91,7 @@ app.MapGet("/login", (HttpContext ctx) =>
     return Results.Challenge(new AuthenticationProperties()
     {
         
-        RedirectUri = "/signin-github"
+        RedirectUri = "/"
     },
     authenticationSchemes: new List<string>() { "github" }); ;
 });
