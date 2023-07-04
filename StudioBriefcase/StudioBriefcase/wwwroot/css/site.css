@@ -126,6 +126,7 @@ a:hover {
 }
 
 /*Initialize Container with FG or BG*/
+/*Being used on <Div> container elements, Children are effected by inheriting colors */
 .FG {
     background-color: #a6b5b1;
     color: #7e1919;
@@ -165,7 +166,7 @@ a:hover {
     font-weight: 400;
     color: inherit;
     text-decoration: none;
-    cursor: pointer;
+
 }
 
 .nav_item {
