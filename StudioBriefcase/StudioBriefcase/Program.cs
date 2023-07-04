@@ -21,10 +21,10 @@ var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
 //Method 1 - Needs Azure.Security.KeyVault.Secrets
 var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
 //string test1 = client.GetSecret("test5").Value.Value.ToString();
-//string id = client.GetSecret("GitHub-clientid").Value.Value.ToString();
-
+string id = client.GetSecret("GitHub-clientid").Value.Value.ToString();
+string secret = client.GetSecret("GitHub-clientsecret").Value.Value.ToString();
 //Method 2
-builder.Configuration.AddAzureKeyVault(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
+//builder.Configuration.AddAzureKeyVault(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
 //string? secret = builder.Configuration["test6"];
 //string? secret = builder.Configuration["GitHub-clientsecret"];
 
@@ -37,9 +37,9 @@ builder.Services.AddAuthentication("cookie")
     .AddOAuth("github", o =>
 {
     o.SignInScheme = "cookie";
-    o.ClientId = client.GetSecret("GitHub-clientid").Value.Value.ToString(); ;
+    o.ClientId = id;
     //if(secret != null)
-        o.ClientSecret = client.GetSecret("GitHub-clientid").Value.Value.ToString();
+    o.ClientSecret = secret;
 
     o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
     o.TokenEndpoint = "https://github.com/login/oauth/access_token";
@@ -89,10 +89,10 @@ app.MapGet("/login", (HttpContext ctx) =>
 {
     return Results.Challenge(new AuthenticationProperties()
     {
-        
         RedirectUri = "/"
+        //RedirectUri = "/signin-github"
     },
-    authenticationSchemes: new List<string>() { "github" }); ;
+    authenticationSchemes: new List<string>() { "github" });
 });
 
 app.Run();
