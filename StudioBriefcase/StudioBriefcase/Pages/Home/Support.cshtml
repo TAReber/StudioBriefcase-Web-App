@@ -1,9 +1,150 @@
 ﻿@page
 @model StudioBriefcase.Pages.Home.SupportModel
 @{
-    
+    ViewData["Title"] = "Donations and Support";
 }
 <!DOCTYPE html>
-<div class="text-center mt-4">
-    <h4>TODO:: I'm working on it!</h4>
+
+<div class="container-fluid size_container">
+
+    <div class="text-center my-4">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div>
+        <div class="rounded-1" >
+            <div class="text-center">
+                <p>
+                    Studio Briefcase is a free-to-use library dedicated to introducing new users to programming
+                    languages and frameworks in a way to overcome learning curve in the most time efficient, 
+                    frustrating free manner possible. This website works by meticulously hyperlinking learners to 
+                    relevant documentation and other content creators.
+                </p>
+                <p><strong>Donations will primarily be used for the following puruposes.</strong></p>
+            </div>
+        </div>
+     
+        <div>
+            <div class="row g-4 row-cols-1 row-cols-lg-3 rounded-1 m-0 p-0 FG">
+                <div class="col text-center rounded-1">
+                    <div>
+                        <h5>Maintenance</h5>
+                        <p>
+                            The upkeep of third party services in Azure and GitHub and continued level of security to keep
+                            StudioBriefcase safe.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col text-center rounded-1">
+                    <div>
+                        <h5>Connecting Community and Creators</h5>
+                        <p>
+                            Building an environemt to connect like minded peers and other tutorial creators. This
+                            isn't a site that seeks to compete, but one that brings people together.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col text-center rounded-1">
+                    <div>
+                        <h5>Continued Development</h5>
+                        <p>
+                            Completing Tutorial Content and Expanding the range of topics in the library. A continued
+                            dedication to save time and frustration.
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+       
+    </div>
+
+
+    <div>
+        <div class="row g-4 py-2 row-cols-1 row-cols-lg-2">
+            <div class="col">
+                <div class="p-3 m-3 text-center rounded-1 FG">
+                    <h6>Donate With PayPal</h6>
+                    <div id="donate-button-container">
+                        <div id="donate-button"></div>
+                        <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+                        <script>
+                            PayPal.Donation.Button({
+                                env: 'production',
+                                hosted_button_id: 'YRNYVAHFETNSA',
+                                image: {
+                                    src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                                    alt: 'Donate with PayPal button',
+                                    title: 'PayPal - The safer, easier way to pay online!',
+                                }
+                            }).render('#donate-button');
+                        </script>
+                    </div>
+                </div>
+
+                <div class="p-3 m-3 text-center rounded-1 FG">
+
+                    <h6>Donate with Stripes</h6>
+                    <script async
+                            src="https://js.stripe.com/v3/buy-button.js">
+                    </script>
+
+                    <stripe-buy-button buy-button-id="buy_btn_1NQcdWDeYSAfupye3J5jMNUH"
+                                       publishable-key="pk_live_51NQbDuDeYSAfupyeinaRP9NANtwL4EHnUtWc4yzsOiByKzRsU1dSfcPERwyglEkMr3FIq4qRsBwzXLO2DwApgCz7003c9Kc66v">
+                    </stripe-buy-button>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="p-3 m-3 rounded-1 FG">
+                    <h6>Current Monthly Costs</h6>
+                    <table class="table BG">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Azure Web Service Subscription B1</td>
+                                <td>$54.75</td>
+                            </tr>
+                            <tr>
+                                <td>Azure Standard Database, Development Service</td>
+                                <td>$8.50</td>
+                            </tr>
+                            <tr>
+                                <td>Domain Names</td>
+                                <td>$1</td>                            
+                            </tr>
+                            <tr>
+                                <td>Current GitHub Services</td>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <td>Current Discord Service</td>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Monthly Total</strong></td>
+                                <td><strong>$64.25</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Yearly Total</strong></td>
+                                <td><strong>$771</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
+

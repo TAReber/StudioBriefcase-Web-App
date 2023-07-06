@@ -3,8 +3,58 @@
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>I'm not collecting any data. When I understand the significance of it and create a login,
-   This policy is subject to change.
-</p>
+<div class="container-fluid size_container">
+    <div class="text-center mb-5 mt-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div>
+        <div class="">
+            <h5>Personal Data</h5>
+        </div>
+        <p >
+            I do not directly collect personal data from our users. However, i do use third-party applications that 
+            might collect data as described below:
+        </p>
+    </div>
+
+    <div>
+        <div class="">
+            <h5>Giscus Commenting System</h5>
+        </div>
+        <p>
+            When you log in using GitHub OAuth2.0, GitHub will share with StudioBriefcase.com authorized user
+            username and the email address associated with your GitHub account. I do not receive or store your GitHub password. For more information,
+            please review GitHub's Privacy Policy.
+        </p>
+    </div>
+
+    <div>
+        <div class="">
+            <h5>Database</h5>
+        </div>
+        <p>
+            I have a database in place that I use for testing and improving this website. I currently do not 
+            store personal data in this database, I reserve the right to do so in the future as per the requirements of 
+            our website.
+        </p>
+    </div>
+
+    <div>
+        <div class="">
+            <h5>Security</h5>
+        </div>
+        <p>
+            I am doing everything I can to ensure user information is handled in a secure manner. The practices I'm currently
+            subscribing to are listed below.
+            <ul>
+                <li>Storing secrets Microsoft's Azure Keyvault and retrieving through managed ID.</li>
+                <li>Relying Heavily on third party sources and systems to protect privacy and data.</li>
+                <li>Be Responsible for as little data as possible.</li>
+                <li>Avoid Duplicating data for use in this website if it exists elsewhere.</li>
+            </ul>
+        </p>
+    </div>
+
+</div>
