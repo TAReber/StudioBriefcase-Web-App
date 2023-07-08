@@ -2,8 +2,8 @@
 @model StudioBriefcase.Pages.Tutorials.Vulkan.DefaultModel
 @{
     Layout = "~/Pages/Shared/_ContentNavigator.cshtml";
+    ViewData["Folder"] = "Vulkan";
     <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
-
 }
 
 @section Selector_Panel {
@@ -74,7 +74,7 @@
 
                     <div class="collapse" id="introduction">
                         <ul class="chapter_listElement list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" id="intro-link" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_intro")">Introduction</a></li>
+                            <li><a href="#" id="intro-link" class="link_decor content-link" data-url="@Url.Page("/Library/Vulkan/_intro")">Introduction</a></li>
                         </ul>
                     </div>
                 </div>
@@ -87,10 +87,10 @@
                     </button>
                     <div class="collapse" id="overview">
                         <ul class="chapter_listElement list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_overview")">Overview</a></li>
-                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_conventions")">Common Conventions</a></li>
-                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_layerintro")">Layers & Debugging</a></li>
-                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_threading")">Threading Behavior</a></li>
+                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Library/Vulkan/_overview")">Overview</a></li>
+                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Library/Vulkan/_conventions")">Common Conventions</a></li>
+                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Library/Vulkan/_layerintro")">Layers & Debugging</a></li>
+                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Library/Vulkan/_threading")">Threading Behavior</a></li>
                         </ul>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                     </button>
                     <div class="collapse" id="installation">
                         <ul class="chapter_listElement list-unstyled fw-normal pb-1 small">
-                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Tutorials/Vulkan/_vulkanSDK")">Vulkan SDK</a></li>
+                            <li><a href="#" class="link_decor content-link" data-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">Vulkan SDK</a></li>
                         </ul>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
 
 @section Selected_Content {
 
-    <div class="main_content" id="tutorial_content" data-startup-url="@Url.Page("/Tutorials/Vulkan/_intro")">
+    <div class="main_content" id="tutorial_content" data-startup-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">
         <p>Error Loading _intro.cshtml file.</p>
     </div>
 }

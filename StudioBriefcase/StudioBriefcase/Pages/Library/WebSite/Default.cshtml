@@ -1,0 +1,86 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.WebSite.DefaultModel
+@{
+    Layout = "~/Pages/Shared/_ContentNavigator.cshtml";
+    ViewData["Folder"] = "WebSite";
+}
+
+@section Selector_Panel {
+    <div class="flex-shrink-0">
+        <div>
+            <ul class="clear_list_style">
+                <li>
+                    <div class="thumbnail_link">
+                        <a href="https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics" target="_blank">
+                            <img src="~/images/Thumbnails/WebTechnologies/MDN_Web_Docs_logo.png" class="img-thumbnail img_format" />
+                        </a>
+                        <div class="thumbnail_text">References</div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="thumbnail_link">
+                        <a href="#" target="_blank">
+                            <img src="~/images/Thumbnails/WebTechnologies/whatwg_html_logo.png" class="img-thumbnail img_format" />
+                        </a>
+                        <div class="thumbnail_text">HTML</div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="thumbnail_link">
+                        <a href="#" target="_blank">
+                            <img src="~/images/Thumbnails/WebTechnologies/W3_CSS_Logo.png" class="img-thumbnail img_format" />
+                        </a>
+                        <div class="thumbnail_text">CSS</div>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="thumbnail_link">
+                        <a href="https://262.ecma-international.org/14.0/#sec-web-scripting" target="_blank">
+                            <img src="~/images/Thumbnails/WebTechnologies/EcmaScript_JS_Logo.png" class="img-thumbnail img_format" />
+                        </a>
+                        <div class="thumbnail_text">JavaScript</div>
+                    </div>
+                </li>
+
+
+
+            </ul>
+        </div>
+
+
+        <div class="language_section">
+            <p>English</p>
+        </div>
+
+
+        <ul class="list-unstyled ps-0">
+            <li class="mb-1">
+
+                <div> <!-- Button that collapses subsequent content with respective id= -->
+                    <button class="chapter_btn_toggle collapsed align-items-center rounded light_background" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true" aria-controls="home-collapse">
+                        <ion-icon class="expanded" name="chevron-forward-outline"></ion-icon>
+                        TODO::ButtonName
+                    </button>
+                    <!-- Following Segements are collapsable hyperlinks-->
+                    <div class="collapse" id="home-collapse">
+                        <ul class="chapter_listElement list-unstyled fw-normal pb-1 small">
+                            <li><a href="#" id="intro-link" class="link_decor content-link" data-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">TODO::NameOfHyperLink</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+}
+<!-- Selected_Content are the main contents of each chapter-->
+<!-- DEBUG NOTE:: Selected Content files are loaded with { layout = null } -->
+@section Selected_Content {
+    <div class="main_content" id="tutorial_content" data-startup-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">
+        <p>Error Loading _intro.cshtml file.</p>
+    </div>
+}
