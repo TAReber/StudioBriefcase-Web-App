@@ -1,0 +1,59 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.SQL.DefaultModel
+<!-- Razor Directive -->
+@{
+    //Tutorial Patterns are used with the Content Navigaor Layout
+    //_ContentNavigator is a simple empty container with a collapse button
+    Layout = "~/Pages/Shared/_ContentNavigator.cshtml";
+    ViewData["Folder"] = "TODO::Enter Folder Name";
+}
+
+<!-- Selector Panel defines the content that sit inside the _ContentNavigator-->
+<!-- Intended to be used for stylized hyperlinks to Dynamically load tutorial content-->
+@section Selector_Panel {
+    <div class="flex-shrink-0">
+
+        <!-- List Area of Main Documentation Links -->
+        <ul class="clear_list_style">
+            <li>
+                <div class="thumbnail_link">
+                    <a href="#" target="_blank">
+                        <img src="TODO::ADDIMAGE" class="img-thumbnail img_format" />
+                    </a>
+                    <div class="thumbnail_text">TODO::Add Text</div>
+                </div>
+            </li>
+
+        </ul>
+
+
+        <div class="language_section">
+            <p>English</p>
+        </div>
+
+
+        <ul class="list-unstyled ps-0">
+            <li class="mb-1">
+
+                <button class="chapter_btn_toggle collapsed align-items-center rounded light_background" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true" aria-controls="home-collapse">
+                    <ion-icon class="expanded" name="chevron-forward-outline"></ion-icon>
+                    TODO::ButtonName
+                </button>
+
+                <div class="collapse" id="home-collapse">
+                    <ul class="chapter_listElement list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" id="intro-link" class="link_decor content-link" data-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">TODO::NameOfHyperLink</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+}
+<!-- Selected_Content are the main contents of each chapter-->
+<!-- Start up Content is defined in the data-startup-url -->
+@section Selected_Content {
+    <div class="main_content" id="tutorial_content" data-startup-url="@Url.Page("/Library/" + ViewData["Folder"] + "/_intro")">
+        <p>Error Loading _intro.cshtml file.</p>
+    </div>
+}

@@ -1,12 +1,12 @@
 ﻿
 
-function copyToClipboard(identifier, buttonElement) {
-    // Get the target data
-    const targetElement = document.querySelector('#' + identifier);
-
-    // Get the value to be copied
+function copyToClipboard(discord_id, buttonElement) {
+    // search for the target target by it's id
+    const targetElement = document.querySelector('#' + discord_id);    
+    // Get the DataValue can be Copied.
+    //This is because I wanted to the discord url to be defined at the top of the page.
     const textToCopy = targetElement.getAttribute('data-value');
-
+    //console.log(discordid);
     // Copy the text to the clipboard
     navigator.clipboard.writeText(textToCopy).then(function () {
         // Update the button text

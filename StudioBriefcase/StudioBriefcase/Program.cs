@@ -1,64 +1,31 @@
 // .NET Core 7.0 uses Minimal API
 // This is the new Startup.cs file
 
-using Microsoft.AspNetCore.Authentication;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text.Json;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
+using MySqlConnector;
 
+using StudioBriefcase.Startup;
 
-
+//https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/handle-errrors?view=aspnetcore-7.0
 var builder = WebApplication.CreateBuilder(args);
 
-// https://www.youtube.com/watch?v=ZXfuxisC0IA //Israel Quiroz - How to use Azure tutorial
-// https://www.youtube.com/watch?v=OeYx4vUs1vw Managed Identities
-//TODO: Figure out what to do with production and development code
-
-var keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL");
-
-//Method 1 - Needs Azure.Security.KeyVault.Secrets
-var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
-string id = client.GetSecret("GitHub-clientid").Value.Value.ToString();
-string secret = client.GetSecret("GitHub-clientsecret").Value.Value.ToString();
-//Method 2
-//builder.Configuration.AddAzureKeyVault(new Uri(keyVaultURL.Value!.ToString()), new DefaultAzureCredential());
-//string? secret = builder.Configuration["GitHub-clientsecret"];
-
-builder.Services.AddRazorPages();
-
-//Handles the stages of Transactions to Authenticate github OAuth Account
-//https://www.youtube.com/watch?v=PUXpfr1LzPE&t=2142s Raw Coding - Authenticating with GitHub OAuth tutorial
-builder.Services.AddAuthentication("cookie")
-    .AddCookie("cookie")
-    .AddOAuth("github", o =>
+// Create a list of names that exist in the key vault so I can iterate over and verify each secret is accessible.
+// Console Window will display exception errors.
+string keyVaultURL = builder.Configuration.GetSection("KeyVault:KeyVaultURL").Value!.ToString();
+List<string> targetNames = new List<string>
 {
-    o.SignInScheme = "cookie";
-    o.ClientId = id;
-    //if(secret != null)
-    o.ClientSecret = secret;
+    builder.Configuration.GetSection("keyVault:GitHub:id").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:GitHub:secret").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:Database:server").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:Database:name").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:Database:user").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:Database:password").Value!.ToString(),
+};
+bool isVerified = builder.Configuration.VerifyKeyVaultSecrets(keyVaultURL, targetNames);
 
-    o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
-    o.TokenEndpoint = "https://github.com/login/oauth/access_token";
-    o.CallbackPath = new PathString("/signin-github");
-    o.SaveTokens = true;
-    o.UserInformationEndpoint = "https://api.github.com/user";
+builder.Services.RegisterServices();
+if (isVerified)
+    DependencyInjectionSetup.RegisterGitHubService(builder);
 
-    o.ClaimActions.MapJsonKey("sub", "id");
-    o.ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
-
-    o.Events.OnCreatingTicket = async ctx =>
-    {
-        
-        using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
-        using var result = await ctx.Backchannel.SendAsync(request);
-        
-        var user = await result.Content.ReadFromJsonAsync<JsonElement>();
-        ctx.RunClaimActions(user);
-    };
-});
 
 var app = builder.Build();
 
@@ -77,21 +44,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 
-app.MapGet("/logout", async (HttpContext ctx) =>
-{
-    await ctx.SignOutAsync("cookie");
-    ctx.Response.Redirect("/");
-});
+if(isVerified)
+    app.MapLoginEndPoints();
 
-app.MapGet("/login", (HttpContext ctx) =>
+//Connect to Database Example
+var database = new MySqlConnectionStringBuilder()
 {
-    return Results.Challenge(new AuthenticationProperties()
-    {
-        RedirectUri = "/"
-        
-    },
-    authenticationSchemes: new List<string>() { "github" });
-});
+    Server = builder.Configuration["database-library-server"],
+    Database = builder.Configuration["database-library-database"],
+    UserID = builder.Configuration["database-library-user"],
+    Password = builder.Configuration["database-library-password"],
+    SslMode = MySqlSslMode.Required,
+};
 
-app.Run();
+using (var connection = new MySqlConnection(database.ConnectionString))
+{
+    await connection.OpenAsync();
+    Console.WriteLine("Opened Connection");
+}
+
+    app.Run();
 
