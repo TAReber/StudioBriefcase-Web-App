@@ -22,9 +22,11 @@ List<string> targetNames = new List<string>
 };
 bool isVerified = builder.Configuration.VerifyKeyVaultSecrets(keyVaultURL, targetNames);
 
+
+
 builder.Services.RegisterServices();
-//if (isVerified)
-    //DependencyInjectionSetup.RegisterGitHubService(builder);
+if (isVerified)
+    DependencyInjectionSetup.RegisterGitHubService(builder);
 
 
 var app = builder.Build();
@@ -44,24 +46,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 
-//if(isVerified)
-    //app.MapLoginEndPoints();
+if(isVerified)
+    app.MapLoginEndPoints();
 
 //Connect to Database Example
-//var database = new MySqlConnectionStringBuilder()
-//{
-//    Server = builder.Configuration["database-library-server"],
-//    Database = builder.Configuration["database-library-database"],
-//    UserID = builder.Configuration["database-library-user"],
-//    Password = builder.Configuration["database-library-password"],
-//    SslMode = MySqlSslMode.Required,
-//};
+var database = new MySqlConnectionStringBuilder()
+               {
+                   Server = builder.Configuration["database-library-server"],
+                   Database = builder.Configuration["database-library-database"],
+                   UserID = builder.Configuration["database-library-user"],
+                   Password = builder.Configuration["database-library-password"],
+                   SslMode = MySqlSslMode.Required,
+               };
 
-//using (var connection = new MySqlConnection(database.ConnectionString))
-//{
-//    await connection.OpenAsync();
-//    Console.WriteLine("Opened Connection");
-//}
+using (var connection = new MySqlConnection(database.ConnectionString))
+{
+    await connection.OpenAsync();
+    Console.WriteLine("Opened Connection");
+}
 
-    app.Run();
+app.Run();
 

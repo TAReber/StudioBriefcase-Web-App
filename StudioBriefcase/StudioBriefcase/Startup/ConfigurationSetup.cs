@@ -19,6 +19,7 @@ namespace StudioBriefcase.Startup
 
                 foreach(string secret in secretList)
                 {
+                    Console.WriteLine(secret);
                     try
                     {
                         client.GetSecret(secret);
