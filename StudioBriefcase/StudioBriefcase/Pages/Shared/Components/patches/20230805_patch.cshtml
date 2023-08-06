@@ -1,0 +1,98 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="accordion-item">
+
+    <button class="accordion-toggle c-fg event-toggle text-sm" data-target="20230805_patch">
+        PatchNotes - 08/05/2023 - Complete Project Refactor
+    </button>
+
+    <div class="accordion-target-vertical box-col c-fg" id="20230805_patch">
+        <p>
+            These Changes were necessary to create a scalable design to support a good user
+            experience. So many mistakes were made during the initial launch that I had to build
+            the website structure from the ground up.
+
+            This new structure all me easily plan, prepare and add changes to the website. The
+            Time I spent doing this will be returned.
+        </p>
+        <ul>
+            <li>
+                <strong>Removed the entire Boostrap Library</strong>
+                <ul>
+                    <li>Created websites own style library.</li>
+                    <li>Designed to quickly identify the source of behavior.</li>
+                    <li>CSS Isolation for functional styles and superfluous styles.</li>
+                    <li>Details Will be added to the Git Repository Readme.</li>
+                    <li>Heavily powered by CSS Functionality, reduced website reliance on javascript.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Updated the main Layout style.</strong>
+                <ul>
+                    <li>Used my own style system to recreate the microsoft template.</li>
+                    <li>Added an Elegent dropdown Menu for user controls.</li>
+                    <li>Updated &lt;body&gt; flow to keep header flexed to the top.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>New Superior Solution for the LightMode DarkMode Toggle</strong>
+                <ul>
+                    <li>Style is loaded into the head through a partialview.</li>
+                    <li>Style contains root color data and classes that use them.</li>
+                    <li>The partialview style has an ID I manipulate with javascript.</li>
+                    <li>Chose Color mode is saved in local storage.</li>
+                    <li>Can be scaled up with more color schemes and custom color styles.</li>
+                    <li>Color class prefixed with the letter c- for easy identification.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Redsigned how Project Pages work with SubLayouts.</strong>
+                <ul>
+                    <li>SubLayouts now hold the &lt;main&gt; so they can control the area of the page. </li>
+                    <li>Fixed bug where the side bar wasn't expanding with a transition.</li>
+                    <li>The Tutorial Razor Page loads the sidebar which reflects the directory path.</li>
+                    <li>Tutorial SubLayout now has data driven Navigation and Document Links.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Added Dependency Injection & ViewComponents</strong>
+                <ul>
+                    <li>Got a Working Dependency Injection</li>
+                    <li>This is a design pattern that renders view through an interface, allowing me to
+                        populate the view on the server with data before the user sees it on screen. 
+                    </li>
+                    <li>This will allow website moderators to update important links and site content 
+                        without redeploying the website like I would with static pages.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Implemented Database to website</strong>
+                <ul>
+                    <li>Successfully Implemented Database and began extracting Data from it.</li>
+                </ul>
+            </li>
+
+            <li>
+                <strong>Restructured Library Folder Hierarchy</strong>
+                <ul>
+                    <li>Folder Structure Support for easier Data Driven ViewComponents</li>
+                    <li>Folder Structure reflects the tables in the database.</li>
+                    <li>Add a Category, which has many libraries, which has many subject that have many topics.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Added a Way to Archive Changes</strong>
+                <ul>
+                    <li>Created a folder to hold partial views of patch history</li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>

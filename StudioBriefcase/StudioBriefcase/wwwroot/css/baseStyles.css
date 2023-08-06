@@ -1,0 +1,332 @@
+﻿:root{
+    --std-gutter: 10px;
+}
+
+
+/*
+    Styles Designated with event means its used in a javascript query selector
+*/
+.event-toggle{
+
+}
+
+.event-toggle:hover{
+    cursor:pointer;
+}
+
+
+
+/*Due to the top down design, it made sense to create a class
+  that to create space between the array of <div> sections in main-content.
+This can simply spacing issues without using margins.
+*/
+.whitespace{
+    width:100%;
+    height: 2rem;
+}
+
+/* Containers are general sitewide layout elements */
+.container-sticky {
+    position: sticky;
+    width: fit-content;
+    height: fit-content;
+}
+
+.container-fixed {
+    position: fixed;
+    height: fit-content;
+    width: fit-content;
+}
+
+.container-relative{
+    position:relative;
+}
+
+
+/* box class are styles that effect immediate children */
+.box-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 30px));
+    grid-gap: var(--std-gutter);
+}
+
+
+
+.grid-row1 {
+    grid-template-rows: auto;
+}
+
+.box-2col > * {
+    /*flex: 1 1 auto;*/
+    box-sizing:border-box;
+    min-width: 15rem;
+    width:50%;
+/*    max-width: calc(50% - (2 * var(--std-gutter) * 1px));
+    gap: var(--std-gutter);*/
+    
+}
+
+.box-3col > * {
+    min-width: 15rem;
+    max-width: 33%;
+}
+
+
+.box-5col > * {
+    min-width: 13rem;
+    max-width: 20%;
+}
+
+.gap2 {
+    grid-gap:2rem;
+}
+
+.box-row {
+    display: flex;
+    flex-direction: row; /* Is Row by Default */
+
+    /*align-items:center;  align-items Effects direction Axis, justify-content effects adjacent Axis */
+}
+
+.box-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.box-wraprow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.box-wrapcol {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.box-w100-margin > * {
+    width:100%;
+    margin-bottom: 1.5rem;
+}
+
+.box-center0 {
+    justify-content: center;
+    align-items: center;
+}
+
+.box-center1 {
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.box-center2 {
+    align-items: center;
+    justify-content: space-around;
+}
+
+.box-center3 {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box-justify0 {
+    justify-content: center;
+}
+
+.box-justify1 {
+    justify-content: space-evenly;
+}
+
+.box-justify2 {
+    justify-content: space-around;
+}
+
+.box-justify3 {
+    justify-content: space-between;
+}
+
+
+.box-pushstart {
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.box-pushend {
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.me-absolute{
+    position:absolute;
+}
+
+.me-justify{
+    justify-self:center;
+}
+
+.me-inline {
+    display: inline;
+}
+
+.me-block {
+    display: block;
+}
+
+.me-pushend {
+    align-self: center;
+    justify-self: flex-end;
+    
+}
+
+
+
+/* Children Properties */
+.me-grow1 {
+    flex-grow: 1;
+}
+
+.me-grow2 {
+    flex-grow: 2;
+}
+
+.me-inherit{
+    width:inherit;
+    height:inherit;
+}
+
+.me-h-fit{
+    height:fit-content;
+}
+
+w-fit{
+    max-width:fit-content;
+}
+
+.zero {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.my3 {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.my5 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.mx20{
+    margin: 0px 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.circle {
+    border-radius: 50%;
+}
+.max-w100{
+    max-width:100%;
+}
+.w100 {
+    width: 100%;
+}
+.h100{
+    height:100%;
+}
+
+.w90{
+    width:90%;
+}
+
+.w75 {
+    width:75%;
+}
+
+.h100 {
+    height:100%;
+}
+
+.vw100{
+    width: 100vw;
+}
+
+.vh100{
+    height:100vh;
+}
+
+.m1 {
+    margin: 2px;
+}
+
+.m2 {
+    margin: 4px;
+}
+
+.m3 {
+    margin: 6px;
+}
+
+.m4 {
+    margin: 8px;
+}
+
+.m5 {
+    margin: 10px;
+}
+
+
+.mt3 {
+    margin-top: 6px;
+}
+
+.mt4 {
+    margin-top: 8px;
+}
+
+.mt5 {
+    margin-top: 10px;
+}
+
+
+.p1 {
+    padding: 2px;
+}
+
+.p2 {
+    padding: 4px;
+}
+
+.p3 {
+    padding: 6px;
+}
+
+.p4 {
+    padding: 8px;
+}
+
+.p5 {
+    padding: 10px;
+}
+
+@media screen and (max-width: 800px){
+/*    .box-2col-media > * {
+        flex: 1 0 auto;
+        max-width: 100%;
+        gap: var(--std-gutter);
+    }
+
+    .box-3col-media > * {
+        flex: 1 0 100%;
+        max-width: 100%;
+        margin: var(--std-gutter);
+
+        
+    }*/
+}

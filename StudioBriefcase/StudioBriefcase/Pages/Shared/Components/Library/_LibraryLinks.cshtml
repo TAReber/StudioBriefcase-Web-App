@@ -1,0 +1,16 @@
+﻿
+@model List<StudioBriefcase.Models.LibraryLinksModel>;
+<!-- Styles Defined with CSS Isolation: Note - I didn't link the stylesheet, why do they work?' -->
+<ul class="doc-list-style">
+    @foreach (var document in Model)
+    {
+        <li>
+            <div class="thumbnail-link w-fit">
+                <a href="@(document.SiteUrl)" target="_blank">
+                    <img src="@(document.ImgSource)" class="doc-logo" />
+                </a>
+                <div class="thumbnail-text">@(document.ShorthandDesc)</div>
+            </div>
+        </li>
+    }
+</ul>

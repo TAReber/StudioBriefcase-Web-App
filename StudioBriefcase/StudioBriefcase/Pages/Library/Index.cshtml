@@ -1,0 +1,22 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.IndexModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Default.cshtml";
+}
+
+<div class="whitespace"></div>
+
+<div class="box-wraprow box-5col box-center0">
+
+    @foreach (var category in Model.CategoryList)
+    {
+        <div class="thumbnail-link">
+            <a asp-area="" asp-page="/Library/@(category.Name)/Index">
+                <img src="~/images/Library/@(category.Name)/@(category.Name).png" alt="@(category.Name) + _thumbanil" class="thumbnail-img">
+            </a>
+            <div class="thumbnail-text"> @(category.Description) </div>
+        </div>
+    }
+
+
+</div>

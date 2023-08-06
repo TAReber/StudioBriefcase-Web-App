@@ -1,0 +1,43 @@
+﻿vk {
+}
+
+    vk:hover {
+        cursor: pointer;
+    }
+
+.chapter_listElement {
+    padding-left: 30px;
+}
+/*********************
+Programming Language Key Word Styles, used with <span>
+*********************/
+c-kw {
+    color: #be85ff;
+}
+/*Function in the VK Library*/
+c-func {
+    color: #baa364;
+    font-weight: bold;
+}
+
+c-type {
+    color: #54b2a4; /*limegreen*/
+    font-weight: bold;
+}
+
+c-mem {
+    color: #8c9eff;
+    font-weight: bold;
+}
+
+c-var {
+}
+
+c-enum {
+    color: #3abf01;
+    font-weight: bold;
+}
+
+l-dec {
+    color: #4a63dd;
+}

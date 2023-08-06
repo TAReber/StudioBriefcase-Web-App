@@ -1,0 +1,20 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.Systems_Programming.IndexModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Default.cshtml";
+}
+<div class="whitespace"></div>
+
+<div class="box-wraprow box-5col box-center0">
+
+    @foreach (var library in Model.LibraryList)
+    {
+        <div class="thumbnail-link">
+            <a asp-area="" asp-page="/Library/Systems_Programming/@(library.Name)/Getting_Started/Introduction">
+                <img src="~/images/Library/Systems_Programming/@(library.Name)/@(library.Name).png" alt="@(library.Name)_thumbnail" class="thumbnail-img">
+            </a>
+            <div class="thumbnail-text"> @library.Description </div>
+        </div>
+    }
+
+</div>

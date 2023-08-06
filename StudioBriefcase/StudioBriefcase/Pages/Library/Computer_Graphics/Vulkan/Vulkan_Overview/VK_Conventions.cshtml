@@ -1,0 +1,54 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.Computer_Graphics.Vulkan.Vulkan_Overview.VK_ConventionsModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+}
+<div class="text-center">
+    <h2>Conventions and Common Types</h2>
+</div>
+
+<div class="mt-4">
+    <h4>Naming Conventions used in the API</h4>
+    <p>
+        Vulkan uses a common naming convention in its enum structures. Some names in the structure violate
+        the rules and are deprecated when the Vulkan team detects them. Make sure to use a name that
+        follows the naming conventions below because then It is or will be deprecated, if its available.
+    </p>
+    <p>
+        <l-dec>typedef</l-dec> enum <c-type>VkStructureType</c-type>: contains the list of enumerations used throughout the API. Each
+        element in this structure contains two parts, Prefix, a name that directly references the
+        corresponding structure.
+    </p>
+    <ul>
+        <li>Prefix: <c-type>VK_STRUCTURE_TYPE_ ...</c-type></li>
+        <li>Structure name: Where VkNameOfStructure becomes NAME_OF_STRUCTURE. </li>
+    </ul>
+    <p>Example: <vk><c-type>VkDeviceCreateInfo</c-type></vk> is references with <c-type>VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO</c-type></p>
+</div>
+
+
+<div>
+    <h4>Common Object Types</h4>
+    <p>
+        Many Vulkan structures and parameters reuse the same object types. See Below.
+        These are common structures you'll see and use with Vulkan API.
+    </p>
+    <ul>
+        <li>
+            <l-dec>typedef</l-dec> struct <vk><c-type>VkOffset2D</c-type></vk> and <vk><c-type>VkOffset3D</c-type></vk>: Struct used to define the relative distance from an origin point.
+            <ul><li>x, y z components</li></ul>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <l-dec>typedef</l-dec> struct <vk><c-type>VkExtent2D</c-type></vk> and <vk><c-type>VkExtent3D</c-type></vk>: Describes the length a rectangle should extend from the origin point.
+            <ul><li>x, y z components</li></ul>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <l-dec>typedef</l-dec> struct <vk><c-type>VkRect2D</c-type></vk>: Defines a rectangular region 2D space using offset and extent structures.
+            <ul><li><c-type>VkOffset</c-type> and <c-type>VkExtent</c-type> components, with respect to 2D and 3D variations.</li></ul>
+        </li>
+    </ul>
+</div>

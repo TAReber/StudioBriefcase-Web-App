@@ -1,0 +1,74 @@
+﻿html {
+    font-size: 16px;
+    font-family: 'Segoe UI';
+    overflow:hidden;
+}
+
+body{
+    overflow:hidden;
+}
+
+main {
+/*    overflow-y: scroll;
+    overflow-x: hidden;*/
+    
+}
+
+footer {
+    border-top: 1px solid #222222;
+    height: fit-content;
+    justify-content: center;
+    
+    
+}
+
+ul{
+    margin-bottom:0.25rem;
+}
+
+
+button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+    color: #a1a1a1;
+}
+
+h1 {
+    font-size: 3.2rem;
+    font-weight: 300;
+    padding: 0px;
+    margin: 0px;
+}
+
+h2 {
+    font-size: 2.8rem;
+    font-weight: 300;
+    padding: 0px;
+    margin: 0px;
+}
+
+h3 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    padding: 0px;
+    margin: 0px;
+}
+
+h4 {
+    font-size: 2.0rem;
+    font-weight: 400;
+    padding: 0px;
+    margin: 0px;
+}
+
+h5 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 0px;
+    margin: 0px;
+}
+
+h6 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 0px;
+    margin: 0px;
+}

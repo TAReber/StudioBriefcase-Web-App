@@ -1,0 +1,114 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Overview.IntroductionModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+}
+<div class="whitespace"></div>
+
+<div class="text-center">
+    <h3>Vulkan Graphics API</h3>
+</div>
+
+<div>
+    <h6>Fast Document Links</h6>
+    <p>This links are always available to the left in the Content Navigator.</p>
+    <ul>
+        <li><a href="https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html" target="_blank">https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html</a></li>
+        <li><a href="https://www.vulkan.org" target="_blank">https://www.vulkan.org</a></li>
+        <li><a href="https://vulkan.lunarg.com/doc/sdk" target="_blank">https://vulkan.lunarg.com/doc/sdk</a></li>
+        <li><a href="https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/" target="_blank">https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/</a></li>
+        <li><a href="https://www.khronos.org/files/vulkan11-reference-guide.pdf" target="_blank">https://www.khronos.org/files/vulkan11-reference-guide.pdf</a></li>
+    </ul>
+</div>
+
+
+<div>
+    <h5>What is Vulkan API</h5>
+    <p>
+        Vulkan provides Application Programming Interfaces(API) for programmers to access and control GPU(Graphics Processing Units)
+        for rendering graphics or computing tasks.
+        <ul>
+            <li>Cross Platform</li>
+            <li>Low Overhead costs on the CPU</li>
+            <li>Supports Concurrent Multithreading</li>
+        </ul>
+    </p>
+
+</div>
+<div>
+    <h5>What would I use this API for?</h5>
+    <p>
+        When your applicatation has expensive operations on the system causing your CPU to start capping. GPU's are built for concurrent
+        proccessing of information accross hundreds of cores. This is often used for 3D graphical display in video games that require
+        several millions of calculations that need to happen within a desired framerate. Though a single CPU Core is faster than a single GPU Core, 8 CPU Cores
+        GPU's can out perform the CPU by having more Cores.
+    </p>
+</div>
+
+<div>
+    <h5>What will be Learned</h5>
+</div>
+
+<div>
+    <h5>Prerequisite Knowledge</h5>
+    <ul>
+        <li>GLFW</li>
+        <li>C++</li>
+        <li>Linear Algebra</li>
+        <li>Familiarity with multi-threading and concurrency</li>
+        <li>Memory Managment</li>
+
+    </ul>
+</div>
+
+<div>
+    <h5>Environments and Tools</h5>
+    <ul>
+        <li>Visual Studios 2022</li>
+    </ul>
+    <h5>Optional</h5>
+    <ul>
+        <li>Github</li>
+        <li>Cmake</li>
+        <li>WinAPI</li>
+    </ul>
+</div>
+
+<div>
+    <h5>Adjacent Frameworks</h5>
+    <ul>
+
+        <li>Math Libraries (DirectX or GLM)</li>
+        <li>SPIR-V - Binary Format for Shaders</li>
+        <li>GLSL - OpenGL Shading Language</li>
+        <li>HLSL - High Level Shading Language</li>
+        <li>shaderc libraries for Runtime shader compiling into SPIR-V</li>
+    </ul>
+</div>
+
+<h4>External Links and Sources</h4>
+
+<div>
+    <h5>Vinjin's Ultimate List</h5>
+    <ul>
+        <li><a href="http://www.vinjn.com/awesome-vulkan/#tutorial" target="_blank">Vinjin</a></li>
+    </ul>
+
+    <h5>Tutorial Websites</h5>
+    <ul>
+        <li><a href="https://vulkan-tutorial.com" target="_blank">Vulkan Tutorial</a></li>
+        <li><a href="https://vkguide.dev" target="_blank">Vulkan Tutorial</a></li>
+    </ul>
+    <h5>Repository</h5>
+    <ul>
+        <li><a href="https://github.com/Overv/VulkanTutorial" target="_blank">VulkanTutorial</a></li>
+        <li><a href="https://github.com/KhronosGroup/Vulkan-Guide" target="_blank">Vulkan-Guide</a></li>
+    </ul>
+</div>
+
+<div class="">
+    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+    </a>
+    <br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+</div>

@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<ul class="box-col box-center3 menu-style p3">
+    @if (Context.User.Identity?.IsAuthenticated == true)
+    {
+        <li class="box-row box-center3">
+            <span class="text-sm" style="color:inherit">Light Mode</span>
+            <button class="menu-btn" type="button">Toggle</button>
+        </li>
+        <li class="box-col box-center0 mt5">
+            <span class="text-sm" style="color:inherit">@Context.User.Identity?.Name</span>
+            <a class="menu-btn text-center w100 c-fg" href="/logout">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="box-row box-center3 w100">
+            <span class="text-sm" style="color:inherit">Color Mode</span>
+            <button class="menu-btn menu-btn-size c-fg" onclick="toggleColorScheme(this)" id="color_mode_toggle" data-target="colorscheme">Light</button>
+        </li>
+        <li class="box-col box-center0 w100">
+            <span class="text-sm" style="color:inherit">GitHub OAuth</span>            
+            <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/login">Login</a>            
+        </li>
+
+    }
+</ul>

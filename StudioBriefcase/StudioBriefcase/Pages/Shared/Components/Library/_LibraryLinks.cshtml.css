@@ -1,0 +1,13 @@
+﻿.doc-list-style {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.doc-logo {
+    background-color: #756356;
+    border-radius: 8px;
+    max-width: 200px;
+    height: auto;
+    margin: 4px;
+}

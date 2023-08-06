@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+    /*Style Sheet Uses ASP.NET feature called CSS Isolation. */
+    <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
+    string? thisDirectory = System.IO.Path.GetDirectoryName(Context.Request.Path);
+    string[] folders = thisDirectory!.Split('\\');
+    string subject = folders[folders.Length - 1];
+    string library = folders[folders.Length - 2];
+    string topic = System.IO.Path.GetFileNameWithoutExtension(Context.Request.Path);
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/LibraryStyles/@(library).css" />
+</head>
+
+<main class="box-row me-grow1 w100 c-bg" style="overflow:hidden">
+
+    <div class="box-row h100">
+        <div class="box-row c-fg expanded" id="sublayout-sidebar-navigator">
+            <div class="sublayout-sidebar-scrollbar">
+                <h6 class="sublayout-link-title">@(library) Links</h6>
+               
+                @await Component.InvokeAsync("LibraryLinks", new {libraryName = @library})
+                
+                <div class="sublayout-language-section">
+                    <p>English</p>
+                </div>
+
+                @await Component.InvokeAsync("LibraryNavigation", new {path = @thisDirectory})
+
+                <div class="whitespace"></div>              
+            </div>
+        </div>
+        <div class="h100 m2">
+            <button class="sublayout-sidebar-toggle c-fg event-toggle" data-target="sublayout-sidebar-navigator">I</button>
+        </div>
+    </div>
+
+    <div class="box-row box-justify0 w100 h100" style="overflow:auto;">
+        <div class="box-col box-w100-margin w75">
+            @RenderBody()
+        </div>
+
+    </div>
+
+
+</main>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        ToggleExpanded('@subject');
+    });
+</script>
+
+@section Scripts{
+    <Script src="~/scripts/library/Vulkan.js"></Script>
+}

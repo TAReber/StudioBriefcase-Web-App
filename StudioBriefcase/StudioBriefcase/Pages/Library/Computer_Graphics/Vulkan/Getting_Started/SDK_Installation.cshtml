@@ -1,0 +1,87 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Getting_Started.SDK_InstallationModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+    ViewData["image_path"] = "/images/Library/Computer_Graphics/Vulkan/SDKInstall/";
+}
+
+<div class="text-center">
+    <h2>Installing Vulkan SDK</h2>
+</div>
+
+<div>
+    <h6>Environment</h6>
+    <ul>
+        <li>Visual Studio 2022</li>
+        <li>RenderDoc</li>
+    </ul>
+</div>
+
+<div>
+    <h6>Download Links</h6>
+    <ul>
+        <li><a href="https://www.lunarg.com/vulkan-sdk/"> Vulkan SDK from LunarG</a></li>
+        <li><a href="https://renderdoc.org/"> Renderdoc Graphics API Troubleshooting</a></li>
+    </ul>
+</div>
+
+<div>
+    <p>
+        LunarG created and maintains the Vulkan Software Development Kit. The software Development kit comes with a collection of essential tools to assist
+        developers.
+    </p>
+    <h6>Tools and headers that come with the Software Development Kit</h6>
+    <ul>
+        <li>GLM headers - OpenGL Math Library</li>
+        <li>shaderc headers - Runtime Compiling of Shading Languages to SPIR-V Binary</li>
+        <li>glslangValidator application - Manual Conversion of GLSL to SPIR-V Binary</li>
+        <li>glslc application - Google's Manual Conversion of GLSL to SPIR-V Binary</li>
+    </ul>
+</div>
+
+
+<div>
+    <h6>LunarG SDK Introduction</h6>
+    <p>The LunarG has robust easy to use documentation. The Getting Started section has a detailed introduction the kits contents.</p>
+</div>
+
+
+<div class="accordion w100 c-bg">
+    <div class="accordion-item">
+        <button class="accordion-toggle event-toggle c-fg" data-target="installing">
+            <span class="text-sm">Installing SDK</span>
+        </button>
+        <div class="accordion-target-vertical box-col" id="installing">
+            <p>
+                Installation is straight forward. The only question have are what extra tools you will need
+                when the installer asks. See the following image.              
+            </p>
+            <img src="@ViewData["image_path"]VulkanSetup.png" class="fit_image" />
+            <p>
+                This tutorial will use the glm headers, and if you didn't add them during the setup, run the maintenancetool
+                application and you can check the box and add them post installation.
+                
+            </p>
+            <img src="@ViewData["image_path"]VulkanMaintenanceTool_Pic.png" class="fit_image" />
+            <p>"C:\VulkanSDK\1.3.250.0\maintenancetool.exe"</p>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <button class="accordion-toggle event-toggle c-fg" type="button" data-target="VSTemplates">
+            <span>Add Visual Studio Template Projects</span>
+        </button>
+        <div class="accordion-target-vertical box-col" id="VSTemplates">
+            <p>
+                The VulkanSDK comes with templates for Visual Studio. Do not extract these, Copy and paste them directly
+                into the respective Visual Studio Template path. Visual Studio is able to handle zipped files.
+
+            </p>
+            <img src="@ViewData["image_path"]SDK_VSTemplates.png" class="fit_image" />
+            <span> C:\Users\username\Documents\Visual Studio YYYY\Templates\ProjectTemplates\Visual C++ Project</span>
+        </div>
+    </div>
+
+
+</div>
+

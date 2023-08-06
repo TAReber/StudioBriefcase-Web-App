@@ -1,0 +1,52 @@
+﻿@page
+@model StudioBriefcase.Pages.Connect.IndexModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Default.cshtml";
+
+    ViewData["Title"] = "Home page";
+    ViewData["DiscordChannel"] = "https://discord.gg/abcBNkDj";
+    ViewData["library"] = "Testing";
+    ViewData["subject"] = "Question";
+    ViewData["section"] = "NewQuestion";
+
+    ViewData["userid"] = "1";
+    ViewData["Category"] = "1";
+
+}
+
+
+<div class="text-center">
+    <h1>Connect with Peers</h1>
+    <p class="text-center">Available Sources to Connecting with other who use this site.</p>
+</div>
+
+<div class="w100">
+
+    <div class="box-row box-center0 ">
+
+        <div class="box-col thumbnail-link" id="discord_channel" data-value="@ViewData["DiscordChannel"]">
+            <a href="https://discord.com/" target="_blank">
+                <img src="~/images/external/discord-mark-blue.png" alt="discord_thumbnail" class="thumbnail-img">
+            </a>
+            <button class="thumbnail-btn" onclick="copyToClipboard('discord_channel', this)">Copy Discord Link</button>
+            <div class="thumbnail-text">Visit Discord</div>
+        </div>
+    </div>
+</div>
+
+
+@*https://www.learnrazorpages.com/razor-pages/partial-pages*@
+<div class="mt-5">
+    <h5 class="text-center">Database and Tools Test Area</h5>
+    <div>
+        <div>
+            <a rel="nofollow noopener noreferrer" target="_blank" href="https://github.com/TAReber" class="gsc-comment-author-avatar">
+                <img src="https://avatars.githubusercontent.com/u/94849230?u=20b482a08448becd69f0eaf3966f32accc46b178&amp;v=4" width="30" height="30" alt="" loading="lazy" class="mr-2 rounded-full">
+                <span class="link-primary overflow-hidden text-ellipsis font-semibold">TAReber</span>
+            </a>
+            <time title="Jul 5, 2023, 7:12 PM CDT" datetime="2023-07-06T00:12:29Z" class="whitespace-nowrap">10 days ago</time></a>
+        </div>
+
+    </div>
+</div>
+

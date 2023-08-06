@@ -1,0 +1,39 @@
+﻿.navigation-subject-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation-topic-list {
+    list-style-type: none;
+    margin-left: 10%;
+    padding: 0;
+    width: 90%;
+    overflow:hidden;
+}
+
+.navigation-topics-container {
+    overflow-y:hidden;
+    visibility:hidden;
+    height:0px;
+    transition: height 0.3s ease-in-out;
+}
+
+.navigation-topics-container.expanded{
+    visibility:visible;
+    height:fit-content;
+}
+
+.navigation-toggle-btn{
+    width:100%;
+    border-radius: 4px;
+    border: 2px solid red;
+}
+
+.navigation-topic-style {
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 25px;
+}
+

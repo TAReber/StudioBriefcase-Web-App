@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @*Site Specific Styles and themes*@
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*Globally Used Styles for element flow and control*@
+    <link rel="stylesheet" href="~/css/baseStyles.css" />
+    @* Redefinition of html Tags *@
+    <link rel="stylesheet" href="~/css/themes.css"/>
+    @*Helper Styles to add visual Assistance to the development process*@
+    <link rel="stylesheet" href="~/css/helperStyles.css" />
+
+    @* Default Colors used in the website and altered values used in darkmode *@
+    <partial name="_colors"/>
+
+</head>
+
+@*vh100 is defined here so main can flex-grow the remaining space in the window
+This keeps the footer at the bottom of the screen for short content*@
+<body class="box-col box-justify3 c-bg zero " style="height:100vh;">
+
+    <header class="header-style w100 c-fg c-shadow">
+        <nav class="max-w100">
+            <div class="box-wraprow box-center3">
+                <div class="box-row box-center3 header-title-box-media">
+                    <a class="box-center0 text-lg" asp-area="" asp-page="/Index">                       
+                        <span class="box-col">
+                            <span class="text-center">Studio</span>
+                            <span>Briefcase</span>
+                        </span>
+                    </a>
+                    <div class="header-title-box-btn-media">
+                        <button class="me-pushend theme-avatar event-toggle" data-target="layout-navbtn">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="header-link-box-media box-row box-center3 me-grow1 center3" id="layout-navbtn">
+
+                    <ul class="box-row zero mx20">
+                        <li class="me-block">
+                            <a class="theme-link text-md" asp-Page="/Connect/Index">Connect</a>
+                        </li>
+                        <li class="me-block">
+                            <a class="theme-link text-md" asp-area="" asp-page="/Library/Index">Library</a>
+                        </li>
+                        <li class="me-block">
+                            <a class="theme-link text-md" asp-area="" asp-page="/About/Index">About</a>
+                        </li>
+                        <li class="me-block">
+                            <a class="theme-link text-md" asp-area="" asp-page="/Support/Index">Support</a>
+                        </li>
+                    </ul>
+
+                    <div class="box-col container-relative mx20">
+                        <button class="event-toggle text-sm" data-target="header-menu">Menu</button>
+                        <div class="box-col me-absolute c-menu menu-window" id="header-menu">
+                            <partial name="_menuPartial" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    
+@*  ProtoType Not Implemented  
+    <div class="fixed-box row center0" id="io-pos">
+        <button class="io-btn toggle" data-target="Layout-io">I</button>
+        <div class="col box BG" id="Layout-io">
+        </div>
+    </div>*@
+
+
+    @* <Main> Element is handled in subLayout because I believed letting a subLayout
+    have control of main styles would simply implementing layout specific behaviors.    *@
+    @RenderBody()
+
+    <footer class="box-col w100 zero c-fg">
+        <div class="footer-content">
+            &copy; 2023 - Studio Briefcase - <a asp-area="" asp-page="/Home/Privacy">Privacy</a>
+        </div>
+
+    </footer>
+
+
+    <script src="~/scripts/site.js"></script>
+    <script src="~/scripts/ColorModes.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

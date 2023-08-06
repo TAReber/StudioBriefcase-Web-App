@@ -1,0 +1,155 @@
+﻿@page
+@model StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Vulkan_Overview.OverviewModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+}
+
+<div class="text-center">
+    <h2>Vulkan Overview</h2>
+</div>
+
+<div>
+    <h5>Vulkan Documentation</h5>
+    <p>
+        Vulkan Documentation uses its own standard naming conventions to work with and understand the API. First
+        things we’ll do is study the language and how the workflow of the API itself. Words that are color coded
+        are words that have a special meaning in the API.
+    </p>
+
+    <ul>
+        <li><c-kw>Document Keyword</c-kw></li>
+        <li><c-type>Objects, Structs, Type aliases</c-type></li>
+        <li><c-func>Functions and Methods</c-func></li>
+        <li><c-mem>Object Members and Properties</c-mem></li>
+        <li><c-enum>Enumeration Values</c-enum></li>
+        <li><l-dec>C++ Language Declaration</l-dec></li>
+    </ul>
+</div>
+
+<div>
+    <h5>Vulkan Execution Model</h5>
+    <ul>
+        <li>Vulkan API provides methods for detecting one or more GPU’s called <c-kw>devices</c-kw>.</li>
+        <li>Each device can do different types of work asynchronously with things called <c-kw>queues</c-kw>.</li>
+        <li>Each set of queues supported by a device is partitioned into something called <c-kw>families</c-kw>.</li>
+    </ul>
+    <p>
+        <div>The purpose of queues is to support the defined types of functionalities a GPU can do, which are:</div>
+        <div><strong>Graphics</strong>, <strong>Compute</strong>, <strong>Transfer</strong> and <strong>Sparse Memory Management</strong>.</div>
+        <div><i>Queues within a family are compatible with one another. Device may report multiple families, even if they are similar to each other, they are not compatible with each other.</i></div>
+    </p>
+</div>
+
+<div>
+    <p>
+        <c-kw>Device</c-kw> Memory is Explicitly Managed by the application. This means that you are responsible for telling the GPU exactly what
+        information is stored, where and how to access it and what its supposed to be doing with it.
+        <c-kw>Devices</c-kw> may have multiple heaps of memory, and may include various combinations of the following types.
+        <ul>
+            <li><c-kw>Device-local</c-kw>: Physical Memory on the device. This is memory optimized for high-speed access by the device.</li>
+            <li><c-kw>Host-local</c-kw>: Physical memory of host, Memory that only the device can access through buffers and mechanism.</li>
+            <li><c-kw>Host-Visible</c-kw>: Memory that can read and written to by the host(CPU).</li>
+        </ul>
+    </p>
+</div>
+
+<div>
+    <h5>What are Commands and Queue Operations</h5>
+    <p>
+        <c-kw>Commands</c-kw> are single instructions for the GPU to perform, related to <strong>Graphics</strong>, <strong>Compute</strong>, <strong>Transfer</strong>, and <strong>Sparse Memory Management</strong>
+        are created when method containing the <c-type>vkCmd</c-type> prefix are called.
+        <ul>
+            <li>
+                <strong>Drawing Commands: </strong>Commands used to perform graphics rendering.
+                <ul><li><vk><c-type>vkCmdDraw</c-type></vk>, <vk><c-type>vkCmdDrawIndexed</c-type></vk> or <vk><c-type>vkCmdDispatch</c-type></vk></li></ul>
+            </li>
+            <li>
+                <strong>State Commands: </strong>Commands used to configure settings in the rendering state.
+                <ul><li><vk><c-type>vkCmdSetViewport</c-type></vk>, <vk><c-type>vkCmdSetScissor</c-type></vk> or <vk><c-type>vkCmdBindPipeline</c-type></vk></li></ul>
+            </li>
+            <li>
+                <strong>Resource Binding Commands: </strong>Commands that bind a resources and data that are used during rendering or compute operations.
+                <ul><li><vk><c-type>vkCmdBindVertexBuffers</c-type></vk>, <vk><c-type>vkCmdBindIndexBuffer</c-type></vk> or <vk><c-type>vkCmdBindDescriptorSets</c-type></vk></li></ul>
+            </li>
+            <li>
+                <strong>Memory Operation Commands: </strong>Memory Management commands for copying data between buffers, clearing memory, resolve multi-sampled images.
+                <ul><li><vk><c-type>vkCmdCopyBuffer</c-type></vk>, <vk><c-type>vkCmdClearAttachments</c-type></vk> or <vk><c-type>vkCmdResolveImage</c-type></vk></li></ul>
+            </li>
+            <li>
+                <strong>Synchronization Commands: </strong> Commands used to synchronize access to resources.
+                <ul><li><vk><c-type>vkCmdPipelineBarrier</c-type></vk>, <vk><c-type>vkCmdSetEvent</c-type></vk> or <vk><c-type>vkCmdWaitEvents</c-type></vk></li></ul>
+            </li>
+        </ul>
+    </p>
+    <h5 class="mt-5"><strong>Cacheing Instructions in a buffer</strong></h5>
+    <p>
+        When instructions are created, they need to be stored in a buffer. This buffer is called a
+        <vk><c-type>VkCommandBuffer</c-type></vk> and is linked to specific queue in the device’s family.
+        Once the <c-kw>command</c-kw> buffer is populated with the desired data, the programmer submits the buffer to the
+        designated queue.
+    </p>
+    <h5 class="mt-2"><strong>Submission to <c-kw>Queues</c-kw></strong></h5>
+    <p>
+        <c-kw>Queue</c-kw> submission calls occur with methods prefixed with <vk><c-type>VkQueue</c-type></vk>, where it waits for its turn to be
+        processed. The designated <c-kw>queue</c-kw> will then direct the buffer to the <c-kw>device’s</c-kw>  Execution Engine to
+        translate, interpret and parse and execute the <c-kw>commands</c-kw>. Once a <c-kw>queue</c-kw> is submitted, the application
+        does not need to wait for the GPU to finish and it continue its operation while the queue processes
+        the <c-kw>commands</c-kw> on the GPU.
+    </p>
+
+    <h5 class="mt-2"><strong>Semaphores</strong></h5>
+    <p>
+        <c-kw>Command</c-kw> buffers can be submitted with multiple lists of semaphores to synchronize work between
+        <c-kw>command</c-kw> buffers. The lists of semaphores just tell the <c-kw>queue</c-kw> how the work should be done and
+        executing <c-kw>commands</c-kw>, signaling and waiting on semaphores are tasks managed by the <c-kw>queue</c-kw>.
+    </p>
+    <p>
+        <c-kw>Command</c-kw> buffer submissions respect submission order, but there are no implicit ordering
+        constraints. Operations can occur in any order, including between operations on different
+        <c-kw>queues</c-kw>, or between <c-kw>queues</c-kw> and the host(CPU). Explicit ordering is expressed using semaphores
+        and fences.
+    </p>
+    <p>
+        <c-kw>Commands</c-kw> in buffers can set persistent information across commands, synchronize other commands
+        or launch other <c-kw>commands</c-kw>. Synchronization <c-kw>commands</c-kw> introduce execution and memory dependencies
+        two sets of action commands.
+    </p>
+</div>
+
+<div>
+    <h4><strong>Vulkan Objects - Object Model</strong></h4>
+    <p>
+        All objects are referred to as handles at the API level. There are two Types of Vulkan objects.
+        <ul>
+            <li>
+                <strong>Dispatchable: </strong>Are unique Handles that are associated with a function
+                pointer table used to look up and call Vulkan API functions. They are the primary
+                interface to the Vulkan API. They are responsible for dispatching API commands
+                through different layers. They are Opaque, which means the details behind the type
+                are concealed from the user. Some common dispatchable objects include:
+                <ul><li><vk><c-type>VkInstance</c-type></vk>, <vk><c-type>VkPhysicalDevice</c-type></vk>, <vk><c-type>VkDevice</c-type></vk> and <vk><c-type>VkQueue</c-type></vk></li></ul>
+            </li>
+            <li>
+                <strong>Non_Dispatchable: </strong>Objects that 64-bit integer handles used to manage Vulkan Objects
+                that do not have a function pointer table. These include pipelines, descriptor sets, buffers,
+                images and more. These have two modes if the privateData feature on <vk><c-type>VkDevice</c-type></vk>
+                is enabled.
+                <ul><li><c-mem>privateData </c-mem> Enabled: Vulkan Objects created on a device must have unique handle that must be reference.</li></ul>
+                <ul><li><c-mem>PrivateData</c-mem> Disabled: Handles may pass data to another handle, rather than being limited to just being referenced.</li></ul>
+            </li>
+        </ul>
+    </p>
+    <p>
+        When destroying objects with handles that are not unique, you must ensure other handles will not be affected.
+        All objects created on a device can only be used on that device, must not be used on other devices.
+    </p>
+</div>
+
+<div>
+    <h4>Object Lifetime</h4>
+    <p>Vulkan Objects are entities created or allocated when methods prefixed with <c-type>vkCreate</c-type> and <c-type>vkAllocate</c-type> are called. These objects are immutable. </p>
+    <p>Objects that are created will reserve a heap of memory. Objects that are allocated use resources from an existing pool or heap. These two prefixes are not always mutual pairs like <vk><c-type>vkCreateDescriptorPool</c-type></vk> and <vk><c-type>vkAllocateDescriptorSets</c-type></vk>, they can serve different purposes.</p>
+    <h6>Destorying Vulkan Objects Safely</h6>
+    <p>Objects must not be destroyed while they are in use. This is something we’ll learn more about while doing. Or you can refer to Vulkan Documentation in <a href="https://registry.khronos.org/vulkan/specs/1.3/html/chap3.html">chapter 3</a>, to know now.</p>
+</div>
+
