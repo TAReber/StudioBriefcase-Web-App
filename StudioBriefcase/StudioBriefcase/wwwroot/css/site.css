@@ -8,12 +8,6 @@ body{
     overflow:hidden;
 }
 
-main {
-/*    overflow-y: scroll;
-    overflow-x: hidden;*/
-    
-}
-
 footer {
     border-top: 1px solid #222222;
     height: fit-content;
