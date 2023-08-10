@@ -1,60 +1,63 @@
 ﻿@page
 @model StudioBriefcase.Pages.Support.IndexModel
 @{
+
     Layout = "/Pages/Shared/_subLayout_Default.cshtml";
-    ViewData["Title"] = "Donations and Support";
+
+
+    ViewData["Title"] = "Support";
 }
 
 <div class="text-center my-4">
     <h3>@ViewData["Title"]</h3>
-</div>
-
-
-
-<div class="text-center">
-    <p>
-        Studio Briefcase is a free-to-use library dedicated to introducing new users to programming
-        languages and frameworks in a way to overcome learning curve in the most time efficient,
-        frustrating free manner possible. This website works by meticulously hyperlinking learners to
-        relevant documentation and other content creators.
+    <p class="text-center">
+        Studio Briefcase is a free-to-use library for everyone and will remain so.
     </p>
-    <p><strong>Donations will primarily be used for the following puruposes.</strong></p>
 </div>
 
+<div class="support-banner-style">
+    <h4 class="support-banner-text c-fg">Become a Patreon</h4>
+    <a href="https://www.patreon.com/PigBoogerStudio" target="_blank" style="max-width:100%">
+        <img src="~/images/Internal/PatreonBanner.png" alt="patreon_banner" class="" style="max-width:inherit" />
+    </a>
 
+</div>
 
-<div class="box-wraprow box-justify0 box-3col">
-    <div class="box-col ">
-        <div class="text-center theme-rounded h100 c-fg">
-            <h5>Maintenance</h5>
-            <p>
-                The upkeep of third party services in Azure and GitHub and continued level of security to keep
-                StudioBriefcase safe.
-            </p>
+<div class="box-col text-center">
+    <h5>What can supporting me do?</h5>
+    <div class="box-wraprow box-justify0 box-3col">
+
+        <div class="box-col">
+            <div class="text-center theme-rounded h100 c-fg">
+                <h6>Give to the Community</h6>
+                <p>
+                    Studio Briefcase is free-to-use for everyone, is licensed under the creative commons and in a public repository.
+                     Supporting me supports everyone.
+                </p>
+            </div>
         </div>
 
-    </div>
+        <div class="box-col ">
+            <div class="text-center theme-rounded h100 c-fg">
+                <h6>Patreon Media Content</h6>
+                <p>
+                    The development cycle will be documented for Patreon subscribers. It will cover first concept, research, tiral and errors and refactors.
+                </p>
+            </div>
 
-    <div class="box-col">
-        <div class="text-center theme-rounded h100 c-fg">
-        <h5>Connecting Community and Creators</h5>
-        <p>
-            Building an environemt to connect like minded peers and other tutorial creators. This
-            isn't a site that seeks to compete, but one that brings people together.
-        </p>
         </div>
-    </div>
 
-    <div class="box-col">
-        <div class="text-center theme-rounded h100 c-fg">
-        <h5>Continued Development</h5>
-        <p>
-            Completing Tutorial Content and Expanding the range of topics in the library. A continued
-            dedication to save time and frustration.
-        </p>
+        <div class="box-col">
+            <div class="text-center theme-rounded h100 c-fg">
+                <h6>Continued Development</h6>
+                <p>
+                    Donations will be used for website upkeep costs, better quality media creation tools and maybe even help me set up a proper work environment. 
+                </p>
+            </div>
         </div>
     </div>
 </div>
+
 
 <div class="box-col box-center0 ">
 
@@ -100,44 +103,31 @@
 
 </div>
 
-<div class="whitespace"></div>
+<div class="box-rowwrap">
 
-<div class="box-rowwrap box-justify3 box-2col">
-
-    <div class="" style="min-width:fit-content">
-        <div class="text-center theme-rounded w75 c-fg">
-            <h6>Donate With PayPal</h6>
-            <div id="donate-button-container">
-                <div id="donate-button"></div>
-                <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-                <script>
-                    PayPal.Donation.Button({
-                        env: 'production',
-                        hosted_button_id: 'YRNYVAHFETNSA',
-                        image: {
-                            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-                            alt: 'Donate with PayPal button',
-                            title: 'PayPal - The safer, easier way to pay online!',
-                        }
-                    }).render('#donate-button');
-                </script>
-            </div>
-        </div>
-
+    <div class="text-center theme-rounded c-fg">
+        <div class="text-lg"><strong>Alternate Support</strong></div>
+        <div>Donate with Pay-pal as an alternative to Patreon.</div>
     </div>
 
-    <div class="">
-        <div class="text-center theme-rounded c-fg">
-            <h6>Donate with Stripes</h6>
-            <script async
-                    src="https://js.stripe.com/v3/buy-button.js">
+    <div class="text-center theme-rounded c-fg">
+
+        <div id="donate-button-container">
+            <div id="donate-button"></div>
+            <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+            <script>
+                PayPal.Donation.Button({
+                    env: 'production',
+                    hosted_button_id: 'YRNYVAHFETNSA',
+                    image: {
+                        src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                        alt: 'Donate with PayPal button',
+                        title: 'PayPal - The safer, easier way to pay online!',
+                    }
+                }).render('#donate-button');
             </script>
-
-            <stripe-buy-button buy-button-id="buy_btn_1NQcdWDeYSAfupye3J5jMNUH"
-                               publishable-key="pk_live_51NQbDuDeYSAfupyeinaRP9NANtwL4EHnUtWc4yzsOiByKzRsU1dSfcPERwyglEkMr3FIq4qRsBwzXLO2DwApgCz7003c9Kc66v">
-            </stripe-buy-button>
-
         </div>
-
     </div>
 </div>
+
+

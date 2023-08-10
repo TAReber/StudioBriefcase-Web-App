@@ -1,0 +1,14 @@
+﻿.support-banner-text {
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;   
+    width:100%;
+}
+
+.support-banner-style {
+    border: solid;
+    border-width: 5px;
+    border-color:darkslateblue;
+    border-radius: 10px;
+
+    max-width: 100%;
+}
