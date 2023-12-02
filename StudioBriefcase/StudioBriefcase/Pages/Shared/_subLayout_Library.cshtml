@@ -19,7 +19,8 @@
         <div class="box-row c-fg expanded" id="sublayout-sidebar-navigator">
             <div class="sublayout-sidebar-scrollbar">
                 <h6 class="sublayout-link-title">@(library) Links</h6>
-               
+
+                @{/* Calls a function in ViewCoponents/LibraryLinkViewComponent.cs using dependency injection */}
                 @await Component.InvokeAsync("LibraryLinks", new {libraryName = @library})
                 
                 <div class="sublayout-language-section">

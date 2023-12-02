@@ -32,11 +32,11 @@ This keeps the footer at the bottom of the screen for short content*@
                         <img src="~/images/internal/StudioBriefcaseBanner.png" alt="Site_Logo" class="m3" style="max-width:225px;">
                     </a>
                     <div class="header-title-box-btn-media">
-                        <button class="me-pushend theme-avatar event-toggle" data-target="layout-navbtn">
+                        <button class="me-pushend theme-avatar event-toggle c-offset" data-target="layout-navbtn">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                     </div>
-                </div>
+                </div> 
 
                 <div class="header-link-box-media box-row box-center3 me-grow1 center3" id="layout-navbtn">
 
@@ -56,10 +56,15 @@ This keeps the footer at the bottom of the screen for short content*@
                     </ul>
 
                     <div class="box-col container-relative mx20">
-                        <button class="event-toggle text-md" data-target="header-menu">Menu</button>
+                        
+                        <img class="icon-btn event-toggle icon-square-media me-justify zero c-offset" data-target="header-menu" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
+@*                         <button class="menu-btn event-toggle c-fg zero text-md" data-target="header-menu">
+                            <img class="icon-square-media me-justify zero c-fg" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
+                        </button> *@
                         <div class="box-col me-absolute c-menu menu-window" id="header-menu">
                             <partial name="_menuPartial" />
                         </div>
+
                     </div>
                 </div>
 
@@ -84,7 +89,15 @@ This keeps the footer at the bottom of the screen for short content*@
 
     <footer class="box-col w100 zero c-fg">
         <div class="footer-content">
-            &copy; 2023 - Studio Briefcase - <a asp-area="" asp-page="/Home/Privacy">Privacy</a>
+            <div class="box-row box-center0 zero">
+                <span><a asp-area="" asp-page="/Home/Privacy">Privacy~ </a></span>
+                <p class="zero" xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="http://studiobriefcase.com">StudioBriefcase</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/TAReber/StudioBriefcase-Web-App">Tyler A Reber</a> is marked with <a href="http://creativecommons.org/publicdomain/zero/1.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC0 1.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1"></a></p>
+                
+            </div>
+            
+            
+
+            
         </div>
 
     </footer>

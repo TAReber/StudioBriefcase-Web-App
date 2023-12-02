@@ -17,6 +17,7 @@ const lightmodeSet = [
     { variable: '--text-color2', value: 'black' },
     { variable: '--shadow1', value: 'black' },
     { variable: '--shadow2', value: '#cccc' },
+    { variable: '--offset', value: '#ffffff'},
     { variable: '--menu-background', value: '#111111' }
 ];
 
@@ -27,6 +28,7 @@ const darkmodeSet = [
     { variable: '--text-color2', value: 'white' },
     { variable: '--shadow1', value: '#888888' },
     { variable: '--shadow2', value: '#444444' },
+    { variable: '--offset', value: '#cccccc' },
     { variable: '--menu-background', value: '#111111' }
 ]
 

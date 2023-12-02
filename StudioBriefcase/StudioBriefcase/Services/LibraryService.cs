@@ -2,22 +2,34 @@
 using MySqlConnector;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace StudioBriefcase.Services
 {
     public class LibraryService : ILibraryService
     {
         private readonly MySqlConnection _connection;
+        private readonly IMemoryCache _cache;
 
-        public LibraryService(MySqlConnection connection)
+        public LibraryService(IMemoryCache cache, MySqlConnection connection)
         {
             _connection = connection;
+            _cache = cache;
         }
 
 
         public async Task<List<LibraryLinksModel>> GetLibraryLinksAsync(string libraryName)
         {
+            //I'm going to try to cache the list thats created to reduce the database traffic.
+            if(_cache.TryGetValue(libraryName, out List<LibraryLinksModel>? cachedlinks))
+            {
+                if(cachedlinks != null)
+                {
+                    return cachedlinks;
+                }            
+            }
 
+            //If CachedData is expired or failed to detect cached list, retrieve from database.
             await _connection.OpenAsync();
 
             var query = new MySqlCommand($"SELECT links from library_links WHERE library_id = (SELECT id from libraries WHERE library_name = @libraryName);", _connection);
@@ -32,12 +44,14 @@ namespace StudioBriefcase.Services
                     var libraryLinksList = JsonSerializer.Deserialize<List<LibraryLinksModel>>(json);
                     if (libraryLinksList != null && libraryLinksList.Count != 0)
                     {
+                        _cache.Set(libraryName, libraryLinksList, TimeSpan.FromMinutes(30));
                         return libraryLinksList;
                     }
                 }
             }
             return Error_GetLibraryLinksAsync();
         }
+
         public async Task<List<SubjectModel>> GetSubjectListAsync(string path)
         {
             string[] folders = path.Split('\\');
@@ -128,7 +142,7 @@ namespace StudioBriefcase.Services
                     {
                         new TopicModel
                         {
-                            Name = "No Topics Founc",
+                            Name = "No Topics Found",
                             PathUrl= "#",
                         }
                     }

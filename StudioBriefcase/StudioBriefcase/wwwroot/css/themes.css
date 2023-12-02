@@ -102,6 +102,24 @@
     background-color: #cccc;
 }
 
+.icon-btn {
+    border: 1px solid #8888;
+    border-radius: 10px;
+    margin: 2px;
+    text-align: center;
+
+}
+
+.icon-btn:hover {
+    background-color: #cccc;
+}
+
+.icon-square-media {
+    max-width: 32px;
+    max-height: 32px;
+    border-radius: 10px;
+}
+
 .theme-link {
     padding: 0.25rem 0.5rem;
     margin-right: 0.125rem;
