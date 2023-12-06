@@ -90,36 +90,31 @@ namespace StudioBriefcase.Startup
                     var user = await result.Content.ReadFromJsonAsync<JsonElement>();
                     ctx.RunClaimActions(user);
 
-                    var githubID = user.GetProperty("id").GetUInt32();
-                    var Name = user.GetProperty("login").ToString();
-                    var avatar = user.GetProperty("avatar_url").ToString();
-                    var site = user.GetProperty("html_url").ToString();
-
-                    
-
-
                     UserModel model = new UserModel
                     {
-                        Id = githubID,
-                        Name = Name,
-                        avatar_url = avatar,
-                        profile_url = site,
-                        role = 2 //2 = Regular User
+                        Id = user.GetProperty("id").GetUInt32(),
+                        Name = user.GetProperty("login").ToString(),
+                        avatar_url = user.GetProperty("avatar_url").ToString(),
+                        profile_url = user.GetProperty("html_url").ToString(),
+                        userclass = 1, //1 = Private
+                        userprivilege = 1 //2 = Admin
                     };
 
-
                     var userService = ctx.HttpContext.RequestServices.GetRequiredService<UserService>();
-                    bool exists = await userService.UserExistsAsync(githubID);
+                    bool exists = await userService.UserExistsAsync(model.Id);
                     if (exists)
                     {
-                        var userrole = await userService.GetUserRole(githubID);
-                        ctx.Identity?.AddClaim(new Claim("role", userrole));
-                        
+                        var userrole = await userService.GetUserClass(model.Id);
+                        var userprivilege = await userService.GetUserPrivilege(model.Id);
+                        ctx.Identity?.AddClaim(new Claim("class", userrole));
+                        ctx.Identity?.AddClaim(new Claim("privilege", userprivilege));
+
                     }
                     else
                     {
                         await userService.AddUserAsync(model);
-                        ctx.Identity?.AddClaim(new Claim("role", "Regular"));
+                        ctx.Identity?.AddClaim(new Claim("role", "private"));
+                        ctx.Identity?.AddClaim(new Claim("privilege", "Regular"));
                     }
 
                 };

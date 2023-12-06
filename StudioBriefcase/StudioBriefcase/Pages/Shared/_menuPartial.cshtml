@@ -10,26 +10,18 @@
         <span class="text-sm" style="color:inherit">Color Mode</span>
         <button class="menu-btn menu-btn-size c-fg" onclick="toggleColorScheme(this)" id="color_mode_toggle" data-target="colorscheme">Light</button>
     </li>
-    @if (Context.User.Identity?.IsAuthenticated == true)
+
+    @if (User.Identity?.IsAuthenticated == true)
     {
         
         <li class="box-col box-center3 w100">
-            <button class="menu-btn menu-btn-link c-fg"><span class="text-sm" style="color:inherit">@Context.User.FindFirst("role")?.Value</span></button>
-            <select id="Menu_RoleDropdown" onchange="updateUserRole()">
-                <option value="Default">Anonymous</option>
-                <option value="Regular">Regular</option>
-                <option value="Content Creator">Content Creator</option>
-                <option value="Student">Student</option>
-                <option value="Professional">Professional</option>
-                <option value="Educator">Educator</option>
-                <option value="Moderator">Moderator</option>
-                <option value="Researcher">Researcher</option>
-            </select>
+            <button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button>
+
         </li>
-
+        
         <li class="box-col box-center0 w100">
-
-            <span class="text-sm" style="color:inherit">@Context.User.FindFirst("name")?.Value</span>
+            <span class="text-sm" style="color:inherit">@User.FindFirst("role")?.Value</span>
+            <span class="text-sm" style="color:inherit">@User.FindFirst("name")?.Value</span>
             <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/logout">Logout</a>
         </li>
     }
@@ -43,14 +35,12 @@
     }
 </ul>
 
-        <script>
-            async function updateUserRole() {
-                var selectedRole = document.getElementById("Menu_RoleDropdown").value;
-                console.log(selectedRole);
-                //PageMethods.DotNet.invokeMethodAsync('StudioBriefcase', "UserService.SetUserRole", selectedRole);
-                //await DotNet.invokeMethodAsync('StudioBriefcase', "UserService.SetUserRole", selectedRole);
-                
-            }
-        </script>
 
-  
+
+<script>
+    function OpenSettingsPage() {
+        
+        let page = window.open('/Shared/Forms/SettingsPage', '_blank', 'width=500,height=500,scrollbars=no,resizable=no');
+        page.focus();
+    }
+</script>

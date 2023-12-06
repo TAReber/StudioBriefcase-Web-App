@@ -6,7 +6,8 @@ namespace StudioBriefcase.Services
     {
         Task<bool> UserExistsAsync(uint user_id);
         Task AddUserAsync(UserModel user);
-        Task<string> GetUserRole(uint user_id);
-        Task SetUserRole(string role);
+        Task<string> GetUserClass(uint user_id);
+        Task<string> GetUserPrivilege(uint user_id);
+        Task SetUserClass(uint userID, string userclass);
     }
 }

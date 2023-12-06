@@ -9,6 +9,7 @@ namespace StudioBriefcase.Models
         public string Name { get; set; } = string.Empty;
         public string profile_url { get; set; } = string.Empty;
         public string avatar_url { get; set; } = string.Empty;
-        public uint role { get; set; } = 2;
+        public uint userclass { get; set; } = 1;
+        public uint userprivilege { get; set; } = 1;
     }
 }
