@@ -7,6 +7,8 @@ namespace StudioBriefcase.Pages.Shared.Forms
     public class SettingsPageModel : PageModel
     {
         UserService _userService;
+        
+
         [BindProperty]
         public string _gitUserID { get; set; }
         [BindProperty]

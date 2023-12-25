@@ -38,6 +38,7 @@ namespace StudioBriefcase.Startup
 
 
 
+
             return services;
         }
         /// <summary>
@@ -118,6 +119,7 @@ namespace StudioBriefcase.Startup
                     }
 
                 };
+                
 
             });
         }
