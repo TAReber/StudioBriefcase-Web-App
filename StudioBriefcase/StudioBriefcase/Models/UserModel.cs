@@ -12,4 +12,12 @@ namespace StudioBriefcase.Models
         public uint userclass { get; set; } = 1;
         public uint userprivilege { get; set; } = 1;
     }
+
+    public class UserRoleUpdateModel
+    {
+        [Required]
+        public string Id { get; set; } = string.Empty;
+        [Required]
+        public string userclass { get; set; } = string.Empty;
+    }
 }

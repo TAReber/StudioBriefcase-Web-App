@@ -1,8 +1,9 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using StudioBriefcase.Models;
 @{
-    
+
 }
 
 <ul class="box-col box-center3 menu-style p3">
@@ -13,12 +14,12 @@
 
     @if (User.Identity?.IsAuthenticated == true)
     {
-        
-        <li class="box-col box-center3 w100">
-            <button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button>
 
+        <li class="box-col box-center3 w100">
+            @* button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button> *@
+            <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
         </li>
-        
+
         <li class="box-col box-center0 w100">
             <span class="text-sm" style="color:inherit">@User.FindFirst("role")?.Value</span>
             <span class="text-sm" style="color:inherit">@User.FindFirst("name")?.Value</span>
@@ -35,12 +36,71 @@
     }
 </ul>
 
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="form" id="user-form">
+        <div class="form-content">
+            <div class="box-col">
+                <span>@User.FindFirst("name")</span>
+                <span>@User.FindFirst("privilege")</span>
+                <a class="icon-btn" href="@User.FindFirst("webpage")?.Value" target="_blank">
+                    <img class="icon-square-media" src="@User.FindFirst("picture")?.Value" alt="Github profile Pic" />
+                </a>
+                <span>@User.FindFirst("class")</span>
+                
+            </div>
+
+            <select id="Menu_RoleDropdown">
+                <option value="Private">Private</option>
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Educator">Educator</option>
+                <option value="Professional">Professional</option>
+                <option value="Researcher">Researcher</option>
+                <option value="Content Creator">Content Creator</option>
+            </select>
+            <input id="SelectedRole" name="SelectedRole" placeholder="@User.FindFirst("class")?.Value" />
+
+            <button class="" type="button" onclick="updateUserRole(event)"><span class="text-sm" style="color:inherit">Apply</span></button>
+
+        </div>
+        <div class="form-background event-toggle" data-target="user-form"/>
+    </div>
+}
 
 
 <script>
-    function OpenSettingsPage() {
+    function updateUserRole(event) {
+        event.stopPropagation();
         
-        let page = window.open('/Shared/Forms/SettingsPage', '_blank', 'width=500,height=500,scrollbars=no,resizable=no');
-        page.focus();
+        var selectedRole = document.getElementById('Menu_RoleDropdown').value;
+        var userId = '@User.FindFirst("sub")?.Value';
+
+        fetch('/api/user/UpdateUserClass', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Id: userId,
+                userClass: selectedRole
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error("Fetch Operation failed in _menuPartial.cshtml:", error);
+            });
     }
+
+
 </script>
+
+

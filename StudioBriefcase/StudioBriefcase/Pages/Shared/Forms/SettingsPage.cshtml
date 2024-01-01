@@ -9,7 +9,7 @@
 @if(User.Identity?.IsAuthenticated == true)
 {
     <div class="box-col">
-        <span>@User.FindFirst("sub")</span>
+        @* <span>@User.FindFirst("sub")</span> *@
         <span>@User.FindFirst("name")</span>
         <span>@User.FindFirst("website")</span>
         <span>@User.FindFirst("picture")</span>
@@ -28,7 +28,7 @@
             <option value="Researcher">Researcher</option>
             <option value="Content Creator">Content Creator</option>
         </select>
-        <input asp-for="_gitUserID" value="@User.FindFirst("sub")?.Value" />
+        <input style="display: none;" asp-for="_gitUserID" value="@User.FindFirst("sub")?.Value" />
         <input asp-for="_userClass" id="SelectedRole" name="SelectedRole" placeholder="@User.FindFirst("class")?.Value" />
 
         <button class="" type="submit"><span class="text-sm" style="color:inherit">Apply</span></button>

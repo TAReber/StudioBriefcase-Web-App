@@ -23,6 +23,8 @@
                 @{/* Calls a function in ViewCoponents/LibraryLinkViewComponent.cs using dependency injection */}
                 @await Component.InvokeAsync("LibraryLinks", new {libraryName = @library})
                 
+                <button>Update Links</button>
+
                 <div class="sublayout-language-section">
                     <p>English</p>
                 </div>
