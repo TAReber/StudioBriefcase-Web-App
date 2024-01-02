@@ -3,6 +3,7 @@ using MySqlConnector;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Mvc;
 
 namespace StudioBriefcase.Services
 {
@@ -41,11 +42,11 @@ namespace StudioBriefcase.Services
                 if (await reader.ReadAsync())
                 {
                     var json = reader.GetString(0);
-                    var libraryLinksList = JsonSerializer.Deserialize<List<LibraryLinksModel>>(json);
-                    if (libraryLinksList != null && libraryLinksList.Count != 0)
+                    var quicklinks = JsonSerializer.Deserialize<List<LibraryLinksModel>>(json);
+                    if (quicklinks != null && quicklinks.Count != 0)
                     {
-                        _cache.Set(libraryName, libraryLinksList, TimeSpan.FromMinutes(30));
-                        return libraryLinksList;
+                        _cache.Set(libraryName, quicklinks, TimeSpan.FromMinutes(30));
+                        return quicklinks;
                     }
                 }
             }
@@ -107,6 +108,8 @@ namespace StudioBriefcase.Services
                 }
                 if (SubjectModel_List != null && SubjectModel_List.Count > 0)
                 {
+                    string cacheKey = $"{library}_subjects";
+                    _cache.Set(cacheKey, SubjectModel_List, TimeSpan.FromMinutes(30));
                     return SubjectModel_List;
                 }
 
@@ -115,6 +118,18 @@ namespace StudioBriefcase.Services
 
 
             return Error_GetSubjectListAsync();
+        }
+
+        public async Task SetLibraryQuickLinksAsync(string libraryName, string jsonString)
+        {
+            await _connection.OpenAsync();
+            var query = new MySqlCommand($"UPDATE library_links SET links = @jsonString WHERE library_id = (SELECT id FROM libraries WHERE library_name = @libraryName);", _connection);
+            query.Parameters.AddWithValue("@jsonString", jsonString);
+            query.Parameters.AddWithValue("@libraryName", libraryName);
+
+            await query.ExecuteNonQueryAsync();
+            await _connection.CloseAsync();
+            _cache.Remove(libraryName);
         }
 
 

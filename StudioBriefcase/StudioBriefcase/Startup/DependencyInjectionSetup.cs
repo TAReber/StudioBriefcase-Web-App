@@ -28,6 +28,7 @@ namespace StudioBriefcase.Startup
             services.AddTransient<ILibraryService, LibraryService>();
 
             services.AddScoped<UserService>();
+            services.AddScoped<LibraryService>();
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

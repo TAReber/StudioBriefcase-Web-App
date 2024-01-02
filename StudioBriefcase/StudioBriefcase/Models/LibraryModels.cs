@@ -35,4 +35,9 @@ namespace StudioBriefcase.Models
         public string PathUrl { get; set; } = string.Empty;    
     }
 
+    public class LibraryLinksUpdateModel
+    {
+        public string LibraryName { get; set; } = string.Empty;
+        public string JsonString { get; set; } = string.Empty;
+    }
 }

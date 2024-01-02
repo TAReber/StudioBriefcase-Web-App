@@ -1,0 +1,42 @@
+﻿@model List<StudioBriefcase.Models.LibraryLinksModel>;
+@{
+}
+
+
+<div class="librarylinks-object-container show">
+    <ul>
+
+
+         @for (int i = 0; i < 5; i++)
+        {
+            
+
+            @if (i < Model.Count)
+            {
+                var document = Model.ElementAt(i);
+                <li class="box-col librarylinks-object c-fg show">
+
+                    <span>Old link (@(document?.SiteUrl ?? "null")) </span>
+                    <input class="link-input w-100" data-property="SiteUrl" value="@(document?.SiteUrl ?? "null")" placeholder="Enter Document Link" />                
+                    <span>Old Source(@(document?.ImgSource ?? "null")) </span>
+                    <input class="link-input" data-property="ImgSource" value="@(document?.ImgSource ?? "null")" placeholder="Enter Image Source" />
+                    <span>Old Caption(@(document?.ShorthandDesc ?? "null"))</span>
+                    <input class="link-input" data-property="ShorthandDesc" value="@(document?.ShorthandDesc ?? "null")" placeholder="Enter New Caption" />
+
+                </li>
+            }
+            else
+            {
+                 <li class="box-col librarylinks-object c-fg show">
+                    <span>Link not Used</span>
+                    <input class="link-input w-100" data-property="SiteUrl" value="null" placeholder="Enter Document Link" />
+                    <span>No Image Source </span>
+                    <input class="link-input" data-property="ImgSource" value="null" placeholder="Enter New Image Source" />
+                    <span>No Caption Implemented</span>
+                    <input class="link-input" data-property="ShorthandDesc" value="null" placeholder="Enter New Caption" />
+
+                </li> 
+            }
+        } 
+    </ul>
+</div>

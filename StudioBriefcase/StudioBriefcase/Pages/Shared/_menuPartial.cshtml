@@ -38,8 +38,8 @@
 
 @if (User.Identity?.IsAuthenticated == true)
 {
-    <div class="form" id="user-form">
-        <div class="form-content">
+    <div class="form c-bg" id="user-form">
+        <div class="form-content c-fg">
             <div class="box-col">
                 <span>@User.FindFirst("name")</span>
                 <span>@User.FindFirst("privilege")</span>
@@ -58,8 +58,7 @@
                 <option value="Professional">Professional</option>
                 <option value="Researcher">Researcher</option>
                 <option value="Content Creator">Content Creator</option>
-            </select>
-            <input id="SelectedRole" name="SelectedRole" placeholder="@User.FindFirst("class")?.Value" />
+            </select>            
 
             <button class="" type="button" onclick="updateUserRole(event)"><span class="text-sm" style="color:inherit">Apply</span></button>
 

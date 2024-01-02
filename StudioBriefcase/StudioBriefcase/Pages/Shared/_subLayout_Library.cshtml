@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_Layout.cshtml";
     /*Style Sheet Uses ASP.NET feature called CSS Isolation. */
-    <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
+        <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
     string? thisDirectory = System.IO.Path.GetDirectoryName(Context.Request.Path);
     string[] folders = thisDirectory!.Split('\\');
     string subject = folders[folders.Length - 1];
@@ -20,18 +20,23 @@
             <div class="sublayout-sidebar-scrollbar">
                 <h6 class="sublayout-link-title">@(library) Links</h6>
 
-                @{/* Calls a function in ViewCoponents/LibraryLinkViewComponent.cs using dependency injection */}
-                @await Component.InvokeAsync("LibraryLinks", new {libraryName = @library})
-                
-                <button>Update Links</button>
+                @{
+                    /* Calls a function in ViewCoponents/LibraryLinkViewComponent.cs using dependency injection */
+                }
+                @await Component.InvokeAsync("LibraryLinks", new { libraryName = @library })
+                @if (User.Identity?.IsAuthenticated == true && (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase)))
+                {
+                    <button class="event-toggle" data-target="librarylinks-form">Update Links</button>
+                }
+
 
                 <div class="sublayout-language-section">
                     <p>English</p>
                 </div>
 
-                @await Component.InvokeAsync("LibraryNavigation", new {path = @thisDirectory})
+                @await Component.InvokeAsync("LibraryNavigation", new { path = @thisDirectory })
 
-                <div class="whitespace"></div>              
+                <div class="whitespace"></div>
             </div>
         </div>
         <div class="h100 m2">
@@ -48,13 +53,79 @@
 
 
 </main>
-<script>
 
+@if (User.Identity?.IsAuthenticated == true && (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase)))
+{
+    <div class="form" id="librarylinks-form">
+        <div class="form-content c-bg show">
+            <div class="box-row">
+                <button onclick="updateLibraryLinks()" id="updateLinksButton">Update Links</button>
+                <button id="not implemented">Cancel</button>
+            </div>
+            @await Component.InvokeAsync("LibraryLinks", new { libraryName = @library, switchvalue = 1 }));
+        </div>
+        <div class="form-background event-toggle" data-target="librarylinks-form"></div>
+    </div>
+}
+
+
+<script>
     document.addEventListener('DOMContentLoaded', () => {
         ToggleExpanded('@subject');
     });
+
+    function updateLibraryLinks(event) {
+        console.log("The javascript updateLibraryLinks function was called");
+
+        let item = [];
+        let inputFields = document.querySelectorAll(".link-input");
+        let objects = [];
+
+        inputFields.forEach((input) => {
+            let propertyName = input.getAttribute('data-property');
+            item.push(input.value);
+        });
+
+        for (let i = 0; i < 5; i++) {
+            if (item[0 + (i * 3)] != "null" && item[0 + (i * 3)] != "null") {
+
+                let object = {
+                    SiteUrl: item[0 + (i * 3)],
+                    ImgSource: item[1 + (i * 3)],
+                    ShorthandDesc: item[2 + (i * 3)]
+                }
+
+                objects.push(object);
+            }
+
+        };
+
+        //After Objects Created, I needed to create a model to store the string in and pass in the parameters.
+        fetch('/api/librarylink/SetLibraryLinks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                LibraryName: '@library',
+                JsonString: JSON.stringify(objects)
+            })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            }).then(data => {
+                console.log(data);
+                //location.reload();
+            }).catch(error => {
+                console.error("Fetch Operation Failed to update library links in _subLayout_Library.cshtml", error);
+            })
+    }
+
 </script>
 
-@section Scripts{
+@section Scripts {
     <Script src="~/scripts/library/Vulkan.js"></Script>
 }
