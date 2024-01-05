@@ -23,14 +23,14 @@
         <li class="box-col box-center0 w100">
             <span class="text-sm" style="color:inherit">@User.FindFirst("role")?.Value</span>
             <span class="text-sm" style="color:inherit">@User.FindFirst("name")?.Value</span>
-            <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/logout">Logout</a>
+            <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/logout?returnUrl=@Context.Request.Path">Logout</a>
         </li>
     }
     else
     {
         <li class="box-col box-center0 w100">
             <span class="text-sm" style="color:inherit">GitHub OAuth</span>
-            <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/login">Login</a>
+            <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/login?returnUrl=@Context.Request.Path">Login</a>
         </li>
 
     }

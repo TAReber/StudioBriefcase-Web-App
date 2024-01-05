@@ -31,9 +31,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 //
-app.MapControllerRoute(
-    name: "api",
-    pattern: "api/{controller}/{action}/{id?}");
+//app.MapControllerRoute(
+//    name: "api",
+//    pattern: "api/{controller}/{action}/{id?}");
 
 //app.MapControllers();
 app.MapMVCRoutes(); //Do I need this?

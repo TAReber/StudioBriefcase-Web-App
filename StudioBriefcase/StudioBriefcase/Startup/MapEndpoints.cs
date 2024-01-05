@@ -15,28 +15,38 @@ namespace StudioBriefcase.Startup
 
         public static WebApplication MapMVCRoutes(this WebApplication app)
         {
-
             app.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                name: "api",
+                pattern: "api/{controller}/{action}/{id?}");
+
+
+            //app.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Index}/{id?}");
 
             return app;
         }
 
         public static WebApplication MapLoginEndPoints(this WebApplication app)
         {
+            //System.IO.Path.GetDirectoryName(Context.Request.Path)
+
             //TODO::??::Verify GitHub OAuth is a added Service
             app.MapGet("/logout", async (HttpContext ctx) =>
             {
+                var returnUri = ctx.Request.Query["returnUrl"].FirstOrDefault() ?? "/";
+
                 await ctx.SignOutAsync("cookie");
-                ctx.Response.Redirect("/");
+                ctx.Response.Redirect(returnUri);
             });
 
             app.MapGet("/login", (HttpContext ctx) =>
             {
+                var returnUri = ctx.Request.Query["returnUrl"].FirstOrDefault() ?? "/";
+
                 return Results.Challenge(new AuthenticationProperties()
                 {
-                    RedirectUri = "/"
+                    RedirectUri = returnUri
                 },
                 authenticationSchemes: new List<string>() { "github" });
             });
