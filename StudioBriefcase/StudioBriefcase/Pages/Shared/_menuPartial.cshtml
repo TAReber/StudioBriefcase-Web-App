@@ -1,5 +1,5 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    Episode 3 - Color Management System, Realtime Color Updates
 *@
 @using StudioBriefcase.Models;
 @{
@@ -11,18 +11,16 @@
         <span class="text-sm" style="color:inherit">Color Mode</span>
         <button class="menu-btn menu-btn-size c-fg" onclick="toggleColorScheme(this)" id="color_mode_toggle" data-target="colorscheme">Light</button>
     </li>
-
+    <li class="box-col box-center3 w100">
+        @* button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button> *@
+        <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
+    </li>
     @if (User.Identity?.IsAuthenticated == true)
     {
-
         <li class="box-col box-center3 w100">
-            @* button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button> *@
-            <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
-        </li>
-
-        <li class="box-col box-center0 w100">
             <span class="text-sm" style="color:inherit">@User.FindFirst("role")?.Value</span>
             <span class="text-sm" style="color:inherit">@User.FindFirst("name")?.Value</span>
+            @* Dynamic Redirect returnUrl Episode 2 *@
             <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/logout?returnUrl=@Context.Request.Path">Logout</a>
         </li>
     }
@@ -30,16 +28,68 @@
     {
         <li class="box-col box-center0 w100">
             <span class="text-sm" style="color:inherit">GitHub OAuth</span>
+            @* Dynamic Redirect returnUrl Episode 2 *@
             <a class="menu-btn menu-btn-link text-center w100 c-fg" href="/login?returnUrl=@Context.Request.Path">Login</a>
         </li>
-
     }
 </ul>
 
-@if (User.Identity?.IsAuthenticated == true)
-{
-    <div class="form c-bg" id="user-form">
-        <div class="form-content c-fg">
+
+<div class="form c-bg" id="user-form">
+    <div class="form-content c-fg c-shadow">
+        <h5 class="text-center w100 c-fg" >User Menu</h5>
+        <div class="accordion w100">
+            <div class="accordion-item">
+
+                <button class="accordion-toggle c-fg event-toggle text-sm" data-target="menu-color-picker">
+                    Advanced Color Mode Panel
+                </button>
+
+                <div class="accordion-target-vertical box-col c-fg" id="menu-color-picker">
+                    <div class="box-row box-center2">
+                        <button class="menu-btn w75 c-fg" onclick="SaveCustomColorScheme()" data-target="colorscheme">Save Colors</button>
+                        <button class="menu-btn w75 c-fg" onclick="ClearCustomColorLocalStorage()" data-target="colorscheme">Clear Cache</button>
+                    </div>
+                    <div id="color_picker_list">
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Background</span>
+                            <input type="color" id="color_background" name="--background" value="#eeeeee" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Foreground</span>
+                            <input type="color" id="color_foreground" name="--foreground" value="#cccccc" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Text Color 1</span>
+                            <input type="color" id="color_text-color1" name="--text-color1" value="#000000" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Text Color 2</span>
+                            <input type="color" id="color_text-color2" name="--text-color2" value="#000000" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Shadow 1</span>
+                            <input type="color" id="color_shadow1" name="--shadow1" value="#000000" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Shadow 2</span>
+                            <input type="color" id="color_shadow2" name="--shadow2" value="#cccccc" oninput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Offset</span>
+                            <input type="color" id="color_offset" name="--offset" value="#cccccc" onInput="ApplyColor(this)" />
+                        </div>
+                        <div class="box-row box-center2">
+                            <span class="text-sm" style="color:inherit">Menu Background</span>
+                            <input type="color" id="color_menu_background" name="--menu_background" value="#111111" onchange="ApplyColor(this)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
             <div class="box-col">
                 <span>@User.FindFirst("name")</span>
                 <span>@User.FindFirst("privilege")</span>
@@ -47,7 +97,7 @@
                     <img class="icon-square-media" src="@User.FindFirst("picture")?.Value" alt="Github profile Pic" />
                 </a>
                 <span>@User.FindFirst("class")</span>
-                
+
             </div>
 
             <select id="Menu_RoleDropdown">
@@ -58,20 +108,20 @@
                 <option value="Professional">Professional</option>
                 <option value="Researcher">Researcher</option>
                 <option value="Content Creator">Content Creator</option>
-            </select>            
+            </select>
 
             <button class="" type="button" onclick="updateUserRole(event)"><span class="text-sm" style="color:inherit">Apply</span></button>
+        }
 
-        </div>
-        <div class="form-background event-toggle" data-target="user-form"/>
     </div>
-}
+    <div class="form-background event-toggle" data-target="user-form" />
 
+</div>
 
 <script>
     function updateUserRole(event) {
         event.stopPropagation();
-        
+
         var selectedRole = document.getElementById('Menu_RoleDropdown').value;
         var userId = '@User.FindFirst("sub")?.Value';
 

@@ -30,13 +30,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//
-//app.MapControllerRoute(
-//    name: "api",
-//    pattern: "api/{controller}/{action}/{id?}");
-
-//app.MapControllers();
-app.MapMVCRoutes(); //Do I need this?
+app.MapMVCRoutes(); //defined in MapEndpoints.cs
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -88,7 +88,7 @@
 }
 
 .menu-btn-size {
-    width:50px;
+    width:70px;
     height: 20px;
 }
 
@@ -289,24 +289,30 @@
 }
 
 .form {
+
     visibility: hidden;
 }
 
-.form.expanded{
-    visibility:visible;
-    
-}
+    .form.expanded {
+        visibility: visible;
+
+    }
 
 .form-background {
+
     position: fixed;
     z-index: 900;
     height: 100vh;
     width: 100vw;
     top: 0px;
     left: 0px;
+    /*background-color: rgba(0, 0, 0, 0.5);*/
 }
 
 .form-content {
+    border-width: 5px;
+    border-radius: 10px;
+
     position: fixed;
     padding: 10px;
     height: fit-content;
@@ -315,7 +321,7 @@
     max-width: 70%;
     color: black;
     opacity: 1.0;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;

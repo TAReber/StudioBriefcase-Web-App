@@ -19,14 +19,10 @@ namespace StudioBriefcase.Startup
                 name: "api",
                 pattern: "api/{controller}/{action}/{id?}");
 
-
-            //app.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
-
             return app;
         }
 
+        // Dynamic Redirect returnUrl Episode 2 
         public static WebApplication MapLoginEndPoints(this WebApplication app)
         {
             //System.IO.Path.GetDirectoryName(Context.Request.Path)
@@ -40,6 +36,7 @@ namespace StudioBriefcase.Startup
                 ctx.Response.Redirect(returnUri);
             });
 
+            
             app.MapGet("/login", (HttpContext ctx) =>
             {
                 var returnUri = ctx.Request.Query["returnUrl"].FirstOrDefault() ?? "/";
