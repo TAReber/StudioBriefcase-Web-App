@@ -11,7 +11,8 @@ List<string> targetNames = new List<string>
 {
     builder.Configuration.GetSection("keyVault:GitHub:id").Value!.ToString(),
     builder.Configuration.GetSection("keyVault:GitHub:secret").Value!.ToString(),
-    builder.Configuration.GetSection("keyVault:database:credential").Value!.ToString()
+    builder.Configuration.GetSection("keyVault:database:credential").Value!.ToString(),
+    builder.Configuration.GetSection("keyVault:api:youtube").Value!.ToString()
 };
 
 bool isVerified = builder.Configuration.VerifyKeyVaultSecrets(keyVaultURL, targetNames);

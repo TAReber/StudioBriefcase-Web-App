@@ -1,11 +1,12 @@
 ﻿@{
     Layout = "_Layout.cshtml";
     /*Style Sheet Uses ASP.NET feature called CSS Isolation. */
-        <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
+    <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
     string? thisDirectory = System.IO.Path.GetDirectoryName(Context.Request.Path);
     string[] folders = thisDirectory!.Split('\\');
-    string subject = folders[folders.Length - 1];
+    string Category = folders[folders.Length - 3];
     string library = folders[folders.Length - 2];
+    string subject = folders[folders.Length - 1];   
     string topic = System.IO.Path.GetFileNameWithoutExtension(Context.Request.Path);
 }
 
@@ -26,14 +27,36 @@
                 @await Component.InvokeAsync("LibraryLinks", new { libraryName = @library })
                 @if (User.Identity?.IsAuthenticated == true && (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase)))
                 {
-                    <button class="event-toggle" data-target="librarylinks-form">Update Links</button>
+                    <button class="event-toggle w100" data-target="librarylinks-form">Update Links</button>
                 }
 
+                @* Create a ViewComponent for Users Library Preferences here *@
+                <form class=" box-col" id="HiddenLibraryPath">
+                    <input type="hidden" name="Category" id="PageCategory" value="@Category" />
+                    <input type="hidden" name="Library" id="PageLibrary" value="@library" />
+                    <input type="hidden" name="Subject" id="PageSubject" value="@subject" />
+                    <input type="hidden" name="Topic" id="PageTopic" value="@topic" />
+                </form>
 
-                <div class="sublayout-language-section">
-                    <p>English</p>
+                <div class="accordion w100">
+                    <div class="accordion-item w100">
+                        <button class="event-toggle w100" data-target="navigation-Parameters">
+                            Post Filter Settings
+                        </button>
+                        <div class="accordion-target-vertical" id="navigation-Parameters">
+                            <div class="box-row">
+                                <label class="p2" for="language">Language:</label>
+                                <select class="zero" name="Language" id="submissionForm-language">
+                                    <option value="1">English</option>
+                                </select>
+
+                            </div>
+                            @await Component.InvokeAsync("LibraryTags")
+                        </div>
+                    </div>
                 </div>
-
+                
+                <div class="p2"></div>
                 @await Component.InvokeAsync("LibraryNavigation", new { path = @thisDirectory })
 
                 <div class="whitespace"></div>
@@ -54,17 +77,26 @@
 
 </main>
 
+@* Button that allows admins and moderators to update the quicklinks in the library sublayout *@
 @if (User.Identity?.IsAuthenticated == true && (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase)))
 {
     <div class="form" id="librarylinks-form">
         <div class="form-content c-bg show">
             <div class="box-row">
                 <button onclick="updateLibraryLinks()" id="updateLinksButton">Update Links</button>
-                <button id="not implemented">Cancel</button>
+                <button id="not implemented">cancel not implemented</button>
             </div>
             @await Component.InvokeAsync("LibraryLinks", new { libraryName = @library, switchvalue = 1 }));
         </div>
         <div class="form-background event-toggle" data-target="librarylinks-form"></div>
+    </div>
+}
+
+@* Target location insert render html forms that allow users to manage posts in the database. *@
+@if(User.Identity?.IsAuthenticated == true)
+{
+    <div id="UserPostManagerLocation">
+
     </div>
 }
 
@@ -75,7 +107,7 @@
     });
 
     function updateLibraryLinks(event) {
-        console.log("The javascript updateLibraryLinks function was called");
+        //console.log("The javascript updateLibraryLinks function was called");
 
         let item = [];
         let inputFields = document.querySelectorAll(".link-input");
@@ -101,7 +133,7 @@
         };
 
         //After Objects Created, I needed to create a model to store the string in and pass in the parameters.
-        fetch('/api/librarylink/SetLibraryLinks', {
+        fetch('/library/SetLibraryQuickLinks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -127,5 +159,6 @@
 </script>
 
 @section Scripts {
+    <script src="~/scripts/GlobalLibraryFunctions.js"></script>
     <Script src="~/scripts/library/Vulkan.js"></Script>
 }

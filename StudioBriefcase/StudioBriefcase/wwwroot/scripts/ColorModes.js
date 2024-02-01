@@ -53,8 +53,8 @@ const lightmodeSet = [
     { variable: '--text-color2', value: '#000000' },
     { variable: '--shadow1', value: '#000000' },
     { variable: '--shadow2', value: '#cccccc' },
-    { variable: '--offset', value: '#ffffff'},
-    { variable: '--menu-background', value: '#111111' }
+    { variable: '--offset', value: '#cccccc'},
+    { variable: '--menu-background', value: '#aaaaaa' }
 ];
 
 const darkmodeSet = [
@@ -64,8 +64,8 @@ const darkmodeSet = [
     { variable: '--text-color2', value: 'white' },
     { variable: '--shadow1', value: '#888888' },
     { variable: '--shadow2', value: '#444444' },
-    { variable: '--offset', value: '#cccccc' },
-    { variable: '--menu-background', value: '#111111' }
+    { variable: '--offset', value: '#222222' },
+    { variable: '--menu-background', value: '#444444' }
 ]
 
 //Toggles Color Mode between Light and Dark mode. Will also revert Custom color scheme to Light mode.
@@ -91,7 +91,6 @@ function toggleColorScheme(buttonelement) {
 //Function for Advanced Color in Settings
 //Applies single color values to the cshtml style for real time updating
 function ApplyColor(buttonElement) {
-
     let newColor = buttonElement.value;
     let buttonName = buttonElement.name;
     let styleelement = document.getElementById('colorscheme');
@@ -101,9 +100,9 @@ function ApplyColor(buttonElement) {
 //Applies Colors Updates the cshtml style with new color values and is the reason we can apply the changes without reloading the page.
 function ApplyColors(ColorSet) {
     let styleelement = document.getElementById('colorscheme');
-
     //loop over Constant Color variable names and give respective colorscheme names its values
     for (let pair of ColorSet) {
+        console.log(pair.name);
         styleelement.sheet.cssRules[0].style.setProperty(pair.variable, pair.value);
     }
 }
@@ -115,7 +114,7 @@ function SaveCustomColorScheme() {
     
     let CustomColorSet = Array.from({ length: colorpicker.length });
     for (let i = 0; i < colorpicker.length; i++) {
-
+        
         let colorObject = { variable: colorpicker[i].name, value: colorpicker[i].value };        
         CustomColorSet[i] = colorObject;
     }

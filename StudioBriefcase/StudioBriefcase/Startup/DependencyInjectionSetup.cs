@@ -15,7 +15,8 @@ namespace StudioBriefcase.Startup
 {
     public static class DependencyInjectionSetup
     {
-
+        //TODO:: Most of these services were copied from the Microsoft Template.
+        //Need to go through and remove the ones that are not needed.
 
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
@@ -24,11 +25,21 @@ namespace StudioBriefcase.Startup
             services.AddTransient<MySqlConnection>(_ =>
             new MySqlConnection(configuration["database-credential"]));
 
-            services.AddMvc();
+            //services.AddMvc();
+            services.AddTransient<IPostTypeService, PostTypeService>();
             services.AddTransient<ILibraryService, LibraryService>();
 
-            services.AddScoped<UserService>();
+            services.AddHttpClient("youtube", client =>
+            {
+                client.BaseAddress = new Uri("https://www.googleapis.com/youtube/v3/");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            });
+            services.AddHttpClient();
+            
+            
+            services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
             services.AddScoped<LibraryService>();
+            services.AddScoped<PostTypeService>();
 
             services.Configure<RazorViewEngineOptions>(options =>
             {
@@ -36,8 +47,6 @@ namespace StudioBriefcase.Startup
                 //    options.PageViewLocationFormats.Add("/Views/{0}" + RazorViewEngine.ViewExtension);
                 //    //options.PageViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
-
-
 
 
             return services;
@@ -80,7 +89,6 @@ namespace StudioBriefcase.Startup
                 
 
                 //This event is a function thats called once Github is Authenticated.
-
                 o.Events.OnCreatingTicket = async ctx =>
                 {
                     using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);

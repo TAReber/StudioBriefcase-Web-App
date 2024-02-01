@@ -15,9 +15,16 @@ namespace StudioBriefcase.Startup
 
         public static WebApplication MapMVCRoutes(this WebApplication app)
         {
+            //This Route maps directly to the tables I created in my database.
             app.MapControllerRoute(
-                name: "api",
-                pattern: "api/{controller}/{action}/{id?}");
+                name: "library",
+                pattern: "Library/{Category}/{Libary}/{subject}/{topic}",
+                defaults: new { controller = "LibraryLink", action = "Index" });
+
+            //Route Deprecated and Worthless? is used for User Controller 
+            //app.MapControllerRoute(
+            //    name: "api",
+            //    pattern: "api/{controller}/{action}/{id?}");
 
             return app;
         }

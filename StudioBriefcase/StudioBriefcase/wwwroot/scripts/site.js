@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         toggles[i].addEventListener('click', (e) => {
             let targetid = e.target.dataset.target;
-
             if (!targetid) {
                 targetid = e.target.parentElement.dataset.target;
             }

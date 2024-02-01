@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model StudioBriefcase.Models.VideoDataModel
+@{
+}
+
+ <div class='preview-container box-row box-pushtop3 c-menu w100 zero'>
+    <div class='preview-end'>
+        <a class='w100' href='@Model.videourl' target='_blank'><img class='preview-image' src=@Model.thumbnail  ></a>
+    </div>
+
+    <div class=' preview-body box-col c-bg zero w100 '>
+        <div class='box-row box-center3 zero c-fg'>
+            <span class='text-sm zero'>@Model.title</span>
+            <a href='@Model.channelurl' class='text-sm zero' target="_blank">@Model.channelName</a>
+        </div>
+        <p class='preview-description c-offset' data-url='@Model.videourl' onclick='ToggleDescription(this, @Model.sectionID)'>@Model.description</p>
+    </div>
+
+    <div class='preview-end'>
+        <a class='w100' href='@Model.videourl' target='_blank'> <img class='preview-image' src='~/images/External/Icons/youtube_social_icon_red.png' alt='youtube-social-Icon'></a>
+    </div>
+</div> 

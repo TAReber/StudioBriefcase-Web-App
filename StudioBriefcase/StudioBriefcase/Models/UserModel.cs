@@ -20,4 +20,16 @@ namespace StudioBriefcase.Models
         [Required]
         public string userclass { get; set; } = string.Empty;
     }
+
+    public class DonationModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public int amount { get; set; }
+
+        public DonationModel(string name, int amount)
+        {
+            Name = name;
+            this.amount = amount;
+        }   
+    }
 }

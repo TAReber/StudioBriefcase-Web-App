@@ -84,7 +84,7 @@ This can simply spacing issues without using margins.
 .box-row {
     display: flex;
     flex-direction: row; /* Is Row by Default */
-
+    
     /*align-items:center;  align-items Effects direction Axis, justify-content effects adjacent Axis */
 }
 
@@ -157,6 +157,15 @@ This can simply spacing issues without using margins.
     justify-content: flex-end;
 }
 
+.box-pushtop3 {
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.box-pushdown3 {
+    align-items: flex-end;
+    justify-content: space-between;
+}
 .me-absolute{
     position:absolute;
 }

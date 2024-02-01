@@ -1,0 +1,59 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model StudioBriefcase.Models.LibraryTagsListModel
+
+@* TODO -- CREATE LISTS FROM DATABASE *@
+
+
+<div class="box-row box-center2">
+    <div class="box-col">
+        <label for="PostType">OS:</label>
+        <select name="OS" id="submissionForm-os@(Model.pageid)">
+            @foreach (var item in Model.Tags_OS)
+            {
+                <option value="@item.id">@item.tagName</option>
+            }
+        </select>
+    </div>
+
+    <div class="box-col">
+        <label for="PostType">IDE</label>
+        <select name="OS" id="submissionForm-ide@(Model.pageid)">
+            @foreach (var item in Model.Tags_IDE)
+            {
+                <option value="@item.id">@item.tagName</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="box-row box-center2">
+    <div class="box-col" style="width:30%;">
+        <label for="Tag1">Tag 1</label>
+        <select name="Tag1" id="submissionForm-tag1@(Model.pageid)">
+            @foreach(var item in Model.Tags_normal)
+            {
+                <option value="@item.id">@item.tagName</option>
+            }
+        </select>
+    </div>
+    <div class="box-col" style="width:30%;">
+        <label for="Tag2">Tag 2</label>
+        <select name="Tag1" id="submissionForm-tag2@(Model.pageid)">
+            @foreach (var item in Model.Tags_normal)
+            {
+                <option value="@item.id">@item.tagName</option>
+            }
+        </select>
+    </div>
+    <div class="box-col" style="width:30%;">
+        <label for="Tag1">Tag 3</label>
+        <select name="Tag3" id="submissionForm-tag3@(Model.pageid)">
+            @foreach (var item in Model.Tags_normal)
+            {
+                <option value="@item.id">@item.tagName</option>
+            }
+        </select>
+    </div>
+</div>

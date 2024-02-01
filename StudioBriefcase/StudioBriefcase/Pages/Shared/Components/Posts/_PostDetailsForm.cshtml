@@ -1,0 +1,126 @@
+﻿@* Form that open to display the relevent mapping routes, tag handlers and post Data
+Goal is to display the data about in the database and give controlls to to the user to alter the records.
+Button to claim the post if its
+*@
+@model StudioBriefcase.Models.VideoDatabaseModel
+<div class='form expanded' id='PostDetailsForm'>
+    <div class='form-content c-bg show'>
+        <div class="box-row box-center3 p5">
+            <span class="w75 text-sm" id="logresult-container">Success/Fail Message Appear Here</span>
+            <div class="box-row">
+                <button>Claim Post</button>
+                @if (Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
+                {
+                    //Button that gets the post GitId from database, Validate displayed Channel_ID post and video data gituser
+                    <button>Sync Posts</button>
+                }
+            </div>
+
+        </div>
+
+        <div class="m3 p3 c-fg">
+            <div class="p3">
+                @if (Model.gitID == 0)
+                {
+                    <span class="p3">Post is Unclaimed Post</span>
+                }
+                else
+                {
+                    <span class="p3">Claimed)</span>
+                }
+                <span class="p3">@(Model.post_type)</span>
+                <span class="p3">@(Model.language)</span>
+            </div>
+
+            <span class="text-sm">Link: @(Model.weblink)</span>
+            <span class="text-sm">Channel: @(Model.channelName)</span>
+            <span class="text-sm">Channel Link: @(Model.channelID)</span>
+
+            <span class="text-sm">@(Model.categoryName)/@(Model.libraryName)/@(Model.subjectName)/@(Model.topicName) in Section (@(Model.sectionValue))</span>
+            <div class="box-row">
+                <div class="text-sm">Post Tags: </div>
+                @foreach (var item in Model.videoTags)
+                {
+                    <div class="text-sm">-@(item)-</div>
+                }
+            </div>
+        </div>
+
+
+        @* <form method="post" action="/api/librarylink/Index"> *@
+        <div class="box-row">
+            <div class="box-col">
+                <label for="categoryName">Category Name:</label>
+                <input style="width:125px;" type="text" name="categoryName" id="submissionForm-category" value="@Model.categoryName" required>
+            </div>
+            <div class="box-col">
+                <label for="libraryName">Library Name:</label>
+                <input style="width:125px;" type="text" name="libraryName" id="submissionForm-library" value="@Model.libraryName" required>
+            </div>
+        </div>
+
+        <div class="box-row">
+            <div class="box-col">
+                <label for="subjectName">Subject Name:</label>
+                <input style="width:100px;" type="text" name="subjectName" id="submissionForm-subject" value="@Model.subjectName" required>
+            </div>
+            <div class="box-col">
+                <label for="topicName">Topic Name:</label>
+                <input style="width:100px;" type="text" name="topicName" id="submissionForm-topic" value="@Model.topicName" required>
+            </div>
+            <div class="box-col">
+                <label for="sectionValue">Section Value:</label>
+                <input style="width:50px;" type="number" name="sectionValue" id="submissionForm-section" value="@Model.sectionValue" required>
+            </div>
+        </div>
+
+        <h5>Filter Parameters</h5>
+        <div class="box-wraprow">
+            <div class="box-col p4 show">
+                <div class="box-row">
+                    <label for="weblink">Weblink: </label>
+                    <input style="width:fit-content" type="text" name="weblink" id="submissionForm-weblink" value="@Model.weblink" required><br>
+                </div>
+                <div class="bow-row">
+                    <label for="PostType">Type of Post:</label>
+                    <select name="Language" id="submissionForm-posttype">
+                        <partial name="\Components\Posts\_PostTypeOptions" />
+                    </select>
+                </div>
+                <div class="box-row">
+                    <label class="p2" for="language">Language:</label>
+                    <select class="zero" name="Language" id="submissionForm-language">
+                        <option value="1">English</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <div class="box-col p4 show">
+                @await Component.InvokeAsync("LibraryTags", new { FormID = 1 })
+            </div>
+
+
+
+        </div>
+        @if(User.Identity?.IsAuthenticated == true)
+        {
+            //If the post is public or the gitID is the same the user Will have access to update and delete buttons
+            @if (Model.gitID == 0 || Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
+            {
+                <div class="box-row">
+                    <button onclick="InsertLinkToDatabase()">Update</button>
+                    <button data-postID="@Model.postID" onclick="DeletePost(this)">Delete</button>
+                </div>
+            }
+        }
+       
+        @* </form> *@
+
+    </div>
+    <div class='form-background' onclick=ToggleExpanded('PostDetailsForm')></div>
+
+
+
+</div>

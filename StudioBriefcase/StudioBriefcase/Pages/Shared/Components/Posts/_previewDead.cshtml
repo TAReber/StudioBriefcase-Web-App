@@ -1,0 +1,13 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model StudioBriefcase.Models.VideoPreviewFetchModel
+@{
+}
+<div class='preview-container box-col box-pushtop3 c-menu w100 zero' >
+    <div class="box-col h100 w100" data-url='@Model.videolink' onclick='ToggleDescription(this, @Model.section)'>
+        <span class='zero'>SITE LINK NOT AVAILABLE</span>
+        <span class='w100 zero'>@(Model.videolink)</span>
+    </div>
+</div> 

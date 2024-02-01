@@ -44,9 +44,118 @@
                 <img src="https://avatars.githubusercontent.com/u/94849230?u=20b482a08448becd69f0eaf3966f32accc46b178&amp;v=4" width="30" height="30" alt="" loading="lazy" class="mr-2 rounded-full">
                 <span class="link-primary overflow-hidden text-ellipsis font-semibold">TAReber</span>
             </a>
-            <time title="Jul 5, 2023, 7:12 PM CDT" datetime="2023-07-06T00:12:29Z" class="whitespace-nowrap">10 days ago</time></a>
+            <time title="Jul 5, 2023, 7:12 PM CDT" datetime="2023-07-06T00:12:29Z" class="whitespace-nowrap">10 days ago</time>
         </div>
 
     </div>
 </div>
 
+
+@* Testing Section *@
+<div class="accordion w100">
+
+    <div class="accordion-item c-bg">
+
+        <button class="accordion-toggle c-fg event-toggle" type="button" data-target="PostTypes">
+            <h6>Testing Section 2</h6>
+        </button>
+
+        <div class="accordion-target-vertical box-col" id="PostTypes">
+
+            @* todo: row of partial views called tabs *@
+            <div class="box-col zero">
+                <div class="box-row box-center3">
+
+                    <div class="box-row zero">
+
+                        @* enter all tabs here *@
+                        <button>Article</button>
+                        <button id="videobuttontest">Video</button>
+                        <button>Stackoverflow</button>
+
+                    </div>
+
+                    <div class="box-row">
+
+                            
+                            <button type="submit" action="handler" value="Insert">Insert</button>
+                            <button type="submit" action="handler" value="Edit">Edit</button>
+                            <button type="submit" action="handler" value="Delete">Delete</button>
+
+                    </div>
+                    
+                </div>
+                <div class="box-col w100 zero section-viewport" id="viewport2" loading="lazy">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="whitespace"></div>
+
+<script>
+    document.getElementById("videobuttontest").addEventListener("click", function () {
+        console.log("Test");
+        let url = "https://youtu.be/90MeC-PTj50"
+
+        fetch("/api/librarylink/GetPreviewVideo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                videolink: url
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+
+                // let newdocument = document.implementation.createHTMLDocument();
+                // newdocument.write(data);
+                //document.getElementById("viewport2").innerHTML. = "<p>Test Content</P>";
+
+                const main = document.getElementById("viewport2");
+                const fragment = document.createDocumentFragment();
+                const block = document.createElement("div");
+                block.innerHTML = data;
+
+                fragment.append(block);
+                main.appendChild(fragment);
+
+
+            });
+
+
+        //document.getElementsByClassName("section-viewport")[0].src = "https://www.youtube.com/embed/6n3pFFPSlW4";
+    });
+
+    let expandedDescription = null;
+    function ToggleDescription(description) {
+
+        if (expandedDescription != null) {
+
+            if (expandedDescription != description) {
+                expandedDescription.classList.toggle('expanded');
+                description.classList.toggle('expanded');
+                expandedDescription = description;
+            }
+            else {
+                description.classList.toggle('expanded');
+                expandedDescription = null;
+            }
+
+        }
+        else {
+            description.classList.toggle('expanded');
+            expandedDescription = description;
+        }
+
+
+    };
+
+
+</script>

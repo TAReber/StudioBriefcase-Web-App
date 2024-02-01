@@ -15,7 +15,7 @@ The color Management system also provides styles prefixed with a c for use in th
         --shadow1: #000000;
         --shadow2: #cccccc;
         --offset: #cccccc;
-        --menu-background: #111111;
+        --menu-background: #aaaaaa;
     }
 
     .c-bg {
@@ -34,13 +34,19 @@ The color Management system also provides styles prefixed with a c for use in th
 
     .c-menu {
         background-color: var(--menu-background);
-        color:#eeeeee;
+        color: var(--text-color1);
     }
+
 
     .c-offset {
         background-color: var(--offset);
-        color: #eeeeee;
+        color: var(--text-color1);
     }
+
+        .c-offset.expanded {
+            background-color: var(--menu-background);
+            color: var(--text-color2);
+        }
 
     a {
         text-decoration: none;
@@ -52,7 +58,7 @@ The color Management system also provides styles prefixed with a c for use in th
         }
 
         a:hover {
-            color: red; /* #a1a1a1;*/
+            color: var(--offset); /* #a1a1a1;*/
         }
 
 </style>

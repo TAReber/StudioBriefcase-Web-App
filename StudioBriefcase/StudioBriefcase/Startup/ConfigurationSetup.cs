@@ -23,6 +23,7 @@ namespace StudioBriefcase.Startup
                     try
                     {
                         var value = client.GetSecret(secret).Value.Value;
+                        
                     }
                     catch (Exception ex)
                     {

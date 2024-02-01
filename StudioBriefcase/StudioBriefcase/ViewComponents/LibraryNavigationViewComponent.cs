@@ -12,6 +12,11 @@ namespace StudioBriefcase.ViewComponents
             _libraryService = libraryService;
         }
 
+        /// <summary>
+        /// Queries the Database for the list of subjects and topics to populate the library navigation panel
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public async Task<IViewComponentResult> InvokeAsync(string path)
         {
 
