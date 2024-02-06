@@ -27,13 +27,73 @@ function ToggleDescription(description, section) {
 };
 
 
+
+
 //Test Function to Retrieve a video preview from a static link value
 function VideoButtonTest(button) {
     //document.getElementById("videobuttontest").addEventListener("click", function () {
     let val = button.dataset.section;
-    console.log(val);
-    let url = "https://youtu.be/90MeC-PTj50"
-    //let url = "https://www.youtube.com/watch?v=90MeC-PTj50";
+    
+    var tagList = [];
+
+    // Add tags to the array only if the value is not 0
+    if (document.getElementById('submissionForm-os0').value !== "0") {
+        tagList.push(document.getElementById('submissionForm-os0').value);
+    }
+
+    if (document.getElementById('submissionForm-ide0').value !== "0") {
+        tagList.push(document.getElementById('submissionForm-ide0').value);
+    }
+
+    if (document.getElementById('submissionForm-tag10').value !== "0") {
+        tagList.push(document.getElementById('submissionForm-tag10').value);
+    }
+
+    if (document.getElementById('submissionForm-tag20').value !== "0") {
+        tagList.push(document.getElementById('submissionForm-tag20').value);
+    }
+
+    if (document.getElementById('submissionForm-tag30').value !== "0") {
+        tagList.push(document.getElementById('submissionForm-tag30').value);
+    }
+
+    let datamap = {
+        sectionValue: val,
+        topicName: document.getElementById('PageTopic').value,
+        subjectName: document.getElementById('PageSubject').value,
+        libraryName: document.getElementById('PageLibrary').value,
+        categoryName: document.getElementById('PageCategory').value,
+        language: document.getElementById('menu-language').value,
+        tags: tagList    
+    }
+   
+    //FUTURE PERFORMANCE DEVELOPMENT FOR DATABASE AND SERVER TRAFFIC
+    //LIMIT FETCH AMOUNT TO 25 LINKS AT A TIME AND LAZY LOAD THEM IN INCREMENTS
+
+    fetch("/api/librarylink/GetVideoPostList", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datamap)
+
+    })
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                CreateVideoPreview(val, data[i]);
+            }
+        })
+        .catch(error => {
+            console.error('Error', error);
+        });
+
+
+    //document.getElementsByClassName("section-viewport")[0].src = "https://www.youtube.com/embed/6n3pFFPSlW4";
+    //});
+}
+
+function CreateVideoPreview(sectionVal, url) {
 
     fetch("/api/librarylink/GetPreviewVideo", {
         method: 'POST',
@@ -42,7 +102,7 @@ function VideoButtonTest(button) {
         },
         body: JSON.stringify({
             videolink: url,
-            section: val
+            section: sectionVal
         })
     })
         .then(response => response.text())
@@ -53,7 +113,7 @@ function VideoButtonTest(button) {
             // newdocument.write(data);
             //document.getElementById("viewport2").innerHTML. = "<p>Test Content</P>";
 
-            const main = document.getElementById("viewport" + val);
+            const main = document.getElementById("viewport" + sectionVal);
             const fragment = document.createDocumentFragment();
             const block = document.createElement("div");
             block.innerHTML = data;
@@ -63,11 +123,9 @@ function VideoButtonTest(button) {
 
 
         });
-
-
-    //document.getElementsByClassName("section-viewport")[0].src = "https://www.youtube.com/embed/6n3pFFPSlW4";
-    //});
 }
+
+
 
 //A Function that retrieves a Form from the server to Insert or Edit a Post
 function OpenPostDetailsForm(pagesection) {
@@ -82,15 +140,6 @@ function OpenPostDetailsForm(pagesection) {
         subjectName: document.getElementById('PageSubject').value,
         libraryName: document.getElementById('PageLibrary').value,
         categoryName: document.getElementById('PageCategory').value,
-        //language: document.getElementById('submissionForm-language0').value, //0
-
-        //posttype: document.getElementById('LinkType' + pagesection).value,
-        //GitId: 0,
-        //OS: 0, //0
-        //IDE: 0, //0
-        //tag1: 0, //0
-        //tag2: 0, //0
-        //tag3: 0 //0
     }
 
 
@@ -123,15 +172,17 @@ function InsertLinkToDatabase() {
         subjectName: document.getElementById('submissionForm-subject').value,
         libraryName: document.getElementById('submissionForm-library').value,
         categoryName: document.getElementById('submissionForm-category').value,
-        language: document.getElementById('submissionForm-language').value,
+        language: document.getElementById('menu-language').value,
         weblink: document.getElementById('submissionForm-weblink').value,
         posttype: document.getElementById('submissionForm-posttype').value,
         GitId: 0,
-        OS: document.getElementById('submissionForm-os1').value,
-        IDE: document.getElementById('submissionForm-ide1').value,
-        tag1: document.getElementById('submissionForm-tag11').value,
-        tag2: document.getElementById('submissionForm-tag21').value,
-        tag3: document.getElementById('submissionForm-tag31').value
+        tags: [
+            document.getElementById('submissionForm-os1').value,
+            document.getElementById('submissionForm-ide1').value,
+            document.getElementById('submissionForm-tag11').value,
+            document.getElementById('submissionForm-tag21').value,
+            document.getElementById('submissionForm-tag31').value
+        ]
 
     }
 
@@ -155,6 +206,9 @@ function InsertLinkToDatabase() {
         });
 
 }
+
+
+
 
 function DeletePost(button) {
     let postidModel = { uinttype: button.getAttribute("data-postID") }

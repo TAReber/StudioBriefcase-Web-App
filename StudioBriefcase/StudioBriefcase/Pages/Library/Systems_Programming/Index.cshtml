@@ -10,7 +10,7 @@
     @foreach (var library in Model.LibraryList)
     {
         <div class="thumbnail-link">
-            <a asp-area="" asp-page="/Library/Systems_Programming/@(library.Name)/Getting_Started/Introduction">
+            <a id="language-parameter" asp-page="/Library/Systems_Programming/@(library.Name)/Getting_Started/Introduction">
                 <img src="~/images/Library/Systems_Programming/@(library.Name)/@(library.Name).png" alt="@(library.Name)_thumbnail" class="thumbnail-img">
             </a>
             <div class="thumbnail-text"> @library.Description </div>

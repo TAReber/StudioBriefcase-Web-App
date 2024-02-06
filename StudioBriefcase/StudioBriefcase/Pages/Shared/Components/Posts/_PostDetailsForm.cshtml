@@ -110,7 +110,7 @@ Button to claim the post if its
             @if (Model.gitID == 0 || Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
             {
                 <div class="box-row">
-                    <button onclick="InsertLinkToDatabase()">Update</button>
+                    <button onclick="InsertLinkToDatabase()">Insert</button>
                     <button data-postID="@Model.postID" onclick="DeletePost(this)">Delete</button>
                 </div>
             }

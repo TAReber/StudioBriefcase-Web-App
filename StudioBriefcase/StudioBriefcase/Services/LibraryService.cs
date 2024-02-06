@@ -165,7 +165,7 @@ namespace StudioBriefcase.Services
         public async Task<VideoDatabaseModel> GetVideoMapData(string url)
         {
 
-            VideoDatabaseModel? retrieveMap = null;
+            VideoDatabaseModel map = new VideoDatabaseModel();
             await _connection.OpenAsync();
 
 
@@ -177,23 +177,22 @@ namespace StudioBriefcase.Services
                 {
                     if (await reader.ReadAsync())
                     {
-                        retrieveMap = new VideoDatabaseModel()
-                        {
-                            sectionValue = reader.GetUInt32("section"),
-                            topicName = reader.GetString("topic_name"),
-                            subjectName = reader.GetString("subject_name"),
-                            libraryName = reader.GetString("library_name"),
-                            categoryName = reader.GetString("category_name"),
-                            post_type = reader.GetString("type_name"),
-                            weblink = url,
-                            language = reader.GetString("lang"),
-                            channelName = reader.GetString("channel_name"),
-                            channelID = reader.GetString("channel_id"),
-                            gitID = reader.GetUInt32("git_id"),
-                            postID = reader.GetUInt32("id"),
-                            videoTags = new List<string>()
 
-                        };
+                        map.sectionValue = reader.GetUInt32("section");
+                        map.topicName = reader.GetString("topic_name");
+                        map.subjectName = reader.GetString("subject_name");
+                        map.libraryName = reader.GetString("library_name");
+                        map.categoryName = reader.GetString("category_name");
+                        map.post_type = reader.GetString("type_name");
+                        map.weblink = url;
+                        map.language = reader.GetString("lang");
+                        map.channelName = reader.GetString("channel_name");
+                        map.channelID = reader.GetString("channel_id");
+                        map.gitID = reader.GetUInt32("git_id");
+                        map.postID = reader.GetUInt32("id");
+                        map.videoTags = new List<string>();
+
+
                     }
                 }
 
@@ -208,7 +207,7 @@ namespace StudioBriefcase.Services
                 await _connection.CloseAsync();
             }
 
-            return retrieveMap;
+            return map;
         }
 
         public async Task<List<string>> GetPostTagsAsync(uint postID)
@@ -241,7 +240,6 @@ namespace StudioBriefcase.Services
 
             return strings;
         }
-
         public async Task<LibraryTagsListModel> GetLibraryTagsAsync()
         {
             //_cache.Remove(_tagsCacheKey);
@@ -258,7 +256,7 @@ namespace StudioBriefcase.Services
             LibraryTagsListModel tagLists = new LibraryTagsListModel();
 
             await _connection.OpenAsync();
-            var query = new MySqlCommand("SELECT * FROM tags;", _connection);
+            var query = new MySqlCommand("SELECT * FROM tags ORDER BY tag;", _connection);
             using (var reader = query.ExecuteReader())
             {
 
@@ -286,7 +284,17 @@ namespace StudioBriefcase.Services
             await _connection.CloseAsync();
             return tagLists;
         }
+        public async Task AddTag(string tagname)
+        {
+            //TODO CHECK if Tag Already Exists.
+            await _connection.OpenAsync();
+            var query = new MySqlCommand($"INSERT INTO tags (tag) VALUES (@name_of_tag);", _connection);
+            query.Parameters.AddWithValue("@name_of_tag", tagname);
 
+            await query.ExecuteNonQueryAsync();
+            await _connection.CloseAsync();
+            _cache.Remove(_tagsCacheKey);
+        }
         public async Task<bool> VideoPostTypeExistsAsync(string videoUrl)
         {
             bool exists = false;
@@ -313,18 +321,6 @@ namespace StudioBriefcase.Services
             return exists;
 
 
-        }
-
-        public async Task AddTag(string tagname)
-        {
-            //TODO CHECK if Tag Already Exists.
-            await _connection.OpenAsync();
-            var query = new MySqlCommand($"INSERT INTO tags (tag) VALUES (@name_of_tag);", _connection);
-            query.Parameters.AddWithValue("@name_of_tag", tagname);
-
-            await query.ExecuteNonQueryAsync();
-            await _connection.CloseAsync();
-            _cache.Remove(_tagsCacheKey);
         }
 
         public async Task<string> DeletePost(uint postID, uint gitID)
@@ -421,7 +417,7 @@ namespace StudioBriefcase.Services
             return message;
         }
 
-        public async Task<string> InsertYoutubeLinkAsyn(PostMappingDataModel postMapper)
+        public async Task<string> InsertYoutubeLinkAsync(PostMappingDataModel postMapper)
         {
             string outputMessage = string.Empty;
             VideoDataModel publicVideoData = await Task.Run(() => _postTypeService.GetYoutubePreview(postMapper.weblink));
@@ -435,21 +431,23 @@ namespace StudioBriefcase.Services
                 {
                     if (await VideoPostTypeExistsAsync(postMapper.weblink) == false) //Make sure video isn't already in Database
                     {
+                        TagsChecked = true;
+                        //LibraryTagsListModel LibraryTags = await GetLibraryTagsAsync();
+                        //Video Verification Code relied on Non-Standard tagging system which didn't work well.
 
-                        LibraryTagsListModel LibraryTags = await GetLibraryTagsAsync();
+                        //foreach (var item in publicVideoData.videoTags)
+                        //{
+                        //    Console.WriteLine(item);
+                        //    string loweritem = item.ToLower();
+                        //    TagsChecked = LibraryTags.Tags_normal.Any(tag => tag.tagName.ToLower() == loweritem) ||
+                        //        LibraryTags.Tags_IDE.Any(tag => tag.tagName.ToLower() == loweritem) ||
+                        //        LibraryTags.Tags_OS.Any(tag => tag.tagName.ToLower() == loweritem);
+                        //    if (TagsChecked == true)
+                        //    {
+                        //        break;
+                        //    }
 
-                        foreach (var item in publicVideoData.videoTags)
-                        {
-                            string loweritem = item.ToLower();
-                            TagsChecked = LibraryTags.Tags_normal.Any(tag => tag.tagName.ToLower() == loweritem) ||
-                                LibraryTags.Tags_IDE.Any(tag => tag.tagName.ToLower() == loweritem) ||
-                                LibraryTags.Tags_OS.Any(tag => tag.tagName.ToLower() == loweritem);
-                            if (TagsChecked == true)
-                            {
-                                break;
-                            }
-
-                        }
+                        //}
                         if (TagsChecked == true) //Make sure atleast one tag on youtube exists in the database.
                         {
                             //Proceed to add the link to database.
@@ -473,7 +471,7 @@ namespace StudioBriefcase.Services
                                     uint postkey = Convert.ToUInt32(readerId);
 
                                     //Create the data that the post maps to
-                                    var addlinkquery = new MySqlCommand("insert into post_type_video (link, post_id, channel_name, channel_id) \nvalues (@link, @postid, @channelname, @channelid);", _connection, transaction);
+                                    var addlinkquery = new MySqlCommand("insert into post_type_video (link, post_id, channel_name, channel_id) values (@link, @postid, @channelname, @channelid);", _connection, transaction);
                                     addlinkquery.Parameters.AddWithValue("@link", postMapper.weblink);
                                     addlinkquery.Parameters.AddWithValue("@postId", postkey);
                                     addlinkquery.Parameters.AddWithValue("@channelname", publicVideoData.channelName);
@@ -486,29 +484,40 @@ namespace StudioBriefcase.Services
 
                                     //If Tag value 1 is for any will just be excluded from existing in the database.
                                     //To help with identifying content niche, I've added Any OS and Any IDE tags.
-                                    if (postMapper.tag1 != 1)
+                                    //TODO CONVERT TAGS TO LIST OF INTS.
+
+                                    for (int i = 0; i < postMapper.tags.Count; i++)
                                     {
-                                        extratags.Append(", (@tag1, @postid)");
-                                    }
-                                    if (postMapper.tag2 != 1)
-                                    {
-                                        extratags.Append(", (@tag2, @postid)");
-                                    }
-                                    if (postMapper.tag3 != 1)
-                                    {
-                                        extratags.Append(", (@tag3, @postid)");
+                                        if (postMapper.tags[i] != 0)
+                                        {
+                                            if (extratags.Length != 0)
+                                            {
+                                                extratags.Append($", (@tag{i}, @postid)");
+                                            }
+                                            else
+                                            {
+                                                extratags.Append($" (@tag{i}, @postid)");
+                                            }
+
+                                        }
                                     }
 
-                                    var tagpostquery = new MySqlCommand($"Insert into tags_posts (tag_id, post_id) values (@os, @postid), (@ide, @postid){extratags};", _connection, transaction);
-                                    tagpostquery.Parameters.AddWithValue("@os", postMapper.OS);
-                                    tagpostquery.Parameters.AddWithValue("@ide", postMapper.IDE);
-                                    tagpostquery.Parameters.AddWithValue("@tag1", postMapper.tag1);
-                                    tagpostquery.Parameters.AddWithValue("@tag2", postMapper.tag2);
-                                    tagpostquery.Parameters.AddWithValue("@tag3", postMapper.tag3);
+
+                                    var tagpostquery = new MySqlCommand($"Insert into tags_posts (tag_id, post_id) values {extratags};", _connection, transaction);
+
                                     tagpostquery.Parameters.AddWithValue("@postid", postkey);
+                                    for (int i = 0; i < postMapper.tags.Count; i++)
+                                    {
+                                        if (postMapper.tags[i] != 0)
+                                        {
+                                            tagpostquery.Parameters.AddWithValue($"@tag{i}", postMapper.tags[i]);
+                                        }
+                                    }
+
                                     await tagpostquery.ExecuteNonQueryAsync();
 
                                     transaction.Commit();
+                                    outputMessage = "Successfully Added Message";
                                 }
                                 catch (Exception ex)
                                 {
@@ -545,7 +554,77 @@ namespace StudioBriefcase.Services
 
             return outputMessage;
         }
+        public async Task<List<string>> GetVideoListAsync(NavigationMapModel map)
+        {
+            List<string> videoList = new List<string>();
+            await _connection.OpenAsync();
+            try
+            {
+                StringBuilder query = new StringBuilder("SELECT v.link from post_type_video v Join posts p on p.id = v.post_id join topics t on t.id = p.topics_id join subjects s on s.id = t.subject_id join libraries l on l.id = s.library_id join categories c on c.id = l.category_id");
 
+                StringBuilder extratags = new StringBuilder();
+                //Tags with value of 0 (Any) kicked out on client side.
+                if (map.tags.Count > 0)
+                {
+                    for (int i = 0; i < map.tags.Count; i++)
+                    {
+                        if (extratags.Length != 0)
+                            extratags.Append($", @tag{i}");
+                        else
+                            extratags.Append($" AND tg.id IN (@tag{i}");
+                    }
+                    extratags.Append(')');
+
+                    query.Append(" LEFT join tags_posts tp on tp.post_id = p.id LEFT join tags tg on tg.id = tp.tag_id");
+                }
+
+
+                query.Append(" where c.category_name = @category and l.library_name = @library and s.subject_name = @subject and t.topic_name = @topic and p.section = @section and p.post_language_id = @language and post_type_id = 5");
+                if (extratags.Length > 0)
+                {
+                    query.Append(extratags);
+                }
+                query.Append(';');
+
+                var command = new MySqlCommand(query.ToString(), _connection);
+                command.Parameters.AddWithValue("@category", map.categoryName);
+                command.Parameters.AddWithValue("@library", map.libraryName);
+                command.Parameters.AddWithValue("@subject", map.subjectName);
+                command.Parameters.AddWithValue("@topic", map.topicName);
+                command.Parameters.AddWithValue("@section", map.sectionValue);
+                command.Parameters.AddWithValue("@language", map.language);
+
+                for (int i = 0; i < map.tags.Count; i++)
+                {
+                    command.Parameters.AddWithValue($"@tag{i}", map.tags[i]);
+                }
+
+
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        string link = reader.GetString(0);
+                        videoList.Add(link);
+                    }
+                }
+
+
+            }
+            catch
+            {
+                //TODO:: Create a Empty List
+            }
+            finally
+            {
+                await _connection.CloseAsync();
+            }
+
+
+
+            return videoList;
+        }
 
         private List<LibraryLinksModel> Error_GetLibraryLinksAsync()
         {
@@ -561,9 +640,6 @@ namespace StudioBriefcase.Services
             };
 
         }
-
-
-
         private List<SubjectModel> Error_GetSubjectListAsync()
         {
             return new List<SubjectModel>

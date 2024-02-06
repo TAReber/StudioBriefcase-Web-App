@@ -15,6 +15,13 @@
         @* button class="menu-btn menu-btn-link c-fg" onclick="OpenSettingsPage()"><span class="text-sm" style="color:inherit">Settings</span></button> *@
         <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
     </li>
+    <li class="box-row">
+        <label class="p2" for="language">Language:</label>
+        <select class="zero" name="Language" id="menu-language" onchange="UpdateLanguage()">
+            <option value="1">English</option>           
+        </select>
+
+    </li>
     @if (User.Identity?.IsAuthenticated == true)
     {
         <li class="box-col box-center3 w100">
@@ -37,7 +44,7 @@
 
 <div class="form c-bg" id="user-form">
     <div class="form-content c-fg c-shadow">
-        <h5 class="text-center w100 c-fg" >User Menu</h5>
+        <h5 class="text-center w100 c-fg">User Menu</h5>
         <div class="accordion w100">
             <div class="accordion-item">
 
@@ -119,6 +126,34 @@
 </div>
 
 <script>
+
+    // const localStorage_Language = 'user_language';
+
+    // function UpdateLanguage() {
+    //     let selection = document.getElementById("menu-language").value;
+    //     localStorage.setItem(localStorage_Language, selection);
+
+    //     let LibraryLinks = document.querySelectorAll("#language-parameter");
+    //     LibraryLinks.forEach(function (link) {
+    //         link.href = link.href + '?Language=' + selection;
+            
+    //     });
+
+    // }
+
+    // document.addEventListener("DOMContentLoaded", () => {
+
+    //     let language_selection = localStorage.getItem(localStorage_Language);
+    //     if (language_selection != null) {
+    //         document.getElementById("menu-language").value = language_selection;
+    //     }
+    //     else { //default settings to English, value 1
+    //         document.getElementById("menu-language").value = 'English';
+    //     }
+
+    // });
+
+
     function updateUserRole(event) {
         event.stopPropagation();
 

@@ -17,7 +17,7 @@
                     <ul class="navigation-topic-list">
                         @foreach(var topic in subject.Topics)
                         {
-                            <li><a class="navigation-topic-style" asp-page="@(topic.PathUrl)">@(topic.Name)</a></li>
+                            <li><a class="navigation-topic-style" id="language-parameter" asp-page="@(topic.PathUrl)">@(topic.Name)</a></li>
                         }
                         
 

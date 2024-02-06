@@ -20,14 +20,6 @@ namespace StudioBriefcase.Controllers
             _postTypeService = postTypeService;
         }
 
-        [HttpPost("Index")]
-        public IActionResult Index()
-        {
-            Console.WriteLine("Index Was Called");
-
-            return Ok();
-        }
-
         [HttpPost("SetLibraryQuickLinks")]
         public async Task<IActionResult> SetLibraryQuickLinks([FromBody] LibraryLinksUpdateModel jsonObject)
         {
@@ -58,6 +50,14 @@ namespace StudioBriefcase.Controllers
 
 
         }
+        [HttpPost("GetVideoPostList")]
+        public async Task<IActionResult> GetVideoPostList([FromBody] NavigationMapModel map)
+        {
+            Console.WriteLine(map.libraryName);
+            List<string> list = await _libraryService.GetVideoListAsync(map);
+            return Ok(list);
+        }
+
 
         [HttpPost("GetPreviewVideo")]
         public async Task<IActionResult> GetPreviewVideo([FromBody] VideoPreviewFetchModel fetchdata)
@@ -118,9 +118,6 @@ namespace StudioBriefcase.Controllers
 
             string SuccessMessage = string.Empty;
 
-
-            string test = "https://youtu.be/90MeC-PTj50";
-
             if (uint.TryParse(User.FindFirst("sub")?.Value, out uint id))
             {
                 postLocation.GitID = id;
@@ -145,7 +142,7 @@ namespace StudioBriefcase.Controllers
                     case 5:
                         if (postLocation.weblink.StartsWith("https://youtu.be/"))
                         {
-                            SuccessMessage = await _libraryService.InsertYoutubeLinkAsyn(postLocation);
+                            SuccessMessage = await _libraryService.InsertYoutubeLinkAsync(postLocation);
 
                         }
                         else

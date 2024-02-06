@@ -20,29 +20,26 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleColorScheme(button);
         }
         //Null is Default settings in _colors.cshtml, (light mode)
-        else if(customcolorset != null) {
+        else if (customcolorset != null) {
             button.textContent = "Custom";
-            
+
             ApplyColors(customcolorset);
-       
+            
         }
     }
+    //If a custom color set is saved, load custom colors into the color picker.
+
 
     if (customcolorset != null) {
-        let colorpicker = document.querySelectorAll('input[type="color"]');
-        for (let i = 0; i < customcolorset.length; i++) {
-            colorpicker[i].value = customcolorset[i].value;
-        }
 
-        //document.getElementById('color_background').value = customcolorset[0].value;
-        //document.getElementById('color_foreground').value = customcolorset[1].value;
-        //document.getElementById('color_text-color1').value = customcolorset[2].value;
-        //document.getElementById('color_text-color2').value = customcolorset[3].value;
-        //document.getElementById('color_shadow1').value = customcolorset[4].value;
-        //document.getElementById('color_shadow2').value = customcolorset[5].value;
-        //document.getElementById('color_offset').value = customcolorset[6].value;
-        //document.getElementById('color_menu_background').value = customcolorset[7].value;
-    }
+       // UpdateColorPickerColors(customcolorset);
+        //let colorpicker = document.querySelectorAll('input[type="color"]');
+        //for (let i = 0; i < customcolorset.length; i++) {
+        //    colorpicker[i].value = customcolorset[i].value;
+        //}
+    }//else if not saved
+
+
 })
 
 // Constant Color Mode Data
@@ -53,7 +50,7 @@ const lightmodeSet = [
     { variable: '--text-color2', value: '#000000' },
     { variable: '--shadow1', value: '#000000' },
     { variable: '--shadow2', value: '#cccccc' },
-    { variable: '--offset', value: '#cccccc'},
+    { variable: '--offset', value: '#cccccc' },
     { variable: '--menu-background', value: '#aaaaaa' }
 ];
 
@@ -61,18 +58,27 @@ const darkmodeSet = [
     { variable: '--background', value: '#1a1e22' },
     { variable: '--foreground', value: '#393939' },
     { variable: '--text-color1', value: '#f6f6f6' },
-    { variable: '--text-color2', value: 'white' },
+    { variable: '--text-color2', value: '#ffffff' },
     { variable: '--shadow1', value: '#888888' },
     { variable: '--shadow2', value: '#444444' },
     { variable: '--offset', value: '#222222' },
     { variable: '--menu-background', value: '#444444' }
 ]
 
+function UpdateColorPickerColors(colorSet) {
+
+    let colorpicker = document.querySelectorAll('input[type=color]');
+    for (let i = 0; i < colorpicker.length; i++) {
+        colorpicker[i].value = colorSet[i].value;
+    }
+
+}
+
 //Toggles Color Mode between Light and Dark mode. Will also revert Custom color scheme to Light mode.
 function toggleColorScheme(buttonelement) {
 
     let modestring = buttonelement.textContent;
-    
+
     if (modestring == "Light") {
         buttonelement.textContent = "Dark";
         ApplyColors(darkmodeSet);
@@ -80,12 +86,13 @@ function toggleColorScheme(buttonelement) {
     }
     else if (modestring == "Dark" || modestring == "Custom") {
         buttonelement.textContent = "Light";
-        
+
         ApplyColors(lightmodeSet);
         //localStorage.setItem(LocalStorage_Mode_Name, 'Light');
         // Using Default Colors defined in Shared/_colors.cshtml
         localStorage.removeItem(LocalStorage_Mode_Name);
     }
+
 }
 
 //Function for Advanced Color in Settings
@@ -102,20 +109,21 @@ function ApplyColors(ColorSet) {
     let styleelement = document.getElementById('colorscheme');
     //loop over Constant Color variable names and give respective colorscheme names its values
     for (let pair of ColorSet) {
-        console.log(pair.name);
+
         styleelement.sheet.cssRules[0].style.setProperty(pair.variable, pair.value);
     }
+    UpdateColorPickerColors(ColorSet);
 }
 
 // Saves Custom Color Scheme to Local Storage
 function SaveCustomColorScheme() {
 
     let colorpicker = document.querySelectorAll('input[type="color"]');
-    
+
     let CustomColorSet = Array.from({ length: colorpicker.length });
     for (let i = 0; i < colorpicker.length; i++) {
-        
-        let colorObject = { variable: colorpicker[i].name, value: colorpicker[i].value };        
+
+        let colorObject = { variable: colorpicker[i].name, value: colorpicker[i].value };
         CustomColorSet[i] = colorObject;
     }
 
@@ -148,9 +156,9 @@ function SaveCustomColorScheme() {
     //    { variable: offset.name, value: offset.value },
     //    { variable: menu_bg.name, value: menu_bg.value }
     //];
-    
+
     let jsonSetstring = JSON.stringify(CustomColorSet);
-    
+
     localStorage.setItem(LocalStorage_Custom_Mode_Name, jsonSetstring);
     let maintogglebutton = document.getElementById('color_mode_toggle');
 
@@ -171,7 +179,7 @@ function ClearCustomColorLocalStorage() {
     let colorpicker = document.querySelectorAll('input[type="color"]');
     for (let i = 0; i < colorpicker.length; i++) {
         colorpicker[i].value = lightmodeSet[i].value;
-        
+
     }
 
     ApplyColors(lightmodeSet);

@@ -12,6 +12,17 @@ namespace StudioBriefcase.Models
         public uint uinttype { get; set; }
     }
 
+    public class NavigationMapModel
+    {
+        public uint sectionValue { get; set; }
+        public string topicName { get; set; } = string.Empty;
+        public string subjectName { get; set; } = string.Empty;
+        public string libraryName { get; set; } = string.Empty;
+        public string categoryName { get; set; } = string.Empty;
+        public uint language { get; set; }
+        public List<uint> tags { get; set; } = new List<uint>();
+    }
+
     public class PostMappingDataModel : BaseMapModel
     {
 
@@ -19,11 +30,8 @@ namespace StudioBriefcase.Models
         //public string weblink {  get; set; } = string.Empty;
         public uint posttype { get; set; }
         public uint GitID { get; set; } = 0;
-        public int OS {  get; set; } = 0;
-        public int IDE {  get; set; } = 0;
-        public int tag1 { get; set; } = 0;
-        public int tag2 { get; set; } = 0;
-        public int tag3 { get; set; } = 0;
+        public List<uint> tags { get; set; } = new List<uint>();
+
         
     }
 
@@ -41,7 +49,8 @@ namespace StudioBriefcase.Models
     }
 
     public class IdentifiersModel : BaseMapModel
-    {       
+    {
+        
         public uint postID { get; set; }
         public uint gitID { get; set; }
         public string post_type { get; set; } = string.Empty;

@@ -11,7 +11,7 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/LibraryStyles/@(library).css" />
+    @* <link rel="stylesheet" href="~/css/LibraryStyles/@(library).css" /> *@
 </head>
 
 <main class="box-row me-grow1 w100 c-bg" style="overflow:hidden">
@@ -44,13 +44,6 @@
                             Post Filter Settings
                         </button>
                         <div class="accordion-target-vertical" id="navigation-Parameters">
-                            <div class="box-row">
-                                <label class="p2" for="language">Language:</label>
-                                <select class="zero" name="Language" id="submissionForm-language">
-                                    <option value="1">English</option>
-                                </select>
-
-                            </div>
                             @await Component.InvokeAsync("LibraryTags")
                         </div>
                     </div>
@@ -106,9 +99,10 @@
         ToggleExpanded('@subject');
     });
 
+    //A Function that creates a single string out of JSON Obejcts and Inserts the string into a database.
     function updateLibraryLinks(event) {
         //console.log("The javascript updateLibraryLinks function was called");
-
+        console.log("LibraryQuicklinks client function");
         let item = [];
         let inputFields = document.querySelectorAll(".link-input");
         let objects = [];
@@ -133,7 +127,7 @@
         };
 
         //After Objects Created, I needed to create a model to store the string in and pass in the parameters.
-        fetch('/library/SetLibraryQuickLinks', {
+        fetch('/api/librarylink/SetLibraryQuickLinks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
