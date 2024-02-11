@@ -22,12 +22,20 @@ namespace StudioBriefcase.Startup
         {
 
             services.AddRazorPages();
-            services.AddTransient<MySqlConnection>(_ =>
+            //Opposite of Singleton, Transient creates a new instance of the service for each request.
+            services.AddTransient<MySqlConnection>(_ => 
             new MySqlConnection(configuration["database-credential"]));
 
             //services.AddMvc();
             services.AddTransient<IPostTypeService, PostTypeService>();
             services.AddTransient<ILibraryService, LibraryService>();
+            services.AddTransient<ICustodianService, CustodianService>();
+
+            //Creates a reusable instance per HTTP request
+            services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
+            //services.AddScoped<LibraryService>(); // If the same viewComponent is invoked multiple times, it automatically uses a scoped instance.
+            services.AddScoped<PostTypeService>();
+            services.AddScoped<PageService>();
 
             services.AddHttpClient("youtube", client =>
             {
@@ -37,10 +45,6 @@ namespace StudioBriefcase.Startup
             services.AddHttpClient();
             
             
-            services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
-            services.AddScoped<LibraryService>();
-            services.AddScoped<PostTypeService>();
-
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationFormats.Add("/Pages/Shared/Components/{0}" + RazorViewEngine.ViewExtension);

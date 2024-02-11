@@ -3,19 +3,69 @@
 namespace StudioBriefcase.Models
 {
 
-    public class CategoryModel
+    public class SelectorModel
+    {
+        public uint id { get; set; }
+        public string name { get; set; } = string.Empty;
+    }
+
+    public class SelectorListModel
+    {
+        List<SelectorModel> list = new List<SelectorModel>();
+    }
+
+    public class LibrarySelectorIDsModel
+    {
+        public uint CategoryID { get; set; }
+        public uint LibraryID { get; set; }
+        public uint SubjectID { get; set; }
+        public uint TopicID { get; set; }
+    }
+
+    public class LibraryMapListModel : LibrarySelectorIDsModel {        
+        public SelectorModel Categories { get; set; } = new SelectorModel();
+        public SelectorModel Libraries { get; set; } = new SelectorModel();
+        public SelectorModel Subjects { get; set; } = new SelectorModel();
+        public SelectorModel Topics { get; set; } = new SelectorModel();
+        
+        public LibraryMapListModel(LibrarySelectorIDsModel ids)
+        {
+            CategoryID = ids.CategoryID;
+            LibraryID = ids.LibraryID;
+            SubjectID = ids.SubjectID;
+            TopicID = ids.TopicID;
+        }
+    }
+
+    /// <summary>
+    /// Model used in the Index.cs pages, To be phased out for datadriven approach
+    /// </summary>
+    public class staticlibraryLinkModel
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
 
-    public class LibraryModel
+    //public class CategoryModel
+    //{
+    //    public string Name { get; set; } = string.Empty;
+    //    public string Description { get; set; } = string.Empty;
+    //}
+
+    //public class LibraryModel
+    //{
+    //    public string Name { get; set; } = string.Empty;
+    //    public string Description { get; set; } = string.Empty;
+    //}
+
+    //Model used to update the quicklinks in the database with json string
+    public class LibraryQuickLinksUpdaterModel
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string LibraryName { get; set; } = string.Empty;
+        public string JsonString { get; set; } = string.Empty;
     }
 
-    public class LibraryLinksModel {
+    public class LibraryQuickLinksModel {
         public string SiteUrl { get; set; } = string.Empty;
         public string ImgSource { get; set; } = string.Empty;
         public string ShorthandDesc { get; set; } = string.Empty;
@@ -34,11 +84,7 @@ namespace StudioBriefcase.Models
         public string PathUrl { get; set; } = string.Empty;
     }
 
-    public class LibraryLinksUpdateModel
-    {
-        public string LibraryName { get; set; } = string.Empty;
-        public string JsonString { get; set; } = string.Empty;
-    }
+
 
     public class LibrarySectionModel
     {

@@ -7,9 +7,9 @@ namespace StudioBriefcase.Pages.Library.Computer_Graphics
     public class IndexModel : PageModel
     {
         //Uses a predefined Folder Heiarchy to Search for images and other related files to display thumbnails.
-        public List<LibraryModel> LibraryList { get; set; } = new List<LibraryModel>
+        public List<staticlibraryLinkModel> LibraryList { get; set; } = new List<staticlibraryLinkModel>
         {
-            new LibraryModel { Name = "Vulkan", Description = "Graphics API"}
+            new staticlibraryLinkModel { Name = "Vulkan", Description = "Graphics API"}
         };
 
         public void OnGet()

@@ -6,9 +6,9 @@ namespace StudioBriefcase.Pages.Library.Internet_Technology
 {
     public class IndexModel : PageModel
     {
-        public List<LibraryModel> LibraryList { get; set; } = new List<LibraryModel>
+        public List<staticlibraryLinkModel> LibraryList { get; set; } = new List<staticlibraryLinkModel>
         {
-            new LibraryModel { Name = "Web_Development", Description = "Todo:Description"}
+            new staticlibraryLinkModel { Name = "Web_Development", Description = "Todo:Description"}
         };
 
         public void OnGet()

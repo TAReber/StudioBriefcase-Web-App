@@ -20,40 +20,10 @@ namespace StudioBriefcase.Controllers
             _postTypeService = postTypeService;
         }
 
-        [HttpPost("SetLibraryQuickLinks")]
-        public async Task<IActionResult> SetLibraryQuickLinks([FromBody] LibraryLinksUpdateModel jsonObject)
-        {
-            //Console.WriteLine(jsonObject.LibraryName);
-            //Console.WriteLine(jsonObject.JsonString);
-
-
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                if (User.FindFirst("privilege")?.Value == "Moderator")
-                {
-                    try
-                    {
-                        await _libraryService.SetLibraryQuickLinksAsync(jsonObject.LibraryName, jsonObject.JsonString);
-                        return Ok(new { Message = "Successfully Updated Library Links" });
-                    }
-                    catch (Exception e)
-                    {
-                        return Ok(new { Message = $"Failed to Update Library Links{e}" });
-                    }
-                }
-                else
-                {
-                    return Ok(new { Message = "Incorrect privilege, Is this a Hack Attempt?" });
-                }
-            }
-            return Ok(new { Message = "User Identity was Null, LibraryLinkController.SetLibraryLinks Method" });
-
-
-        }
         [HttpPost("GetVideoPostList")]
         public async Task<IActionResult> GetVideoPostList([FromBody] NavigationMapModel map)
         {
-            Console.WriteLine(map.libraryName);
+            //Console.WriteLine(map.libraryName);
             List<string> list = await _libraryService.GetVideoListAsync(map);
             return Ok(list);
         }
@@ -86,11 +56,10 @@ namespace StudioBriefcase.Controllers
                 BaseMapModel test = postLocation;
 
                 bool exists = false;
-                exists = await _libraryService.VideoPostTypeExistsAsync(postLocation.weblink);
-
+                //exists = await _libraryService.VideoPostTypeExistsAsync(postLocation.weblink);
+                exists = await _libraryService.PostTypeExistsAsync(postLocation.weblink, "video");
                 if (exists)
                 {
-
                     VideoDatabaseModel postModel = await _libraryService.GetVideoMapData(postLocation.weblink);
                     postModel.videoTags = await _libraryService.GetPostTagsAsync(postModel.postID);
                     viewstring = "~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml";
@@ -105,7 +74,9 @@ namespace StudioBriefcase.Controllers
             catch
             {
                 //TODO viewstring = "~/Pages/Shared/Components/Posts/_RequestFailedForm.cshtml"
+                Console.WriteLine("Failed to Retrieve Post Details Form");
             }
+            
 
             return PartialView(viewstring, postLocation);
         }

@@ -8,15 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Text;
+using StudioBriefcase.Helpers;
 
 namespace StudioBriefcase.Services
 {
     public class LibraryService : ILibraryService
     {
         PostTypeService _postTypeService;
-        private readonly MySqlConnection _connection;
-        private readonly IMemoryCache _cache;
-        private readonly string _tagsCacheKey;
+        protected readonly MySqlConnection _connection;
+        protected readonly IMemoryCache _cache;
+        protected readonly string _tagsCacheKey;
 
 
         public LibraryService(IMemoryCache cache, MySqlConnection connection, PostTypeService postTypeService)
@@ -26,142 +27,9 @@ namespace StudioBriefcase.Services
             _postTypeService = postTypeService;
             _tagsCacheKey = "tags";
 
-
+            Console.WriteLine("LibraryService Constructor");
         }
-
-
-        /// <summary>
-        /// Used to Retrieve Quick LInks in Library Navigator
-        /// </summary>
-        /// <param name="libraryName"></param>
-        /// <returns></returns>
-        public async Task<List<LibraryLinksModel>> GetLibraryLinksAsync(string libraryName)
-        {
-            //I'm going to try to cache the list thats created to reduce the database traffic.
-            if (_cache.TryGetValue(libraryName, out List<LibraryLinksModel>? cachedlinks))
-            {
-                if (cachedlinks != null)
-                {
-                    return cachedlinks;
-                }
-            }
-
-            //If CachedData is expired or failed to detect cached list, retrieve from database.
-            await _connection.OpenAsync();
-
-            var query = new MySqlCommand($"SELECT links from library_links WHERE library_id = (SELECT id from libraries WHERE library_name = @libraryName);", _connection);
-            query.Parameters.AddWithValue("@libraryName", libraryName);
-
-
-            using (var reader = query.ExecuteReader())
-            {
-                if (await reader.ReadAsync())
-                {
-                    var json = reader.GetString(0);
-                    var quicklinks = JsonSerializer.Deserialize<List<LibraryLinksModel>>(json);
-                    if (quicklinks != null && quicklinks.Count != 0)
-                    {
-                        _cache.Set(libraryName, quicklinks, TimeSpan.FromMinutes(30));
-                        return quicklinks;
-                    }
-                }
-            }
-            return Error_GetLibraryLinksAsync();
-        }
-
-        /// <summary>
-        /// Used to Get a List of Subject and Topics that exist in a library.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public async Task<List<SubjectModel>> GetSubjectListAsync(string path)
-        {
-            string[] folders = path.Split('\\');
-            string library = folders[folders.Length - 2];
-            string category = folders[folders.Length - 3];
-
-            await _connection.OpenAsync();
-            var query = new MySqlCommand($"SELECT subjects.subject_name, topics.topic_name FROM subjects join topics on subjects.id = topics.subject_id where library_id =  (SELECT id from libraries where library_name = @variable) ORDER BY subjects.priority, topics.priority;", _connection);
-
-            query.Parameters.AddWithValue("@variable", library);
-
-            using (var reader = query.ExecuteReader())
-            {
-                List<SubjectModel> SubjectModel_List = new List<SubjectModel>();
-                string subject_temp = string.Empty;
-                int iterator = -1;
-                while (await reader.ReadAsync())
-                {
-
-                    string subjectName = reader.GetString(0);
-
-                    if (subjectName != subject_temp)
-                    {
-                        iterator++;
-                        subject_temp = subjectName;
-
-                        SubjectModel_List.Add(
-                            new SubjectModel()
-                            {
-                                Name = subjectName,
-                                Topics =
-                                {
-                                    new TopicModel()
-                                    {
-                                        Name = reader.GetString(1),
-                                        PathUrl = $"/Library/{category}/{library}/{reader.GetString(0)}/{reader.GetString(1)}"
-                                    }
-                                }
-
-                            });
-                    }
-                    else
-                    {
-                        SubjectModel_List[iterator].Topics.Add(new TopicModel
-                        {
-                            Name = reader.GetString(1),
-                            PathUrl = $"/Library/{category}/{library}/{reader.GetString(0)}/{reader.GetString(1)}"
-
-                        });
-                    }
-
-
-                }
-                if (SubjectModel_List != null && SubjectModel_List.Count > 0)
-                {
-                    string cacheKey = $"{library}_subjects";
-                    _cache.Set(cacheKey, SubjectModel_List, TimeSpan.FromMinutes(30));
-                    return SubjectModel_List;
-                }
-
-
-            }
-
-
-            return Error_GetSubjectListAsync();
-        }
-
-
-        /// <summary>
-        /// Updates the Library Quick Links
-        /// </summary>
-        /// <param name="libraryName"></param>
-        /// <param name="jsonString"></param>
-        /// <returns></returns>
-        public async Task SetLibraryQuickLinksAsync(string libraryName, string jsonString)
-        {
-            await _connection.OpenAsync();
-            var query = new MySqlCommand($"UPDATE library_links SET links = @jsonString WHERE library_id = (SELECT id FROM libraries WHERE library_name = @libraryName);", _connection);
-            query.Parameters.AddWithValue("@jsonString", jsonString);
-            query.Parameters.AddWithValue("@libraryName", libraryName);
-
-            await query.ExecuteNonQueryAsync();
-            await _connection.CloseAsync();
-            _cache.Remove(libraryName);
-        }
-
-
-
+     
         public async Task<VideoDatabaseModel> GetVideoMapData(string url)
         {
 
@@ -240,67 +108,52 @@ namespace StudioBriefcase.Services
 
             return strings;
         }
-        public async Task<LibraryTagsListModel> GetLibraryTagsAsync()
+       
+
+
+        public async Task<bool> PostTypeExistsAsync(string site, uint posttype)
         {
-            //_cache.Remove(_tagsCacheKey);
-
-            if (_cache.TryGetValue(_tagsCacheKey, out LibraryTagsListModel? cachedtags))
-            {
-                if (cachedtags != null)
-                {
-                    return cachedtags;
-                }
-            }
-
-
-            LibraryTagsListModel tagLists = new LibraryTagsListModel();
-
+            bool exists = false;
             await _connection.OpenAsync();
-            var query = new MySqlCommand("SELECT * FROM tags ORDER BY tag;", _connection);
+
+
+
+
+            await _connection.CloseAsync();
+            return exists;
+        }
+
+        public async Task<bool> PostTypeExistsAsync(string link, string table)
+        {
+            bool exists = false;
+            await _connection.OpenAsync();
+            MySqlCommand query = new QueryHelper().Select("count(1)")
+                .From($"post_type_{table}").Where("link")
+                .Build(_connection);
+            query.Parameters.AddWithValue("@link", link);
+            //Console.WriteLine(query.CommandText);
             using (var reader = query.ExecuteReader())
             {
-
-                while (await reader.ReadAsync())
+                if (await reader.ReadAsync())
                 {
-                    uint tagid = reader.GetFieldValue<uint>(0);
-                    string name = reader.GetFieldValue<string>(1);
-                    int area = reader.GetFieldValue<int>(2);
-
-                    LibraryTagsModel tags = new LibraryTagsModel()
+                    var count = reader.GetInt32(0);
+                    if (count > 0)
                     {
-                        id = tagid,
-                        tagName = name
-                    };
-                    if (area == 1)
-                        tagLists.Tags_normal.Add(tags);
-                    else if (area == 2)
-                        tagLists.Tags_IDE.Add(tags);
-                    else if (area == 3)
-                        tagLists.Tags_OS.Add(tags);
-
-                    _cache.Set(_tagsCacheKey, tagLists, TimeSpan.FromMinutes(300));
+                        Console.WriteLine("Exists");
+                        exists = true;
+                    }
                 }
             }
             await _connection.CloseAsync();
-            return tagLists;
-        }
-        public async Task AddTag(string tagname)
-        {
-            //TODO CHECK if Tag Already Exists.
-            await _connection.OpenAsync();
-            var query = new MySqlCommand($"INSERT INTO tags (tag) VALUES (@name_of_tag);", _connection);
-            query.Parameters.AddWithValue("@name_of_tag", tagname);
 
-            await query.ExecuteNonQueryAsync();
-            await _connection.CloseAsync();
-            _cache.Remove(_tagsCacheKey);
+            return exists;
         }
+
         public async Task<bool> VideoPostTypeExistsAsync(string videoUrl)
         {
             bool exists = false;
 
             await _connection.OpenAsync();
-
 
             var query = new MySqlCommand($"SELECT count(1) FROM post_type_video WHERE link = @link;", _connection);
             query.Parameters.AddWithValue("@link", videoUrl);
@@ -319,8 +172,6 @@ namespace StudioBriefcase.Services
             }
             await _connection.CloseAsync();
             return exists;
-
-
         }
 
         public async Task<string> DeletePost(uint postID, uint gitID)
@@ -626,38 +477,9 @@ namespace StudioBriefcase.Services
             return videoList;
         }
 
-        private List<LibraryLinksModel> Error_GetLibraryLinksAsync()
-        {
-            return new List<LibraryLinksModel>
-            {
-                new LibraryLinksModel
-                {
-                    SiteUrl = "#",
-                    ImgSource = "",
-                    ShorthandDesc = "ERROR"
-                },
 
-            };
 
-        }
-        private List<SubjectModel> Error_GetSubjectListAsync()
-        {
-            return new List<SubjectModel>
-            {
-
-                new SubjectModel { Name = "No Subjects Found",
-                Topics = new List<TopicModel>
-                    {
-                        new TopicModel
-                        {
-                            Name = "No Topics Found",
-                            PathUrl= "#",
-                        }
-                    }
-                }
-            };
-        }
-
+       
 
     }
 

@@ -127,7 +127,7 @@
         };
 
         //After Objects Created, I needed to create a model to store the string in and pass in the parameters.
-        fetch('/api/librarylink/SetLibraryQuickLinks', {
+        fetch('/api/custodianController/SetLibraryQuickLinks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -153,6 +153,7 @@
 </script>
 
 @section Scripts {
+    
     <script src="~/scripts/GlobalLibraryFunctions.js"></script>
     <Script src="~/scripts/library/Vulkan.js"></Script>
 }

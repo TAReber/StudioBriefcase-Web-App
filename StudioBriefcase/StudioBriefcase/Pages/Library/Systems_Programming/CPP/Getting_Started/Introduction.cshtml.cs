@@ -7,7 +7,11 @@ namespace StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started
 {
     public class IntroductionModel : PageModel
     {
-        //private ILibraryService? _libraryService;
+        private readonly PageService _pageService;
+        public IntroductionModel(PageService pageService)
+        {
+            _pageService = pageService;
+        }
        
         
 
@@ -21,6 +25,8 @@ namespace StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started
 
         public void OnGet()
         {
+            Console.WriteLine(Request.Path.Value);
+
             //Console.WriteLine($"Language:{Language}");
             //string path = System.IO.Path.GetFileNameWithoutExtension(Request.Path);
             //Console.WriteLine($"Path: {path}");

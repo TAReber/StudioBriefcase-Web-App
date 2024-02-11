@@ -7,11 +7,11 @@ namespace StudioBriefcase.Pages.Library
     public class IndexModel : PageModel
     {
 
-        public List<CategoryModel> CategoryList{ get; set; } = new List<CategoryModel>
+        public List<staticlibraryLinkModel> CategoryList{ get; set; } = new List<staticlibraryLinkModel>
         {
-            new CategoryModel { Name = "Internet_Technology", Description = "WebSite Development & Internet"},
-            new CategoryModel { Name = "Computer_Graphics", Description = "2D & 3D Graphics Libraries"},
-            new CategoryModel { Name = "Systems_Programming", Description = "Low Level Languages"}
+            new staticlibraryLinkModel { Name = "Internet_Technology", Description = "WebSite Development & Internet"},
+            new staticlibraryLinkModel { Name = "Computer_Graphics", Description = "2D & 3D Graphics Libraries"},
+            new staticlibraryLinkModel { Name = "Systems_Programming", Description = "Low Level Languages"}
         };
 
         public void OnGet()

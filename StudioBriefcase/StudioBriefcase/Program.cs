@@ -17,6 +17,7 @@ List<string> targetNames = new List<string>
 
 bool isVerified = builder.Configuration.VerifyKeyVaultSecrets(keyVaultURL, targetNames);
 
+// DependencyInjectionSetup class is used to register services and configure the http request pipeline.
 builder.Services.RegisterServices(builder.Configuration);
 if (isVerified)
     DependencyInjectionSetup.RegisterGitHubService(builder);

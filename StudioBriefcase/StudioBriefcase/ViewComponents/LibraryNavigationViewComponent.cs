@@ -5,11 +5,12 @@ namespace StudioBriefcase.ViewComponents
 {
     public class LibraryNavigationViewComponent : ViewComponent
     {
-        ILibraryService _libraryService;
 
-        public LibraryNavigationViewComponent(ILibraryService libraryService)
+        PageService _pageService;
+
+        public LibraryNavigationViewComponent(PageService pageService)
         {
-            _libraryService = libraryService;
+            _pageService = pageService;
         }
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace StudioBriefcase.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(string path)
         {
 
-            var listdata = await _libraryService.GetSubjectListAsync(path);
+            var listdata = await _pageService.GetSubjectListAsync(path);
         
             return View("~/Pages/Shared/Components/Library/_LibraryNavigation.cshtml", listdata);
         }

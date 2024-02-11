@@ -5,19 +5,20 @@ namespace StudioBriefcase.ViewComponents
 {
     public class LibraryLinksViewComponent : ViewComponent
     {
-
-        private ILibraryService _libraryService;
+        PageService _pageService;
+        //private ILibraryService _libraryService;
         //Constructor
-        public LibraryLinksViewComponent(ILibraryService libraryService)
+        public LibraryLinksViewComponent(PageService pageService)
         {
-            _libraryService = libraryService;
+            //_libraryService = libraryService;
+            _pageService = pageService;
         }
 
         //TODO, I'll have to pass in a 
         public async Task<IViewComponentResult> InvokeAsync(string libraryName, int switchvalue = 0)
         {
             //Console.WriteLine("Called LibraryLink ViewComponent");
-            var modelList = await _libraryService.GetLibraryLinksAsync(libraryName);
+            var modelList = await _pageService.GetLibraryQuickLinksAsync(libraryName);
 
             string view = string.Empty;
 

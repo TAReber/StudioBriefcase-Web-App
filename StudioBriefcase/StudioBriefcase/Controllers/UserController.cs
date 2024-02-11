@@ -23,9 +23,9 @@ namespace StudioBriefcase.Controllers
 
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                if(model.Id == User.FindFirst("sub")?.Value)
-                {
-                    if (uint.TryParse(model.Id, out uint id))
+                //if (model.Id == User.FindFirst("sub")?.Value)
+                //{
+                    if (uint.TryParse(User.FindFirst("sub")?.Value, out uint id))
                     {
                         //Console.WriteLine(id);
                         await _userService.SetUserClass(id, model.userclass);
@@ -35,11 +35,11 @@ namespace StudioBriefcase.Controllers
                     {
                         return Ok(new { Message = "Failed to Change Role" });
                     }
-                }
-                else
-                {
-                    return Ok(new { Message = "Wrong User ID Submitted, Is this a Hack Attempt?" });
-                }
+                //}
+                //else
+                //{
+                //    return Ok(new { Message = "Wrong User ID Submitted, Is this a Hack Attempt?" });
+                //}
             }
             return Ok(new { Message = "User Identity was Null, UserController.UpdateUserClass Method" });
         }

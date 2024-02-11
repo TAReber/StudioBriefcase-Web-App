@@ -5,17 +5,12 @@
 @{
     List<StudioBriefcase.Models.DonationModel> donators = new List<StudioBriefcase.Models.DonationModel>
     {
-        new StudioBriefcase.Models.DonationModel("Your Name Here!", 100),
-        new StudioBriefcase.Models.DonationModel("Kangaroo Boogaloo", 87),
-        new StudioBriefcase.Models.DonationModel("Jonothan McSmith", 37),
-        new StudioBriefcase.Models.DonationModel("Dino Nugs", 36),
-        new StudioBriefcase.Models.DonationModel("Tator Tots", 17),
-        new StudioBriefcase.Models.DonationModel("Salty Fries", 4),
-        new StudioBriefcase.Models.DonationModel("Or Your Name Here!", 2),
+        new StudioBriefcase.Models.DonationModel("Anonymous", 1), // First Donor
+        new StudioBriefcase.Models.DonationModel("Benjamin", 1), //First Reward Donor
     };
 }
 <div class="accordion w100 c-bg">
-    <h2>Top Donors of 2024 Fundraiser --EXAMPLE ONLY--</h2>
+    <h2>Mega Cool Donor List -- Total Raised: $2</h2>
     <table class="w100 c-fg">
         <thead class="w100">
             <tr class="w100 box-pushstart">
@@ -25,10 +20,11 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < 5; i++)
+
+            @for (int i = 0; i < donators.Count(); i++)
             {
                 <tr class="box-pushstart">
-                    <td>@(i + 1)</td>
+                    <td>@(i)</td>
                     <td>@donators[i].Name</td>
                     <td>$@donators[i].amount</td>
                 </tr>
@@ -53,14 +49,14 @@
                     </tr>
                 </thead> *@
                 <tbody>
-                    @for(int i = 5; i < donators.Count; i++)
+@*                     @for(int i = 5; i < donators.Count; i++)
                     {
                         <tr class="box-pushstart">
                             <td>@(i + 1)</td>
                             <td>@donators[i].Name</td>
                             <td>$@donators[i].amount</td>
                         </tr>
-                    }
+                    } *@
 
 
 

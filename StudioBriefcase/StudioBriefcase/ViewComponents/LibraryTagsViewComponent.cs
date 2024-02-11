@@ -6,18 +6,18 @@ namespace StudioBriefcase.ViewComponents
 {
     public class LibraryTagsViewComponent : ViewComponent
     {
-        ILibraryService _libraryService;
+        PageService _pageService;
 
-        public LibraryTagsViewComponent(ILibraryService libraryService)
+        public LibraryTagsViewComponent(PageService pageService)
         {
-            _libraryService = libraryService;
+            _pageService = pageService;
         }
 
         [ResponseCache(Duration =3600)] //Not Caching Response
         public async Task<IViewComponentResult> InvokeAsync(int FormID = 0)
         {
 
-            LibraryTagsListModel tags = await _libraryService.GetLibraryTagsAsync();
+            LibraryTagsListModel tags = await _pageService.GetLibraryTagsAsync();
             tags.pageid = FormID;
             return View("~/Pages/Shared/Components/Library/_LibraryPrebuiltTags.cshtml", tags);
         }

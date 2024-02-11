@@ -7,9 +7,9 @@ namespace StudioBriefcase.Pages.Library.Systems_Programming
     public class IndexModel : PageModel
     {
 
-        public List<LibraryModel> LibraryList { get; set; } = new List<LibraryModel>
+        public List<staticlibraryLinkModel> LibraryList { get; set; } = new List<staticlibraryLinkModel>
         {
-            new LibraryModel { Name = "CPP", Description = "C++ Tutorial"}
+            new staticlibraryLinkModel { Name = "CPP", Description = "C++ Tutorial"}
         };
         public void OnGet()
         {
