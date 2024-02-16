@@ -15,18 +15,155 @@ namespace StudioBriefcase.Services
         {
             _cache = cache;
             _connection = connection;
-            Console.WriteLine("BaseService Constructor");
+            
         }
 
-        public Task<SelectorListModel> GetCategoryListAsync()
+        public Task<LibraryMapIDsModel> BuildMapFromTopicID(uint topicID)
         {
-            //MySqlCommand command = new QueryHelper().Select("id, category_name").From("categories").Order("category_name").Build(_connection);
-            MySqlCommand command = new MySqlCommand("SELECT id, category_name from categories ORDER BY category_name ASC;", _connection);
+            
+            LibraryMapIDsModel map = new LibraryMapIDsModel();
+
+            MySqlCommand command = new QueryHelper().SelectMapID(topicID).Build(_connection);
+
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    
+                    map.LibraryID = reader.GetUInt32(0);
+                    map.CategoryID = reader.GetUInt32(1);
+                    map.SubjectID = reader.GetUInt32(2);
+
+                    map.TopicID = topicID;
+                }
+            }
+
+            return Task.FromResult(map);
+        }
+
+        public async Task<SelectorListModel> GetCategoryListAsync()
+        {            
+            SelectorListModel categoryList = new SelectorListModel();
+            MySqlCommand command = new QueryHelper().Select("id, category_name").From("categories").Order("category_name").Build(_connection);
+
+            using(var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    categoryList.list.Add(new ID_String_Pair_Model
+                    {
+                        id = reader.GetUInt32(0),
+                        text = reader.GetString(1)
+                    });
+                }
+            }
+
+            return categoryList;
+        }
+
+        public async Task<SelectorListModel> GetLibraryListAsync(uint categoryID)
+        {
+            SelectorListModel libraryList = new SelectorListModel();
+            MySqlCommand command = new QueryHelper().Select("id, library_name").From("libraries").Where("id", categoryID).Order("library_name").Build(_connection);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    libraryList.list.Add(new ID_String_Pair_Model
+                    {
+                        id = reader.GetUInt32(0),
+                        text = reader.GetString(1)
+                    });
+                }
+            }
+
+            return libraryList;
+
+        }
+
+        public async Task<SelectorListModel> GetSubjectListAsync(uint libraryID)
+        {
+            SelectorListModel subjectList = new SelectorListModel();
+            MySqlCommand command = new QueryHelper().Select("id, subject_name").From("subjects").Where("library_id", libraryID).Order("subject_name").Build(_connection);
+            using(var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    subjectList.list.Add(new ID_String_Pair_Model
+                    {
+                        id = reader.GetUInt32(0),
+                        text = reader.GetString(1)
+                    });
+                }
+            }
+            return subjectList;
+        }
+
+        public async Task<SelectorListModel> GetTopicListAsync(uint subjectID)
+        {
+            SelectorListModel topicList = new SelectorListModel();
+            MySqlCommand command = new QueryHelper().Select("id, topic_name").From("topics").Where("subject_id", subjectID).Order("topic_name").Build(_connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (await reader.ReadAsync())
+                {
+                    topicList.list.Add(new ID_String_Pair_Model
+                    {
+                        id = reader.GetUInt32(0),
+                        text = reader.GetString(1)
+                    });
+                }
+            }
+            return topicList;
+
+        }
 
 
+        public async Task<LibraryTagsListModel> GetLibraryTagsAsync()
+        {
+            //_cache.Remove(_tagsCacheKey);
+
+            if (_cache.TryGetValue("tags", out LibraryTagsListModel? cachedtags))
+            {
+                if (cachedtags != null)
+                {
+                    return cachedtags;
+                }
+            }
 
 
-            throw new NotImplementedException();
+            LibraryTagsListModel tagLists = new LibraryTagsListModel();
+
+            //await _connection.OpenAsync(); //CONNECTION TEST1
+            var query = new MySqlCommand("SELECT * FROM tags ORDER BY tag;", _connection);
+            using (var reader = query.ExecuteReader())
+            {
+
+                while (await reader.ReadAsync())
+                {
+                    uint tagid = reader.GetFieldValue<uint>(0);
+                    string name = reader.GetFieldValue<string>(1);
+                    int area = reader.GetFieldValue<int>(2);
+
+                    ID_String_Pair_Model tags = new ID_String_Pair_Model()
+                    {
+                        id = tagid,
+                        text = name
+                    };
+                    if (area == 1)
+                        tagLists.Tags_OS.list.Add(tags);                      
+                    else if (area == 2)
+                        tagLists.Tags_IDE.list.Add(tags);
+                    else if (area == 3)
+                        tagLists.Tags_normal.list.Add(tags);
+
+
+                    _cache.Set("tags", tagLists, TimeSpan.FromMinutes(300));
+                }
+            }
+            //await _connection.CloseAsync();
+            return tagLists;
         }
     }
 }

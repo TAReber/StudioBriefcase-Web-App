@@ -1,12 +1,13 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    _subLayout_Library component used to create links in the navigation bar.
+
+    Created for StudioBriefcase by:  Tyler Andrew Reber
 *@
-@{
-}
+
 @model List<StudioBriefcase.Models.SubjectModel>;
 
 <ul class="navigation-subject-list">
-    @foreach(var subject in Model)
+    @foreach (var subject in Model)
     {
         <li>
             <div>
@@ -15,11 +16,11 @@
                 </button>
                 <div class="navigation-topics-container" id="@(subject.Name)">
                     <ul class="navigation-topic-list">
-                        @foreach(var topic in subject.Topics)
+                        @foreach (var topic in subject.Topics)
                         {
                             <li><a class="navigation-topic-style" id="language-parameter" asp-page="@(topic.PathUrl)">@(topic.Name)</a></li>
                         }
-                        
+
 
                     </ul>
                 </div>

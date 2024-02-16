@@ -1,102 +1,142 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudioBriefcase.Services;
 using StudioBriefcase.Models;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+
+
 namespace StudioBriefcase.Controllers
 {
     //[ApiController]
     [Route("api/librarylink")]
     public class LibraryLinkController : Controller
     {
-        private readonly ILibraryService _libraryService;
+        private readonly LibraryService _libraryService;
         private readonly IPostTypeService _postTypeService;
 
 
-        public LibraryLinkController(ILibraryService libraryService, IPostTypeService postTypeService)
+        public LibraryLinkController(LibraryService libraryService, IPostTypeService postTypeService)
         {
 
             _libraryService = libraryService;
             _postTypeService = postTypeService;
+
         }
 
         [HttpPost("GetVideoPostList")]
         public async Task<IActionResult> GetVideoPostList([FromBody] NavigationMapModel map)
         {
-            //Console.WriteLine(map.libraryName);
-            List<string> list = await _libraryService.GetVideoListAsync(map);
+            List<string> list = await _libraryService.GetPostLinksAsync(map);
             return Ok(list);
         }
 
-
-        [HttpPost("GetPreviewVideo")]
-        public async Task<IActionResult> GetPreviewVideo([FromBody] VideoPreviewFetchModel fetchdata)
+        [HttpPost("GetLibraryOptions")]
+        public async Task<IActionResult> GetLibraryOptions([FromBody] LibraryMapIDsModel data)
         {
-            
-            var videomodel = await _postTypeService.GetYoutubePreview(fetchdata.videolink);
-            if (videomodel == null) {
-             
-                return PartialView("~/Pages/Shared/Components/Posts/_previewDead.cshtml", fetchdata);
+            LibraryMapListModel temp = new LibraryMapListModel(data);
+
+            //Console.WriteLine($"CategoryID: {data.CategoryID}, LibraryID: {data.LibraryID}, SubjectID: {data.SubjectID}, TopicID: {data.TopicID}");
+
+            temp.Categories = await _libraryService.GetCategoryListAsync();
+            temp.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
+            if (data.LibraryID == 0)
+            {
+                temp.LibraryID = temp.Libraries.list[0].id;
+            }
+
+            temp.Subjects = await _libraryService.GetSubjectListAsync(temp.LibraryID);
+            if (data.SubjectID == 0)
+            {
+                temp.SubjectID = temp.Subjects.list[0].id;
+            }
+
+            temp.Topics = await _libraryService.GetTopicListAsync(temp.SubjectID);
+
+
+            //return PartialView("~/Pages/Shared/Components/Library/_LibrarySelectorOptions", temp);
+            return PartialView("~/Pages/Shared/Components/Library/_LibraryMapSelectors.cshtml", temp);
+        }
+
+
+        /// <summary> MOVE TO NEW SERVICE - Doesn't Connect to the database
+        /// Build a Model with a data from the database and returns a Partial View with Model Data.
+        /// </summary>
+        [HttpPost("GetPreviewVideo")]
+        public async Task<IActionResult> GetPreviewVideo([FromBody] ID_String_Pair_Model data)
+        {
+            Console.WriteLine(data.text);
+            Console.WriteLine(data.id);
+            var videomodel = await _postTypeService.GetYoutubePreview(data.text);
+            if (videomodel == null)
+            {
+
+                return PartialView("~/Pages/Shared/Components/Posts/_previewDead.cshtml", data);
             }
             else
             {
-                videomodel.sectionID = fetchdata.section;
+                videomodel.sectionID = data.id;
             }
-            
+
             return PartialView("~/Pages/Shared/Components/Posts/_previewVideo.cshtml", videomodel);
         }
 
+
+
         [HttpPost("GetPostDetailsForm")]
-        public async Task<IActionResult> GetPostDetailsForm([FromBody] BaseMapModel postLocation)
+        public async Task<IActionResult> GetPostDetailsForm([FromBody] ClientSideSendingData clientData)
         {
 
-            string viewstring = string.Empty; //"~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml and _PostCreationForm.cshtml"
-            try
-            {
-                BaseMapModel test = postLocation;
+            uint TopicID = clientData.topicID;
+            string viewstring = "~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml"; //"~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml and _PostCreationForm.cshtml"
 
-                bool exists = false;
-                //exists = await _libraryService.VideoPostTypeExistsAsync(postLocation.weblink);
-                exists = await _libraryService.PostTypeExistsAsync(postLocation.weblink, "video");
-                if (exists)
-                {
-                    VideoDatabaseModel postModel = await _libraryService.GetVideoMapData(postLocation.weblink);
-                    postModel.videoTags = await _libraryService.GetPostTagsAsync(postModel.postID);
-                    viewstring = "~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml";
-                    return PartialView(viewstring, postModel);
-                }
-                else
-                {
-                    viewstring = "~/Pages/Shared/Components/Posts/_PostCreationForm.cshtml";
+            uint postID = await _libraryService.PostTypeExistsAsync(clientData.url, "video");
+
+            PostInspectModel model = new PostInspectModel(clientData.url);
+
+            model.Tags.TagLists = await _libraryService.GetLibraryTagsAsync();
+
+            //If an ID is found, then we can retrieve data on the post.
+            if (postID != 0)
+            {
+                model.exists = true;
+                model.Post = await _libraryService.GetPostIDValues(postID);
+                if (model.Post != null)
+                {                  
+                    model.Tags.ids = await _libraryService.GetPostTagsAsync(postID);
+                    
                 }
 
             }
-            catch
-            {
-                //TODO viewstring = "~/Pages/Shared/Components/Posts/_RequestFailedForm.cshtml"
-                Console.WriteLine("Failed to Retrieve Post Details Form");
+            else {
+                model.Post.section = clientData.sectionID;
+                model.Post.post_language_id = clientData.language;
             }
-            
 
-            return PartialView(viewstring, postLocation);
+            model.Map = new LibraryMapListModel(await _libraryService.BuildMapFromTopicID(TopicID));
+            model.Map.Categories = await _libraryService.GetCategoryListAsync();
+            model.Map.Libraries = await _libraryService.GetLibraryListAsync(model.Map.CategoryID);
+            model.Map.Subjects = await _libraryService.GetSubjectListAsync(model.Map.LibraryID);
+            model.Map.Topics = await _libraryService.GetTopicListAsync(model.Map.SubjectID);
+            //viewstring = "~/Pages/Shared/Components/Posts/_PostCreationForm.cshtml";
+
+            //return PartialView(viewstring, pair);
+            return PartialView(viewstring, model);
         }
 
 
 
         [HttpPost("InsertLink")]
-        public async Task<IActionResult> InsertLink([FromBody] PostMappingDataModel postLocation)
+        public async Task<IActionResult> InsertLink([FromBody] ClientInsertionData postLocation)
         {
 
             string SuccessMessage = string.Empty;
 
             if (uint.TryParse(User.FindFirst("sub")?.Value, out uint id))
             {
-                postLocation.GitID = id;
+                postLocation.gitID = 0;
             }
 
-            if (User.Identity?.IsAuthenticated == true)
+            if (User.Identity?.IsAuthenticated == true || true)
             {
-                switch (postLocation.posttype)
+                switch (postLocation.post_type)
                 {
                     case 1:
                         SuccessMessage = "Question Not Implemented";
@@ -111,7 +151,7 @@ namespace StudioBriefcase.Controllers
                         SuccessMessage = "Series Type Not Implemented";
                         break;
                     case 5:
-                        if (postLocation.weblink.StartsWith("https://youtu.be/"))
+                        if (postLocation.url.StartsWith("https://youtu.be/"))
                         {
                             SuccessMessage = await _libraryService.InsertYoutubeLinkAsync(postLocation);
 
@@ -148,21 +188,21 @@ namespace StudioBriefcase.Controllers
 
             //2 Conditions to delete a post are that the post is public, git_id of 0, or that the user has higher privelege to override regular use commands.
             //If the user is an Admin or Moderator, set gitID to 0 to treat the ID value as public status.
-            if (User.Identity?.IsAuthenticated == true)
-            {
-                uint gitID;
-                if (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase))
-                {
-                    //IF user is admin or moderator, we can treat the query as if the post is a public entry
-                    gitID = 0;
-                }
-                else
-                {
-                    uint.TryParse(User.FindFirst("sub")?.Value, out gitID);
-                }
-                
-                message = await _libraryService.DeletePost(postID.uinttype, gitID);
-            }
+            //if (User.Identity?.IsAuthenticated == true)
+            //{
+                //uint gitID;
+                //if (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    //IF user is admin or moderator, we can treat the query as if the post is a public entry
+                //    gitID = 0;
+                //}
+                //else
+                //{
+                //    uint.TryParse(User.FindFirst("sub")?.Value, out gitID);
+                //}
+
+                message = await _libraryService.DeletePost(postID.uinttype, 0);
+            //}
 
 
             return Ok(message);

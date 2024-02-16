@@ -1,15 +1,12 @@
-﻿@model List<StudioBriefcase.Models.LibraryQuickLinksModel>;
-@{
-}
-
+﻿@model List<StudioBriefcase.Models.PageQuickLinksModel>;
 
 <div class="librarylinks-object-container show">
     <ul>
 
 
-         @for (int i = 0; i < 5; i++)
+        @for (int i = 0; i < 5; i++)
         {
-            
+
 
             @if (i < Model.Count)
             {
@@ -17,7 +14,7 @@
                 <li class="box-col librarylinks-object c-fg show">
 
                     <span>Old link (@(document?.SiteUrl ?? "null")) </span>
-                    <input class="link-input w-100" data-property="SiteUrl" value="@(document?.SiteUrl ?? "null")" placeholder="Enter Document Link" />                
+                    <input class="link-input w-100" data-property="SiteUrl" value="@(document?.SiteUrl ?? "null")" placeholder="Enter Document Link" />
                     <span>Old Source(@(document?.ImgSource ?? "null")) </span>
                     <input class="link-input" data-property="ImgSource" value="@(document?.ImgSource ?? "null")" placeholder="Enter Image Source" />
                     <span>Old Caption(@(document?.ShorthandDesc ?? "null"))</span>
@@ -27,7 +24,7 @@
             }
             else
             {
-                 <li class="box-col librarylinks-object c-fg show">
+                <li class="box-col librarylinks-object c-fg show">
                     <span>Link not Used</span>
                     <input class="link-input w-100" data-property="SiteUrl" value="null" placeholder="Enter Document Link" />
                     <span>No Image Source </span>
@@ -35,8 +32,8 @@
                     <span>No Caption Implemented</span>
                     <input class="link-input" data-property="ShorthandDesc" value="null" placeholder="Enter New Caption" />
 
-                </li> 
+                </li>
             }
-        } 
+        }
     </ul>
 </div>

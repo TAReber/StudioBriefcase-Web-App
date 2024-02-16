@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 using MySqlConnector;
+using StudioBriefcase.Helpers;
 using StudioBriefcase.Models;
 using System.Text.Json;
 
@@ -14,12 +15,13 @@ namespace StudioBriefcase.Services
            Console.WriteLine("PageService Constructor");
            
             _connection.Open();
+
         }
 
-        public async Task<List<LibraryQuickLinksModel>> GetLibraryQuickLinksAsync(string libraryName)
+        public async Task<List<PageQuickLinksModel>> GetLibraryQuickLinksAsync(string libraryName)
         {
             //I'm going to try to cache the list thats created to reduce the database traffic.
-            if (_cache.TryGetValue(libraryName, out List<LibraryQuickLinksModel>? cachedlinks))
+            if (_cache.TryGetValue(libraryName, out List<PageQuickLinksModel>? cachedlinks))
             {
                 if (cachedlinks != null)
                 {
@@ -40,7 +42,7 @@ namespace StudioBriefcase.Services
                 if (await reader.ReadAsync())
                 {
                     var json = reader.GetString(0);
-                    var quicklinks = JsonSerializer.Deserialize<List<LibraryQuickLinksModel>>(json);
+                    var quicklinks = JsonSerializer.Deserialize<List<PageQuickLinksModel>>(json);
                     if (quicklinks != null && quicklinks.Count != 0)
                     {
                         _cache.Set(libraryName, quicklinks, TimeSpan.FromMinutes(30));
@@ -117,60 +119,39 @@ namespace StudioBriefcase.Services
 
             return Error_GetSubjectListAsync();
         }
-        public async Task<LibraryTagsListModel> GetLibraryTagsAsync()
+       
+
+        //Phasing Out -- Not Used --
+       //public Task<PageMapModel> GetPageMapID(string category, string library, string subject, string topic)
+        //{
+            //PageMapModel pageMap = new PageMapModel();
+            //MySqlCommand command = new QueryHelper().Select("c.id, l.id, s.id, t.id").FromJoinMap().WhereMapByNames().Build(_connection);
+            //command.Parameters.AddWithValue("@category", category);
+            //command.Parameters.AddWithValue("@library", library);
+            //command.Parameters.AddWithValue("@subject", subject);
+            //command.Parameters.AddWithValue("@topic", topic);
+            
+            //using(var reader = command.ExecuteReader())
+            //{
+            //    if (reader.Read())
+            //    {
+            //        pageMap.Category.id = reader.GetFieldValue<uint>(0);
+            //        pageMap.Library.id = reader.GetFieldValue<uint>(1);
+            //        pageMap.Subject.id = reader.GetFieldValue<uint>(2);
+            //        pageMap.Topic.id = reader.GetFieldValue<uint>(3);
+
+            //    }
+            //}
+
+
+            //return Task.FromResult(pageMap);
+        //}
+
+        private List<PageQuickLinksModel> Error_GetLibraryLinksAsync()
         {
-            //_cache.Remove(_tagsCacheKey);
-
-            if (_cache.TryGetValue("tags", out LibraryTagsListModel? cachedtags))
+            return new List<PageQuickLinksModel>
             {
-                if (cachedtags != null)
-                {
-                    return cachedtags;
-                }
-            }
-
-
-            LibraryTagsListModel tagLists = new LibraryTagsListModel();
-
-            //await _connection.OpenAsync(); //CONNECTION TEST1
-            var query = new MySqlCommand("SELECT * FROM tags ORDER BY tag;", _connection);
-            using (var reader = query.ExecuteReader())
-            {
-
-                while (await reader.ReadAsync())
-                {
-                    uint tagid = reader.GetFieldValue<uint>(0);
-                    string name = reader.GetFieldValue<string>(1);
-                    int area = reader.GetFieldValue<int>(2);
-
-                    LibraryTagsModel tags = new LibraryTagsModel()
-                    {
-                        id = tagid,
-                        tagName = name
-                    };
-                    if (area == 1)
-                        tagLists.Tags_normal.Add(tags);
-                    else if (area == 2)
-                        tagLists.Tags_IDE.Add(tags);
-                    else if (area == 3)
-                        tagLists.Tags_OS.Add(tags);
-
-                    _cache.Set("tags", tagLists, TimeSpan.FromMinutes(300));
-                }
-            }
-            //await _connection.CloseAsync();
-            return tagLists;
-        }
-
-
-
-
-
-        private List<LibraryQuickLinksModel> Error_GetLibraryLinksAsync()
-        {
-            return new List<LibraryQuickLinksModel>
-            {
-                new LibraryQuickLinksModel
+                new PageQuickLinksModel
                 {
                     SiteUrl = "#",
                     ImgSource = "",
@@ -197,5 +178,7 @@ namespace StudioBriefcase.Services
                 }
             };
         }
+
+
     }
 }

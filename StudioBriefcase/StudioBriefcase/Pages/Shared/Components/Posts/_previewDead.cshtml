@@ -1,13 +1,16 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    Authored by: Tyler Andrew Reber
+Simple Preview to fill the space of a delete youtube video or a dead link.
+
+    model: ID_String_Pair_Model
+    text: website URL
+    id: PageSection_Post ID Value
 *@
 
-@model StudioBriefcase.Models.VideoPreviewFetchModel
-@{
-}
+@model StudioBriefcase.Models.ID_String_Pair_Model
 <div class='preview-container box-col box-pushtop3 c-menu w100 zero' >
-    <div class="box-col h100 w100" data-url='@Model.videolink' onclick='ToggleDescription(this, @Model.section)'>
+    <div class="box-col h100 w100" data-url='@Model.text' onclick='ToggleDescription(this, @Model.id)'>
         <span class='zero'>SITE LINK NOT AVAILABLE</span>
-        <span class='w100 zero'>@(Model.videolink)</span>
+        <span class='w100 zero'>@(Model.text)</span>
     </div>
 </div> 

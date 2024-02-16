@@ -33,40 +33,43 @@ function ToggleDescription(description, section) {
 function VideoButtonTest(button) {
     //document.getElementById("videobuttontest").addEventListener("click", function () {
     let val = button.dataset.section;
-    
+    let posttype = button.dataset.type;
+
     var tagList = [];
 
     // Add tags to the array only if the value is not 0
-    if (document.getElementById('submissionForm-os0').value !== "0") {
+    if (document.getElementById('PageTag-OS').value !== "0") {
         tagList.push(document.getElementById('submissionForm-os0').value);
     }
 
-    if (document.getElementById('submissionForm-ide0').value !== "0") {
+    if (document.getElementById('PageTag-IDE').value !== "0") {
         tagList.push(document.getElementById('submissionForm-ide0').value);
     }
 
-    if (document.getElementById('submissionForm-tag10').value !== "0") {
+    if (document.getElementById('PageTag-1').value !== "0") {
         tagList.push(document.getElementById('submissionForm-tag10').value);
     }
 
-    if (document.getElementById('submissionForm-tag20').value !== "0") {
+    if (document.getElementById('PageTag-2').value !== "0") {
         tagList.push(document.getElementById('submissionForm-tag20').value);
     }
 
-    if (document.getElementById('submissionForm-tag30').value !== "0") {
+    if (document.getElementById('PageTag-3').value !== "0") {
         tagList.push(document.getElementById('submissionForm-tag30').value);
     }
 
     let datamap = {
         sectionValue: val,
-        topicName: document.getElementById('PageTopic').value,
-        subjectName: document.getElementById('PageSubject').value,
-        libraryName: document.getElementById('PageLibrary').value,
-        categoryName: document.getElementById('PageCategory').value,
+        topicID: document.getElementById('PageTopic').dataset.id,
+        posttype: posttype,
+        //topicName: document.getElementById('PageTopic').value,
+        //subjectName: document.getElementById('PageSubject').value,
+        //libraryName: document.getElementById('PageLibrary').value,
+        //categoryName: document.getElementById('PageCategory').value,
         language: document.getElementById('menu-language').value,
-        tags: tagList    
+        tags: tagList
     }
-   
+
     //FUTURE PERFORMANCE DEVELOPMENT FOR DATABASE AND SERVER TRAFFIC
     //LIMIT FETCH AMOUNT TO 25 LINKS AT A TIME AND LAZY LOAD THEM IN INCREMENTS
 
@@ -95,15 +98,18 @@ function VideoButtonTest(button) {
 
 function CreateVideoPreview(sectionVal, url) {
 
+    let pair = {
+        id: sectionVal,
+        text: url
+    }
+
+
     fetch("/api/librarylink/GetPreviewVideo", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            videolink: url,
-            section: sectionVal
-        })
+        body: JSON.stringify(pair)
     })
         .then(response => response.text())
         .then(data => {
@@ -129,18 +135,17 @@ function CreateVideoPreview(sectionVal, url) {
 
 //A Function that retrieves a Form from the server to Insert or Edit a Post
 function OpenPostDetailsForm(pagesection) {
-    console.log(pagesection);
+    //console.log(pagesection);
 
     //"https://youtu.be/90MeC-PTj50"
 
-    let clientModel = {
-        weblink: document.getElementById('sectionInspectorInput' + pagesection).value,
-        sectionValue: pagesection,
-        topicName: document.getElementById('PageTopic').value,
-        subjectName: document.getElementById('PageSubject').value,
-        libraryName: document.getElementById('PageLibrary').value,
-        categoryName: document.getElementById('PageCategory').value,
+    let clientData = {
+        topicID: document.getElementById('PageTopic').dataset.id,
+        sectionID: pagesection,
+        url: document.getElementById('sectionInspectorInput' + pagesection).value,
+        language: document.getElementById('menu-language').value
     }
+
 
 
     fetch("/api/librarylink/GetPostDetailsForm", {
@@ -148,7 +153,7 @@ function OpenPostDetailsForm(pagesection) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(clientModel)
+        body: JSON.stringify(clientData)
     })
         .then(response => response.text())
         .then(data => {
@@ -167,21 +172,19 @@ function InsertLinkToDatabase() {
 
     //Tags language and from OS - tag3 are subfixed with 1. The location in navigation bar is subfixed with 0
     let LibraryMapModel = {
-        sectionValue: document.getElementById('submissionForm-section').value,
-        topicName: document.getElementById('submissionForm-topic').value,
-        subjectName: document.getElementById('submissionForm-subject').value,
-        libraryName: document.getElementById('submissionForm-library').value,
-        categoryName: document.getElementById('submissionForm-category').value,
+        sectionID: document.getElementById('PostInspect-section').value,
+        topicID: document.getElementById('PostInspect-topic').value,
         language: document.getElementById('menu-language').value,
-        weblink: document.getElementById('submissionForm-weblink').value,
-        posttype: document.getElementById('submissionForm-posttype').value,
-        GitId: 0,
+        url: document.getElementById('PostInspect-link').value,
+        post_type: document.getElementById('PostInspect-posttype').value,
+
+
         tags: [
-            document.getElementById('submissionForm-os1').value,
-            document.getElementById('submissionForm-ide1').value,
-            document.getElementById('submissionForm-tag11').value,
-            document.getElementById('submissionForm-tag21').value,
-            document.getElementById('submissionForm-tag31').value
+            document.getElementById('PostInspect-Tag-OS').value,
+            document.getElementById('PostInspect-Tag-IDE').value,
+            document.getElementById('PostInspect-Tag-1').value,
+            document.getElementById('PostInspect-Tag-2').value,
+            document.getElementById('PostInspect-Tag-3').value
         ]
 
     }

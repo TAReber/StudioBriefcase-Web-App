@@ -1,10 +1,11 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿@* 
+StudioBriefcase/Pages/Shared/Components/Page/_PageSection_Post.cshtml
+By: Tyler Andrew Reber
+
+PageSections are intended to be reusuable containers for different types of content hosted in the database.
 *@
 
 @model StudioBriefcase.Models.LibrarySectionModel;
-@{
-}
 
 <div class="accordion w100">
 
@@ -24,23 +25,23 @@
 
                         @* enter all tabs here *@
                         @* <button>Article</button> *@
-                        <button data-section='@(Model.sectionlocation)' onclick='VideoButtonTest(this)' id='videobuttontest'>Video</button>
+                        <button data-type='video' data-section='@(Model.sectionlocation)' onclick='VideoButtonTest(this)' id='videobuttontest'>Video</button>
                         @* <button>Stackoverflow</button> *@
 
                     </div>
                     <div class="box-row">
-@*                         @if(User.Identity?.IsAuthenticated == true)
+                        @*                         @if(User.Identity?.IsAuthenticated == true)
                         { *@
-                            @*<label for="PostType">Post Type:</label>
-                             <select name="sectionPostType@(Model.sectionlocation)" id="LinkType@(Model.sectionlocation)">
-                                <partial name="\Components\Posts\_PostTypeOptions" />
-                            </select> *@
-                            <input type="text" class="text-sm" id="sectionInspectorInput@(Model.sectionlocation)" value="TODO_POST_LINK" />
-                            <button onclick="OpenPostDetailsForm(@(Model.sectionlocation))">Inspect</button>
-@*                         }
+                        @*<label for="PostType">Post Type:</label>
+                        <select name="sectionPostType@(Model.sectionlocation)" id="LinkType@(Model.sectionlocation)">
+                        <partial name="\Components\Posts\_PostTypeOptions" />
+                        </select> *@
+                        <input type="text" class="text-sm" id="sectionInspectorInput@(Model.sectionlocation)" value="TODO_POST_LINK" />
+                        <button onclick="OpenPostDetailsForm(@(Model.sectionlocation))">Inspect</button>
+                        @*                         }
                         else
                         {
-                            <span class="text-md">Login to Add Post</span>
+                        <span class="text-md">Login to Add Post</span>
                         } *@
 
                     </div>
@@ -54,4 +55,3 @@
         </div>
     </div>
 </div>
-

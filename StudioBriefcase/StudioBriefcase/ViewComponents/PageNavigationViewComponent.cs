@@ -3,12 +3,11 @@ using StudioBriefcase.Services;
 
 namespace StudioBriefcase.ViewComponents
 {
-    public class LibraryNavigationViewComponent : ViewComponent
+    public class PageNavigationViewComponent : ViewComponent
     {
-
         PageService _pageService;
 
-        public LibraryNavigationViewComponent(PageService pageService)
+        public PageNavigationViewComponent(PageService pageService)
         {
             _pageService = pageService;
         }
@@ -22,8 +21,8 @@ namespace StudioBriefcase.ViewComponents
         {
 
             var listdata = await _pageService.GetSubjectListAsync(path);
-        
-            return View("~/Pages/Shared/Components/Library/_LibraryNavigation.cshtml", listdata);
+
+            return View("~/Pages/Shared/Components/Page/_Page_NavigationLinks.cshtml", listdata);
         }
     }
 }

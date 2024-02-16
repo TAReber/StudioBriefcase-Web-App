@@ -7,25 +7,28 @@ namespace StudioBriefcase.Services
     /// </summary>
     public interface ILibraryService
     {
-        //Global Library Functions
-        
-        //Task<List<CategoryModel>> GetCategoryListAsync(string categoryName);
-        //Task<List<LibraryModel>> GetLibraryListAsync(string libraryName);
-        //Task<List<SubjectModel>> GetSubjectListAsync(string subjectName);
+
+        Task<PostTagsModel> GetPostTagsAsync(uint postID);
+        Task<uint> PostTypeExistsAsync(string site, string table);
+
+        Task<PostIdentificationsModel?> GetPostIDValues(uint postID);
+
+        Task<string> DeletePost(uint postID, uint gitID);
 
 
-        Task<List<string>> GetPostTagsAsync(uint postID);
 
         //Post Functions        
-        Task<string> InsertYoutubeLinkAsync(PostMappingDataModel postMapper);
+        Task<string> InsertYoutubeLinkAsync(ClientInsertionData postMapper);
         //Verification
         Task<bool> VideoPostTypeExistsAsync(string videoUrl); //Phase Out
-        Task<bool> PostTypeExistsAsync(string site, string table);
+        
 
         Task<VideoDatabaseModel> GetVideoMapData(string url);
 
+        Task<List<string>> GetPostLinksAsync(NavigationMapModel map);
+
         Task<List<string>> GetVideoListAsync(NavigationMapModel map);
-        Task<string> DeletePost(uint postID, uint gitID);
+        
         //Task<LibraryVideoPostModel> GetVideoPostData(string videoUrl);
 
 

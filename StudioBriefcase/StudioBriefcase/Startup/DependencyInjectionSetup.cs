@@ -27,15 +27,18 @@ namespace StudioBriefcase.Startup
             new MySqlConnection(configuration["database-credential"]));
 
             //services.AddMvc();
+            services.AddTransient<IBaseService, BaseService>();
             services.AddTransient<IPostTypeService, PostTypeService>();
-            services.AddTransient<ILibraryService, LibraryService>();
+
             services.AddTransient<ICustodianService, CustodianService>();
 
             //Creates a reusable instance per HTTP request
             services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
-            //services.AddScoped<LibraryService>(); // If the same viewComponent is invoked multiple times, it automatically uses a scoped instance.
+            services.AddScoped<LibraryService>(); // If the same viewComponent is invoked multiple times, it automatically uses a scoped instance.
             services.AddScoped<PostTypeService>();
             services.AddScoped<PageService>();
+
+            services.AddControllersWithViews();
 
             services.AddHttpClient("youtube", client =>
             {

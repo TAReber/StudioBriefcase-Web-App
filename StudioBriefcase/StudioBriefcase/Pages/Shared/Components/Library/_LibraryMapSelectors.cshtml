@@ -1,0 +1,27 @@
+﻿@*
+    StudioBriefcase/Pages/Shared/Components/Library/_LibraryMapSelectors.cshtml
+    Author: Tyler Andrew Reber
+    
+    This component is structured to iterate over the selectors to update the selectors or retrieve the selected values.
+*@
+
+@model StudioBriefcase.Models.LibraryMapListModel
+
+
+<select style="width:150px;" type="text" data-table="categories" data-column="category_id" id="PostInspect--category" value=@Model.CategoryID onchange="MapOptionsChanged(0)">
+    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.Categories, Model.CategoryID))
+</select>
+
+<select style="width:150px;" type="text" data-table="libraries" data-column="library_id" id="PostInspect-library" value="@Model.LibraryID" onchange="MapOptionsChanged(1)">
+    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.Libraries, Model.LibraryID))
+</select>
+
+<select style="width:150px;" type="text" data-table="subjects" data-column="subject_id" id="PostInspect-subjects" value="@Model.SubjectID" onchange="MapOptionsChanged(2)">
+    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.Subjects, Model.SubjectID))
+</select>
+
+<select style="width:150px;" type="text" data-table="topics" id="PostInspect-topic" value="@Model.TopicID">
+    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.Topics, Model.TopicID))
+</select>
+
+

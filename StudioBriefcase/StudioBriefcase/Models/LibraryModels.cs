@@ -3,18 +3,27 @@
 namespace StudioBriefcase.Models
 {
 
-    public class SelectorModel
+    /// <summary>
+    /// Model used in the Index.cs pages, To be phased out for datadriven approach
+    /// </summary>
+    public class staticlibraryLinkModel //Good
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+
+    public class ID_String_Pair_Model
     {
         public uint id { get; set; }
-        public string name { get; set; } = string.Empty;
+        public string text { get; set; } = string.Empty;
     }
 
     public class SelectorListModel
     {
-        List<SelectorModel> list = new List<SelectorModel>();
+        public List<ID_String_Pair_Model> list = new List<ID_String_Pair_Model>();
     }
 
-    public class LibrarySelectorIDsModel
+    public class LibraryMapIDsModel
     {
         public uint CategoryID { get; set; }
         public uint LibraryID { get; set; }
@@ -22,13 +31,13 @@ namespace StudioBriefcase.Models
         public uint TopicID { get; set; }
     }
 
-    public class LibraryMapListModel : LibrarySelectorIDsModel {        
-        public SelectorModel Categories { get; set; } = new SelectorModel();
-        public SelectorModel Libraries { get; set; } = new SelectorModel();
-        public SelectorModel Subjects { get; set; } = new SelectorModel();
-        public SelectorModel Topics { get; set; } = new SelectorModel();
+    public class LibraryMapListModel : LibraryMapIDsModel {        
+        public SelectorListModel Categories { get; set; } = new SelectorListModel();
+        public SelectorListModel Libraries { get; set; } = new SelectorListModel();
+        public SelectorListModel Subjects { get; set; } = new SelectorListModel();
+        public SelectorListModel Topics { get; set; } = new SelectorListModel();
         
-        public LibraryMapListModel(LibrarySelectorIDsModel ids)
+        public LibraryMapListModel(LibraryMapIDsModel ids)
         {
             CategoryID = ids.CategoryID;
             LibraryID = ids.LibraryID;
@@ -38,13 +47,86 @@ namespace StudioBriefcase.Models
     }
 
     /// <summary>
-    /// Model used in the Index.cs pages, To be phased out for datadriven approach
+    /// Primarily Used to for Displaying Tags on the User Interface
     /// </summary>
-    public class staticlibraryLinkModel
+    public class PostTagsModel
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public uint OS = 0;
+        public uint IDE = 0;
+        public uint Tag1 = 0;
+        public uint Tag2 = 0;
+        public uint Tag3 = 0;
     }
+
+    //Used to Populate ViewComponent Shared\Components\Library\_LibraryPrebuiltTags.cshtml
+    public class LibraryTagsListModel
+    {       
+        //public LibraryTagsIDsModel ids { get; set; } = new LibraryTagsIDsModel();
+        public SelectorListModel Tags_normal { get; set; } = new SelectorListModel();
+        public SelectorListModel Tags_IDE { get; set; } = new SelectorListModel();
+        public SelectorListModel Tags_OS { get; set; } = new SelectorListModel();
+    }
+
+    public class TagsModel
+    {
+        public PostTagsModel ids { get; set; } = new PostTagsModel();
+        public LibraryTagsListModel TagLists { get; set; } = new LibraryTagsListModel();
+    }
+
+    public class PostInspectModel
+    {
+        public bool exists = false;
+        public string WebSite_URL { get; set; } = string.Empty;
+        
+        public LibraryMapListModel? Map { get; set; } = null;
+        public TagsModel Tags { get; set; } = new TagsModel();
+        public PostIdentificationsModel Post { get; set; } = new PostIdentificationsModel();
+
+        public PostInspectModel(string url)
+        {
+            WebSite_URL = url;
+        }
+
+    }
+
+    public class PostIdentificationsModel
+    {
+        public uint id { get; set; } = 0;
+        public uint post_type_id { get; set; } = 1;
+        public uint post_language_id { get; set; } = 1;
+        public uint git_id { get; set; } = 0;
+        public uint section { get; set; } = 0;
+    }
+
+
+    public class ClientSideSendingData
+    {
+        public uint topicID { get; set; } = 0;
+        public uint sectionID { get; set; } = 0;
+        public string url { get; set; } = string.Empty;
+        public uint language { get; set; } = 1;
+        public uint post_type { get; set; } = 5;
+
+    }
+
+    public class ClientInsertionData : ClientSideSendingData
+    {
+        public uint gitID { get; set; } = 0;
+        public List<uint> tags { get; set; } = new List<uint>();
+    }
+
+    //public class LibraryTagsModel
+    //{
+    //    LibraryTagsIDsModel Tags = new LibraryTagsIDsModel();
+    //    LibraryTagsListModel Lists = new LibraryTagsListModel();
+    //}
+
+    //public class LibraryTagsModel
+    //{
+    //    public uint id { get; set; } = 0;
+    //    public string tagName { get; set; } = string.Empty;
+
+    //}
 
     //public class CategoryModel
     //{
@@ -59,17 +141,9 @@ namespace StudioBriefcase.Models
     //}
 
     //Model used to update the quicklinks in the database with json string
-    public class LibraryQuickLinksUpdaterModel
-    {
-        public string LibraryName { get; set; } = string.Empty;
-        public string JsonString { get; set; } = string.Empty;
-    }
 
-    public class LibraryQuickLinksModel {
-        public string SiteUrl { get; set; } = string.Empty;
-        public string ImgSource { get; set; } = string.Empty;
-        public string ShorthandDesc { get; set; } = string.Empty;
-    }
+
+
 
     public class SubjectModel
     {
@@ -115,22 +189,6 @@ namespace StudioBriefcase.Models
     }
 
     
-    public class LibraryTagsModel
-    {
-        public uint id { get; set; } = 0;
-        public string tagName { get; set; } = string.Empty;
 
-    }
-
-    //Used to Populate ViewComponent Shared\Components\Library\_LibraryPrebuiltTags.cshtml
-    public class LibraryTagsListModel
-    {
-        public int pageid { get; set; } = 0;
-        public List<LibraryTagsModel> Tags_normal = new List<LibraryTagsModel>();
-        public List<LibraryTagsModel> Tags_IDE = new List<LibraryTagsModel>();
-        public List<LibraryTagsModel> Tags_OS = new List<LibraryTagsModel>();
-
-        
-    }
 
 }

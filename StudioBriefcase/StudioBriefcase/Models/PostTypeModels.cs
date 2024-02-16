@@ -1,12 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace StudioBriefcase.Models
 {
-    public class VideoPreviewFetchModel
-    {
-        public string videolink { get; set; } = string.Empty;
-        public int section { get; set; } = 0;
-    }
+    //public class OneParamStringModel
+    //{
+    //    public string text = string.Empty;
+    //}
+
+    //public class VideoPreviewFetchModel
+    //{
+    //    public string videolink { get; set; } = string.Empty;
+    //    public uint section { get; set; } = 0;
+    //}
 
     public class UINTTypeModel { 
         public uint uinttype { get; set; }
@@ -15,10 +21,12 @@ namespace StudioBriefcase.Models
     public class NavigationMapModel
     {
         public uint sectionValue { get; set; }
-        public string topicName { get; set; } = string.Empty;
-        public string subjectName { get; set; } = string.Empty;
-        public string libraryName { get; set; } = string.Empty;
-        public string categoryName { get; set; } = string.Empty;
+        public uint topicID { get; set; }
+        public string postType { get; set; } = string.Empty;
+        //public string topicName { get; set; } = string.Empty;
+        //public string subjectName { get; set; } = string.Empty;
+        //public string libraryName { get; set; } = string.Empty;
+        //public string categoryName { get; set; } = string.Empty;
         public uint language { get; set; }
         public List<uint> tags { get; set; } = new List<uint>();
     }
@@ -66,7 +74,7 @@ namespace StudioBriefcase.Models
 
     public class VideoDataModel
     {
-        public int sectionID { get; set; } = 0;
+        public uint sectionID { get; set; } = 0;
         public string title { get; set; } = string.Empty;
         public string videourl { get; set; } = string.Empty;
         public string channelName { get; set; } = string.Empty;
@@ -86,7 +94,6 @@ namespace StudioBriefcase.Models
             thumbnail = model.thumbnail;
             description = model.description;
             videoTags = model.videoTags != null ?new List<string>(model.videoTags) : new List<string>();
-
         }
     }
 

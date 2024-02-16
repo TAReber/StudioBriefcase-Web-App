@@ -19,6 +19,7 @@ namespace StudioBriefcase.Services
 
         public async Task<VideoDataModel> GetYoutubePreview(string videoId)
         {
+
             VideoDataModel? videoData = null;
             var apiKey = _configuration["youtube-api-key"];
 
@@ -51,6 +52,7 @@ namespace StudioBriefcase.Services
 
 
                     }
+
                 }
                 catch
                 {

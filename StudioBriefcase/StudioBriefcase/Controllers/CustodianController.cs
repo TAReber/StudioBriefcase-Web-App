@@ -17,10 +17,10 @@ namespace StudioBriefcase.Controllers
 
 
         [HttpPost("SetLibraryQuickLinks")]
-        public async Task<IActionResult> SetLibraryQuickLinks([FromBody] LibraryQuickLinksUpdaterModel jsonObject)
+        public async Task<IActionResult> SetLibraryQuickLinks([FromBody] PageQuickLinksJSONModel jsonObject)
         {
-            Console.WriteLine(jsonObject.LibraryName);
-            Console.WriteLine(jsonObject.JsonString);
+            //Console.WriteLine(jsonObject.LibraryName);
+            //Console.WriteLine(jsonObject.JsonString);
 
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {

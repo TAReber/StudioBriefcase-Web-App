@@ -12,24 +12,53 @@ using StudioBriefcase.Helpers;
 
 namespace StudioBriefcase.Services
 {
-    public class LibraryService : ILibraryService
+    public class LibraryService : BaseService, ILibraryService
     {
         PostTypeService _postTypeService;
-        protected readonly MySqlConnection _connection;
-        protected readonly IMemoryCache _cache;
         protected readonly string _tagsCacheKey;
 
 
-        public LibraryService(IMemoryCache cache, MySqlConnection connection, PostTypeService postTypeService)
+        public LibraryService(IMemoryCache cache, MySqlConnection connection, PostTypeService postTypeService) : base(cache, connection)
         {
-            _connection = connection;
-            _cache = cache;
             _postTypeService = postTypeService;
             _tagsCacheKey = "tags";
 
-            Console.WriteLine("LibraryService Constructor");
+            _connection.Open();
+            
         }
-     
+
+
+        public async Task<PostIdentificationsModel?> GetPostIDValues(uint postID)
+        {
+            PostIdentificationsModel? post = null;
+
+            MySqlCommand command = new QueryHelper().Select("post_type_id, post_language_id, git_id, section")
+                .From("posts").Where("id", postID).Build(_connection);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                if (await reader.ReadAsync())
+                {
+                    post = new PostIdentificationsModel
+                    {
+                        id = postID,
+                        post_type_id = reader.GetUInt32(0),
+                        post_language_id = reader.GetUInt32(1),
+                        git_id = reader.GetUInt32(2),
+                        section = reader.GetUInt32(3)
+                    };
+                }
+            }
+
+
+            return post;
+        }
+
+
+
+
+
+
         public async Task<VideoDatabaseModel> GetVideoMapData(string url)
         {
 
@@ -78,38 +107,66 @@ namespace StudioBriefcase.Services
             return map;
         }
 
-        public async Task<List<string>> GetPostTagsAsync(uint postID)
+        public async Task<PostTagsModel> GetPostTagsAsync(uint postID)
         {
-            List<string> strings = new List<string>();
-            await _connection.OpenAsync();
+            List<uint> tags = new List<uint>() { 0, 0, 0, 0, 0 };
+            //await _connection.OpenAsync();
 
             try
             {
-                var tagquery = new MySqlCommand("SELECT tag FROM tags JOIN tags_posts ON tags.id = tags_posts.tag_id WHERE tags_posts.post_id = @postid;", _connection);
-                tagquery.Parameters.AddWithValue("@postid", postID);
+                MySqlCommand command = new QueryHelper().Select("tp.tag_id").From("tags_posts tp")
+                    .Join("tags ON tags.id = tp.tag_id").Where("tp.post_id", postID).Order("tags.area").Build(_connection);
 
-                using (var tagreader = await tagquery.ExecuteReaderAsync())
+
+                //var tagquery = new MySqlCommand("SELECT tag FROM tags JOIN tags_posts ON tags.id = tags_posts.tag_id WHERE tags_posts.post_id = @postid;", _connection);
+                //tagquery.Parameters.AddWithValue("@postid", postID);
+
+                using (var tagreader = await command.ExecuteReaderAsync())
                 {
+                    int index = 0;
                     while (await tagreader.ReadAsync())
                     {
-                        string tag = tagreader.GetFieldValue<string>(0);
-                        strings.Add(tag);
+                        uint tag = tagreader.GetFieldValue<uint>(0);
+                        tags[index] = tag;
+                        
+                        index++;
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine("FAILED THE COMMAND THINGS");
             }
             finally
             {
-                await _connection.CloseAsync();
+                //await _connection.CloseAsync();
             }
 
-            return strings;
-        }
-       
+            PostTagsModel tagIDs = new PostTagsModel();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        tagIDs.OS = tags[i];
+                        break;
+                    case 1:
+                        tagIDs.IDE = tags[i];
+                        break;
+                    case 2:
+                        tagIDs.Tag1 = tags[i];
+                        break;
+                    case 3:
+                        tagIDs.Tag2 = tags[i];
+                        break;
+                    case 4:
+                        tagIDs.Tag3 = tags[i];
+                        break;
+                }
+            }
 
+            return tagIDs;
+        }
 
         public async Task<bool> PostTypeExistsAsync(string site, uint posttype)
         {
@@ -123,30 +180,27 @@ namespace StudioBriefcase.Services
             return exists;
         }
 
-        public async Task<bool> PostTypeExistsAsync(string link, string table)
+        public async Task<uint> PostTypeExistsAsync(string weblink, string table)
         {
-            bool exists = false;
-            await _connection.OpenAsync();
-            MySqlCommand query = new QueryHelper().Select("count(1)")
-                .From($"post_type_{table}").Where("link")
-                .Build(_connection);
-            query.Parameters.AddWithValue("@link", link);
-            //Console.WriteLine(query.CommandText);
-            using (var reader = query.ExecuteReader())
+
+            //await _connection.OpenAsync();
+            uint postID = 0;
+
+            MySqlCommand command = new QueryHelper().Select("p.id").From("posts p")
+                .Join($"post_type_{table} pt ON pt.post_id = p.id")
+                .Where("pt.link", weblink).Build(_connection);
+
+            using (var reader = command.ExecuteReader())
             {
                 if (await reader.ReadAsync())
                 {
-                    var count = reader.GetInt32(0);
-                    if (count > 0)
-                    {
-                        Console.WriteLine("Exists");
-                        exists = true;
-                    }
+                    postID = reader.IsDBNull(0) ? 0 : reader.GetUInt32(0);
                 }
             }
-            await _connection.CloseAsync();
+            //await _connection.CloseAsync();
+            command.Dispose();
 
-            return exists;
+            return postID;
         }
 
         public async Task<bool> VideoPostTypeExistsAsync(string videoUrl)
@@ -176,9 +230,9 @@ namespace StudioBriefcase.Services
 
         public async Task<string> DeletePost(uint postID, uint gitID)
         {
-            Console.WriteLine($"{postID}, {gitID}");
+            //Console.WriteLine($"{postID}, {gitID}");
             string message = string.Empty;
-            await _connection.OpenAsync();
+
 
 
             MySqlCommand getpostTypequery;
@@ -260,7 +314,7 @@ namespace StudioBriefcase.Services
                 message = "Permission Access Denied from Deleting Post";
             }
 
-            await _connection.CloseAsync();
+
 
 
 
@@ -268,10 +322,10 @@ namespace StudioBriefcase.Services
             return message;
         }
 
-        public async Task<string> InsertYoutubeLinkAsync(PostMappingDataModel postMapper)
+        public async Task<string> InsertYoutubeLinkAsync(ClientInsertionData data)
         {
             string outputMessage = string.Empty;
-            VideoDataModel publicVideoData = await Task.Run(() => _postTypeService.GetYoutubePreview(postMapper.weblink));
+            VideoDataModel publicVideoData = await Task.Run(() => _postTypeService.GetYoutubePreview(data.url));
 
 
             bool TagsChecked = false;
@@ -280,7 +334,7 @@ namespace StudioBriefcase.Services
             {
                 if (publicVideoData.videoTags != null) //If it has tags
                 {
-                    if (await VideoPostTypeExistsAsync(postMapper.weblink) == false) //Make sure video isn't already in Database
+                    if (await PostTypeExistsAsync(data.url, "video") == 0) //Make sure video isn't already in Database
                     {
                         TagsChecked = true;
                         //LibraryTagsListModel LibraryTags = await GetLibraryTagsAsync();
@@ -302,28 +356,22 @@ namespace StudioBriefcase.Services
                         if (TagsChecked == true) //Make sure atleast one tag on youtube exists in the database.
                         {
                             //Proceed to add the link to database.
-                            await _connection.OpenAsync();
                             //Transaction stores the queries and undoes them if something fails.
                             using (var transaction = await _connection.BeginTransactionAsync())
                             {
                                 try
                                 {
-                                    //Creates a new post which is the area it should exist on the website and tags to filter stuff.
-                                    var query = new MySqlCommand("INSERT INTO posts (topics_id, post_type_id, post_language_id, section) VALUE ((SELECT t.id AS topic_id FROM topics t JOIN subjects s ON t.subject_id = s.id JOIN libraries l ON s.library_id = l.id JOIN categories c ON l.category_id = c.id WHERE c.category_name = @category AND l.library_name = @library AND s.subject_name = @subject AND t.topic_name = @topic), @typeId, @languageId, @section); SELECT LAST_INSERT_ID();", _connection, transaction);
-                                    query.Parameters.AddWithValue("@category", postMapper.categoryName);
-                                    query.Parameters.AddWithValue("@library", postMapper.libraryName);
-                                    query.Parameters.AddWithValue("@subject", postMapper.subjectName);
-                                    query.Parameters.AddWithValue("@topic", postMapper.topicName);
-                                    query.Parameters.AddWithValue("@section", postMapper.sectionValue);
-                                    query.Parameters.AddWithValue("@typeId", postMapper.posttype);
-                                    query.Parameters.AddWithValue("@languageId", postMapper.language);
 
-                                    var readerId = await query.ExecuteScalarAsync();
+                                    MySqlCommand insert = new QueryHelper().InsertPost(data.topicID, data.post_type, data.language, data.gitID, data.sectionID)
+                                        .LastID().Build(_connection, transaction);
+
+
+                                    var readerId = await insert.ExecuteScalarAsync();
                                     uint postkey = Convert.ToUInt32(readerId);
 
                                     //Create the data that the post maps to
                                     var addlinkquery = new MySqlCommand("insert into post_type_video (link, post_id, channel_name, channel_id) values (@link, @postid, @channelname, @channelid);", _connection, transaction);
-                                    addlinkquery.Parameters.AddWithValue("@link", postMapper.weblink);
+                                    addlinkquery.Parameters.AddWithValue("@link", data.url);
                                     addlinkquery.Parameters.AddWithValue("@postId", postkey);
                                     addlinkquery.Parameters.AddWithValue("@channelname", publicVideoData.channelName);
                                     addlinkquery.Parameters.AddWithValue("@channelid", publicVideoData.channelurl);
@@ -337,9 +385,9 @@ namespace StudioBriefcase.Services
                                     //To help with identifying content niche, I've added Any OS and Any IDE tags.
                                     //TODO CONVERT TAGS TO LIST OF INTS.
 
-                                    for (int i = 0; i < postMapper.tags.Count; i++)
+                                    for (int i = 0; i < data.tags.Count; i++)
                                     {
-                                        if (postMapper.tags[i] != 0)
+                                        if (data.tags[i] != 0)
                                         {
                                             if (extratags.Length != 0)
                                             {
@@ -357,11 +405,11 @@ namespace StudioBriefcase.Services
                                     var tagpostquery = new MySqlCommand($"Insert into tags_posts (tag_id, post_id) values {extratags};", _connection, transaction);
 
                                     tagpostquery.Parameters.AddWithValue("@postid", postkey);
-                                    for (int i = 0; i < postMapper.tags.Count; i++)
+                                    for (int i = 0; i < data.tags.Count; i++)
                                     {
-                                        if (postMapper.tags[i] != 0)
+                                        if (data.tags[i] != 0)
                                         {
-                                            tagpostquery.Parameters.AddWithValue($"@tag{i}", postMapper.tags[i]);
+                                            tagpostquery.Parameters.AddWithValue($"@tag{i}", data.tags[i]);
                                         }
                                     }
 
@@ -378,7 +426,7 @@ namespace StudioBriefcase.Services
                                 }
                                 finally
                                 {
-                                    await _connection.CloseAsync();
+
 
                                 }
                             }
@@ -405,12 +453,45 @@ namespace StudioBriefcase.Services
 
             return outputMessage;
         }
+
+
+        //Refactored to use QueryHelper
+        public async Task<List<string>> GetPostLinksAsync(NavigationMapModel map)
+        {
+
+
+            List<string> videoList = new List<string>();
+
+            MySqlCommand command = new QueryHelper().SelectPostLinks($"post_type_{map.postType}")
+                .JoinPosts(map.topicID, map.language, map.sectionValue)
+                .JoinTags(map.tags).Build(_connection);
+
+            //MySqlCommand test = new QueryHelper().SelectPostLinks($"post_type_{map.postType}").JoinPosts("Systems_Programming", "CPP", "Getting_Started", "Introduction", map.language, map.sectionValue).JoinTags(map.tags).Build(_connection);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    videoList.Add(reader.GetString(0));
+                }
+            }
+
+            return videoList;
+        }
+
+
+
+
+
+        //Delete GetVideoListAsync
         public async Task<List<string>> GetVideoListAsync(NavigationMapModel map)
         {
             List<string> videoList = new List<string>();
             await _connection.OpenAsync();
             try
             {
+
+
                 StringBuilder query = new StringBuilder("SELECT v.link from post_type_video v Join posts p on p.id = v.post_id join topics t on t.id = p.topics_id join subjects s on s.id = t.subject_id join libraries l on l.id = s.library_id join categories c on c.id = l.category_id");
 
                 StringBuilder extratags = new StringBuilder();
@@ -438,13 +519,9 @@ namespace StudioBriefcase.Services
                 query.Append(';');
 
                 var command = new MySqlCommand(query.ToString(), _connection);
-                command.Parameters.AddWithValue("@category", map.categoryName);
-                command.Parameters.AddWithValue("@library", map.libraryName);
-                command.Parameters.AddWithValue("@subject", map.subjectName);
-                command.Parameters.AddWithValue("@topic", map.topicName);
                 command.Parameters.AddWithValue("@section", map.sectionValue);
                 command.Parameters.AddWithValue("@language", map.language);
-
+                Console.WriteLine(command.CommandText);
                 for (int i = 0; i < map.tags.Count; i++)
                 {
                     command.Parameters.AddWithValue($"@tag{i}", map.tags[i]);
@@ -479,7 +556,7 @@ namespace StudioBriefcase.Services
 
 
 
-       
+
 
     }
 

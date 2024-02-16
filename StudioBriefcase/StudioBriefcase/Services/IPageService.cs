@@ -4,8 +4,9 @@ namespace StudioBriefcase.Services
 {
     public interface IPageService
     {
-        Task<List<LibraryQuickLinksModel>> GetLibraryQuickLinksAsync(string libraryName);
+        Task<List<PageQuickLinksModel>> GetLibraryQuickLinksAsync(string libraryName);
         Task<List<SubjectModel>> GetSubjectListAsync(string path);
-        Task<LibraryTagsListModel> GetLibraryTagsAsync();
+        
+        //Task<PageMapModel> GetPageMapID(string category, string library, string subject, string topic);
     }
 }
