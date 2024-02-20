@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using MySqlConnector;
 using StudioBriefcase.Helpers;
 using StudioBriefcase.Models;
+using System.Text;
 //using StudioBriefcase.Helpers;
 
 namespace StudioBriefcase.Services
@@ -23,7 +24,10 @@ namespace StudioBriefcase.Services
             
             LibraryMapIDsModel map = new LibraryMapIDsModel();
 
-            MySqlCommand command = new QueryHelper().SelectMapID(topicID).Build(_connection);
+            MySqlCommand command = new QueryHelper()
+                .SelectMapID(topicID)
+                .JoinMap()
+                .Build(_connection);
 
             using (var reader = command.ExecuteReader())
             {
@@ -103,7 +107,11 @@ namespace StudioBriefcase.Services
         public async Task<SelectorListModel> GetTopicListAsync(uint subjectID)
         {
             SelectorListModel topicList = new SelectorListModel();
-            MySqlCommand command = new QueryHelper().Select("id, topic_name").From("topics").Where("subject_id", subjectID).Order("topic_name").Build(_connection);
+            MySqlCommand command = new QueryHelper().Select("id, topic_name")
+                .From("topics")
+                .Where("subject_id", subjectID)
+                .Order("topic_name")
+                .Build(_connection);
             using (var reader = command.ExecuteReader())
             {
                 while (await reader.ReadAsync())
@@ -164,6 +172,26 @@ namespace StudioBriefcase.Services
             }
             //await _connection.CloseAsync();
             return tagLists;
+        }
+
+        public Task<string> GetDirectyPathMap(uint TopicID)
+        {
+            string path = string.Empty;
+            MySqlCommand command = new QueryHelper().SelectMapName(TopicID).JoinMap().Build(_connection);
+
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    StringBuilder pathBuilder = new StringBuilder(reader.GetString(0));
+                    pathBuilder.Append($"/{reader.GetString(1)}");
+                    pathBuilder.Append($"/{reader.GetString(2)}");
+                    pathBuilder.Append($"/{reader.GetString(3)}");
+                    path = pathBuilder.ToString();
+                }
+            }
+
+            return Task.FromResult(path);
         }
     }
 }

@@ -11,12 +11,12 @@
     @*Globally Used Styles for element flow and control*@
     <link rel="stylesheet" href="~/css/baseStyles.css" />
     @* Redefinition of html Tags *@
-    <link rel="stylesheet" href="~/css/themes.css"/>
+    <link rel="stylesheet" href="~/css/themes.css" />
     @*Helper Styles to add visual Assistance to the development process*@
     <link rel="stylesheet" href="~/css/helperStyles.css" />
 
     @* Default Colors used in the website and altered values used in darkmode *@
-    <partial name="_colors"/>
+    <partial name="_colors" />
 
 </head>
 
@@ -28,15 +28,15 @@ This keeps the footer at the bottom of the screen for short content*@
         <nav class="max-w100">
             <div class="box-wraprow box-center3">
                 <div class="box-row box-center3 header-title-box-media">
-                    <a class="box-center0 text-lg" asp-area="" asp-page="/Index">                       
+                    <a class="box-center0 text-lg" asp-area="" asp-page="/Index">
                         <img src="~/images/internal/StudioBriefcaseBanner.png" alt="Site_Logo" class="m3" style="max-width:225px;">
                     </a>
                     <div class="header-title-box-btn-media">
                         <button class="me-pushend theme-avatar event-toggle c-menu" data-target="layout-navbtn">
-                            <span class="navbar-toggler-icon"></span>
+                            <span class="navbar-toggler-icon">M</span>
                         </button>
                     </div>
-                </div> 
+                </div>
 
                 <div class="header-link-box-media box-row box-center3 me-grow1 center3" id="layout-navbtn">
 
@@ -56,12 +56,12 @@ This keeps the footer at the bottom of the screen for short content*@
                     </ul>
 
                     <div class="box-col container-relative mx20">
-                        
+
                         <img class="icon-btn event-toggle icon-square-media me-justify zero c-offset" data-target="header-menu" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
-@*                         <button class="menu-btn event-toggle c-fg zero text-md" data-target="header-menu">
-                            <img class="icon-square-media me-justify zero c-fg" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
+                        @*                         <button class="menu-btn event-toggle c-fg zero text-md" data-target="header-menu">
+                        <img class="icon-square-media me-justify zero c-fg" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
                         </button> *@
-                        <div class="box-col me-absolute c-menu menu-window" id="header-menu">                       
+                        <div class="box-col me-absolute c-menu menu-window" id="header-menu">
                             <partial name="_menuPartial" />
                         </div>
 
@@ -74,25 +74,31 @@ This keeps the footer at the bottom of the screen for short content*@
 
     </header>
 
-    
-@*  ProtoType Not Implemented  
-    <div class="fixed-box row center0" id="io-pos">
-        <button class="io-btn toggle" data-target="Layout-io">I</button>
-        <div class="col box BG" id="Layout-io">
-        </div>
-    </div>*@
+
+
+
 
 
     @* <Main> Element is handled in subLayout because I believed letting a subLayout
-    have control of main styles would simply implementing layout specific behaviors.    *@
-    @RenderBody()
+    have control of main styles would simply implementing layout specific behaviors.    *@@*
+    I'm might back track on this tucking the main element inside the sublayout.
+    When I plug this site wide picture inside a picture. Its going to compete for space with the main element. *@
+
+    
+    @RenderBody() @* LeftSide *@
+   
+
+
+    
+
+
 
     <footer class="box-col w100 zero c-fg">
         <div class="footer-content">
             <div class="box-row box-center0 zero">
                 <span><a asp-area="" asp-page="/Home/Privacy">Privacy~ </a></span>
-                <p class="zero" xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="http://studiobriefcase.com">StudioBriefcase</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/TAReber/StudioBriefcase-Web-App">Tyler A Reber</a> is marked with <a href="http://creativecommons.org/publicdomain/zero/1.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC0 1.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1"></a></p>
-            </div> 
+                <p class="zero" xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="http://studiobriefcase.com">StudioBriefcase</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://github.com/TAReber/StudioBriefcase-Web-App">Tyler A Reber</a> is marked with <a href="http://creativecommons.org/publicdomain/zero/1.0?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC0 1.0<img alt="CreateiveCommon image" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img alt="creative commons thing" style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/zero.svg?ref=chooser-v1"></a></p>
+            </div>
         </div>
 
     </footer>

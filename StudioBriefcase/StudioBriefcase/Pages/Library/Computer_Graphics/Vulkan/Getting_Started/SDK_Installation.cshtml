@@ -1,7 +1,7 @@
 ﻿@page
 @model StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Getting_Started.SDK_InstallationModel
 @{
-    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+    Layout = ViewData["Layout"]?.ToString();
     ViewData["image_path"] = "/images/Library/Computer_Graphics/Vulkan/SDKInstall/";
 }
 

@@ -5,17 +5,17 @@ By: Tyler Andrew Reber
 PageSections are intended to be reusuable containers for different types of content hosted in the database.
 *@
 
-@model StudioBriefcase.Models.LibrarySectionModel;
+@model int
 
 <div class="accordion w100">
 
     <div class="accordion-item c-bg">
 
-        <button class="accordion-toggle c-fg event-toggle" type="button" data-target="@Model.sectionlocation">
-            <h6>Section @Model.sectionlocation</h6>
+        <button class="accordion-toggle c-fg event-toggle" type="button" data-target="@Model">
+            <h6>Section @Model</h6>
         </button>
 
-        <div class="accordion-target-vertical box-col" id="@Model.sectionlocation">
+        <div class="accordion-target-vertical box-col" id="@Model">
 
             @* todo: row of partial views called tabs *@
             <div class="box-col zero">
@@ -25,7 +25,7 @@ PageSections are intended to be reusuable containers for different types of cont
 
                         @* enter all tabs here *@
                         @* <button>Article</button> *@
-                        <button data-type='video' data-section='@(Model.sectionlocation)' onclick='VideoButtonTest(this)' id='videobuttontest'>Video</button>
+                        <button data-type='video' data-section='@(Model)' onclick='VideoButtonTest(this)' id='videobuttontest'>Video</button>
                         @* <button>Stackoverflow</button> *@
 
                     </div>
@@ -36,8 +36,8 @@ PageSections are intended to be reusuable containers for different types of cont
                         <select name="sectionPostType@(Model.sectionlocation)" id="LinkType@(Model.sectionlocation)">
                         <partial name="\Components\Posts\_PostTypeOptions" />
                         </select> *@
-                        <input type="text" class="text-sm" id="sectionInspectorInput@(Model.sectionlocation)" value="TODO_POST_LINK" />
-                        <button onclick="OpenPostDetailsForm(@(Model.sectionlocation))">Inspect</button>
+                        <input type="text" class="text-sm" id="sectionInspectorInput@(Model)" value="TODO_POST_LINK" />
+                        <button onclick="OpenPostDetailsForm(@(Model))">Inspect</button>
                         @*                         }
                         else
                         {
@@ -47,7 +47,7 @@ PageSections are intended to be reusuable containers for different types of cont
                     </div>
 
                 </div>
-                <div class="box-col w100 zero section-viewport" id="viewport@(Model.sectionlocation)" loading="lazy">
+                <div class="box-col w100 zero section-viewport" id="viewport@(Model)" loading="lazy">
                 </div>
 
             </div>

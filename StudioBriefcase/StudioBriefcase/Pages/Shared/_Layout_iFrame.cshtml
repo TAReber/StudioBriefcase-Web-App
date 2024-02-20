@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @*Site Specific Styles and themes*@
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*Globally Used Styles for element flow and control*@
+    <link rel="stylesheet" href="~/css/baseStyles.css" />
+    @* Redefinition of html Tags *@
+    <link rel="stylesheet" href="~/css/themes.css" />
+    @*Helper Styles to add visual Assistance to the development process*@
+    <link rel="stylesheet" href="~/css/helperStyles.css" />
+
+    @* Default Colors used in the website and altered values used in darkmode *@
+    <partial name="_colors" />
+
+    @* <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" /> *@
+
+</head>
+
+<body class="w100 box-col zero c-bg" style="height:100vh; overflow:hidden;">
+    <main class="box-col" style="overflow-y:auto; overflow-x:hidden; ">
+        @if(ViewData["Library"] != null)
+        {
+            @await Component.InvokeAsync("miniQuickLinks", new { libraryName = ViewData["Library"] })
+            <div class="accordion-target-vertical" id="navigation-Parameters">
+                <label class="text-sm w100" id="PageCategory" data-name="@ViewData["Category"]">@ViewData["Category"]</label>
+                <label class="text-sm w100" id="PageLibrary" data-name="@ViewData["Library"]">@ViewData["Library"]</label>
+                <label class="text-sm w100" id="PageSubject" data-name="@ViewData["Subject"]">@ViewData["Subject"]</label>
+                <label class="text-sm w100" id="PageTopic" data-id="@ViewData["TopicID"]">@ViewData["Topic"]</label>
+
+                
+                @await Component.InvokeAsync("Page_Tags")
+            </div>
+
+        }
+        <div class="box-row">
+            <label class="text-sm w100" id="color_mode_toggle">Dark</label>
+            <label class="p2">Language:</label>
+            <select class="zero" name="Language" id="menu-language" onchange="UpdateLanguage()">
+                <option value="1">English</option>
+            </select>
+        </div>
+
+        <div class="p5">
+            @RenderBody()
+        </div>
+        
+
+        @* The location that is used to inject Post Inspection Form *@
+        @* @if(User.Identity?.IsAuthenticated == true)
+        { *@
+        <div id="UserPostManagerLocation">
+        </div>
+        @* } *@
+
+    </main>
+
+</body>
+    
+
+
+
+<script src="~/scripts/site.js"></script>
+<script src="~/scripts/ColorModes.js"></script>
+
+
+<script src="~/scripts/LibraryFunctions.js"></script>
+<script src="~/scripts/GlobalLibraryFunctions.js"></script>
+<Script src="~/scripts/library/Vulkan.js"></Script>
+
+
+
+@*jquery Added for Ajax to fetch api data*@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+@RenderSection("Scripts", required: false)

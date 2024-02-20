@@ -39,33 +39,30 @@ function VideoButtonTest(button) {
 
     // Add tags to the array only if the value is not 0
     if (document.getElementById('PageTag-OS').value !== "0") {
-        tagList.push(document.getElementById('submissionForm-os0').value);
+        tagList.push(document.getElementById('PageTag-OS').value);
     }
 
     if (document.getElementById('PageTag-IDE').value !== "0") {
-        tagList.push(document.getElementById('submissionForm-ide0').value);
+        tagList.push(document.getElementById('PageTag-IDE').value);
     }
 
     if (document.getElementById('PageTag-1').value !== "0") {
-        tagList.push(document.getElementById('submissionForm-tag10').value);
+        tagList.push(document.getElementById('PageTag-1').value);
     }
 
     if (document.getElementById('PageTag-2').value !== "0") {
-        tagList.push(document.getElementById('submissionForm-tag20').value);
+        tagList.push(document.getElementById('PageTag-2').value);
     }
 
     if (document.getElementById('PageTag-3').value !== "0") {
-        tagList.push(document.getElementById('submissionForm-tag30').value);
+        tagList.push(document.getElementById('PageTag-3').value);
     }
 
     let datamap = {
         sectionValue: val,
         topicID: document.getElementById('PageTopic').dataset.id,
         posttype: posttype,
-        //topicName: document.getElementById('PageTopic').value,
-        //subjectName: document.getElementById('PageSubject').value,
-        //libraryName: document.getElementById('PageLibrary').value,
-        //categoryName: document.getElementById('PageCategory').value,
+
         language: document.getElementById('menu-language').value,
         tags: tagList
     }
@@ -219,7 +216,7 @@ function DeletePost(button) {
     fetch("/api/librarylink/DeletePost", {
         method: 'POST',
         headers: {
-            'content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(postidModel)
     })
@@ -232,5 +229,5 @@ function DeletePost(button) {
             console.log("Failed to Delete Post Exception");
         });
 
-
 }
+

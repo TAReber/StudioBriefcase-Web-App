@@ -28,8 +28,8 @@ namespace StudioBriefcase.Startup
 
             //services.AddMvc();
             services.AddTransient<IBaseService, BaseService>();
-            services.AddTransient<IPostTypeService, PostTypeService>();
 
+            services.AddTransient<IPostTypeService, PostTypeService>();
             services.AddTransient<ICustodianService, CustodianService>();
 
             //Creates a reusable instance per HTTP request

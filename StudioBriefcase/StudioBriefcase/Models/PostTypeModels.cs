@@ -14,37 +14,34 @@ namespace StudioBriefcase.Models
     //    public uint section { get; set; } = 0;
     //}
 
-    public class UINTTypeModel { 
-        public uint uinttype { get; set; }
-    }
 
+    ///<summary>
+    /// Post Data needed to Retrieve a list of Posts
+    /// </summary>
     public class NavigationMapModel
     {
         public uint sectionValue { get; set; }
         public uint topicID { get; set; }
         public string postType { get; set; } = string.Empty;
-        //public string topicName { get; set; } = string.Empty;
-        //public string subjectName { get; set; } = string.Empty;
-        //public string libraryName { get; set; } = string.Empty;
-        //public string categoryName { get; set; } = string.Empty;
+
         public uint language { get; set; }
         public List<uint> tags { get; set; } = new List<uint>();
     }
 
-    public class PostMappingDataModel : BaseMapModel
-    {
+    //public class PostMappingDataModel : BaseMapModel
+    //{
 
-        public int language { get; set; } = 1;
-        //public string weblink {  get; set; } = string.Empty;
-        public uint posttype { get; set; }
-        public uint GitID { get; set; } = 0;
-        public List<uint> tags { get; set; } = new List<uint>();
+    //    public int language { get; set; } = 1;
+    //    //public string weblink {  get; set; } = string.Empty;
+    //    public uint posttype { get; set; }
+    //    public uint GitID { get; set; } = 0;
+    //    public List<uint> tags { get; set; } = new List<uint>();
 
         
-    }
+    //}
 
     /// <summary>
-    /// 
+    /// Not sure what this is used for at the moment
     /// </summary>
     public class BaseMapModel
     {
@@ -67,11 +64,15 @@ namespace StudioBriefcase.Models
     }
 
     public class VideoDatabaseModel : IdentifiersModel
-    {              
+    {
         public string channelName { get; set; } = string.Empty;
         public string channelID { get; set; } = string.Empty;
     }
 
+
+    /// <summary>
+    /// The Model Used to Store Scraped data from the Youtube API
+    /// </summary>
     public class VideoDataModel
     {
         public uint sectionID { get; set; } = 0;
@@ -93,12 +94,12 @@ namespace StudioBriefcase.Models
             channelurl = model.channelurl;
             thumbnail = model.thumbnail;
             description = model.description;
-            videoTags = model.videoTags != null ?new List<string>(model.videoTags) : new List<string>();
+            videoTags = model.videoTags != null ? new List<string>(model.videoTags) : new List<string>();
         }
     }
 
-    public class TagNameModel
-    {
-        public string tagName { get; set; } = string.Empty;
-    }
+    //public class TagNameModel
+    //{
+    //    public string tagName { get; set; } = string.Empty;
+    //}
 }

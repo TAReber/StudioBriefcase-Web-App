@@ -20,14 +20,14 @@ namespace StudioBriefcase.Services
         //Post Functions        
         Task<string> InsertYoutubeLinkAsync(ClientInsertionData postMapper);
         //Verification
-        Task<bool> VideoPostTypeExistsAsync(string videoUrl); //Phase Out
+        //Task<bool> VideoPostTypeExistsAsync(string videoUrl); //Phase Out
         
 
-        Task<VideoDatabaseModel> GetVideoMapData(string url);
+        //Task<VideoDatabaseModel> GetVideoMapData(string url);
 
         Task<List<string>> GetPostLinksAsync(NavigationMapModel map);
 
-        Task<List<string>> GetVideoListAsync(NavigationMapModel map);
+        //Task<List<string>> GetVideoListAsync(NavigationMapModel map);
         
         //Task<LibraryVideoPostModel> GetVideoPostData(string videoUrl);
 

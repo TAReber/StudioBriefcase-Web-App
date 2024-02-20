@@ -1,7 +1,14 @@
 ﻿@page
 @model StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started.IntroductionModel
 @{
-    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+    //studioBriefcase/Pages/Library/Systems_Programming/CPP/Getting_Started/Introduction.cshtml
+    //Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+
+    // or specify a different layout
+
+    Layout = ViewData["Layout"]?.ToString();
+    
+
 }
 
 <div>

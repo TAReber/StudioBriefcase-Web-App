@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudioBriefcase.Services;
 using StudioBriefcase.Models;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace StudioBriefcase.Controllers
@@ -21,34 +23,89 @@ namespace StudioBriefcase.Controllers
 
         }
 
+        [HttpPost("InitializeMiniMapSelectors")]
+        public async Task<IActionResult> InitializeMiniMapSelectors([FromBody] LibraryMapIDsModel targetIDs)
+        {
+            
+            //I want to cache the ID values on client side, pass them to server. If IDs are 0, Create new lists.
+            LibraryMapModel map = new LibraryMapModel(targetIDs);
+            if(targetIDs.CategoryID == 0)
+            {
+                map.lists.Categories = await _libraryService.GetCategoryListAsync();
+                map.lists.Libraries = await _libraryService.GetLibraryListAsync(map.lists.Categories.list[0].id);
+                map.lists.Subjects = await _libraryService.GetSubjectListAsync(map.lists.Libraries.list[0].id);
+                map.lists.Topics = await _libraryService.GetTopicListAsync(map.lists.Subjects.list[0].id);
+            }
+            else
+            {
+                map.lists.Categories = await _libraryService.GetCategoryListAsync();
+                map.lists.Libraries = await _libraryService.GetLibraryListAsync(targetIDs.CategoryID);
+                map.lists.Subjects = await _libraryService.GetSubjectListAsync(targetIDs.LibraryID);
+                map.lists.Topics = await _libraryService.GetTopicListAsync(targetIDs.SubjectID);
+            }
+
+
+
+            return PartialView("~/Pages/Shared/Components/Page/_Page_MiniSelects.cshtml", map);
+        }
+
         [HttpPost("GetVideoPostList")]
         public async Task<IActionResult> GetVideoPostList([FromBody] NavigationMapModel map)
         {
             List<string> list = await _libraryService.GetPostLinksAsync(map);
             return Ok(list);
         }
+        /// <summary>
+        /// TODO: DUPLICATE FUNCTION - REMOVE ONCE I LEARN JAVASCRIPT PATTERNS
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost("UpdateLibraryOptions")]
+        public async Task<IActionResult> UpdateLibraryOptions([FromBody] LibraryMapIDsModel data)
+        {
+            LibraryMapModel temp = new LibraryMapModel(data);
+
+            //Console.WriteLine($"CategoryID: {data.CategoryID}, LibraryID: {data.LibraryID}, SubjectID: {data.SubjectID}, TopicID: {data.TopicID}");
+
+            temp.lists.Categories = await _libraryService.GetCategoryListAsync();
+            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
+            if (data.LibraryID == 0)
+            {
+                temp.ids.LibraryID = temp.lists.Libraries.list[0].id;
+            }
+
+            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID);
+            if (data.SubjectID == 0)
+            {
+                temp.ids.SubjectID = temp.lists.Subjects.list[0].id;
+            }
+
+            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID);
+
+            return PartialView("~/Pages/Shared/Components/Page/_Page_MiniSelects.cshtml", temp);
+        }
 
         [HttpPost("GetLibraryOptions")]
         public async Task<IActionResult> GetLibraryOptions([FromBody] LibraryMapIDsModel data)
         {
-            LibraryMapListModel temp = new LibraryMapListModel(data);
+            LibraryMapModel temp = new LibraryMapModel(data);
 
             //Console.WriteLine($"CategoryID: {data.CategoryID}, LibraryID: {data.LibraryID}, SubjectID: {data.SubjectID}, TopicID: {data.TopicID}");
 
-            temp.Categories = await _libraryService.GetCategoryListAsync();
-            temp.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
+            temp.lists.Categories = await _libraryService.GetCategoryListAsync();
+            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
             if (data.LibraryID == 0)
             {
-                temp.LibraryID = temp.Libraries.list[0].id;
+                temp.ids.LibraryID = temp.lists.Libraries.list[0].id;
             }
 
-            temp.Subjects = await _libraryService.GetSubjectListAsync(temp.LibraryID);
+            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID);
             if (data.SubjectID == 0)
             {
-                temp.SubjectID = temp.Subjects.list[0].id;
+                temp.ids.SubjectID = temp.lists.Subjects.list[0].id;
             }
 
-            temp.Topics = await _libraryService.GetTopicListAsync(temp.SubjectID);
+            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID);
 
 
             //return PartialView("~/Pages/Shared/Components/Library/_LibrarySelectorOptions", temp);
@@ -62,8 +119,7 @@ namespace StudioBriefcase.Controllers
         [HttpPost("GetPreviewVideo")]
         public async Task<IActionResult> GetPreviewVideo([FromBody] ID_String_Pair_Model data)
         {
-            Console.WriteLine(data.text);
-            Console.WriteLine(data.id);
+
             var videomodel = await _postTypeService.GetYoutubePreview(data.text);
             if (videomodel == null)
             {
@@ -110,11 +166,11 @@ namespace StudioBriefcase.Controllers
                 model.Post.post_language_id = clientData.language;
             }
 
-            model.Map = new LibraryMapListModel(await _libraryService.BuildMapFromTopicID(TopicID));
-            model.Map.Categories = await _libraryService.GetCategoryListAsync();
-            model.Map.Libraries = await _libraryService.GetLibraryListAsync(model.Map.CategoryID);
-            model.Map.Subjects = await _libraryService.GetSubjectListAsync(model.Map.LibraryID);
-            model.Map.Topics = await _libraryService.GetTopicListAsync(model.Map.SubjectID);
+            model.Map = new LibraryMapModel(await _libraryService.BuildMapFromTopicID(TopicID));
+            model.Map.lists.Categories = await _libraryService.GetCategoryListAsync();
+            model.Map.lists.Libraries = await _libraryService.GetLibraryListAsync(model.Map.ids.CategoryID);
+            model.Map.lists.Subjects = await _libraryService.GetSubjectListAsync(model.Map.ids.LibraryID);
+            model.Map.lists.Topics = await _libraryService.GetTopicListAsync(model.Map.ids.SubjectID);
             //viewstring = "~/Pages/Shared/Components/Posts/_PostCreationForm.cshtml";
 
             //return PartialView(viewstring, pair);
@@ -206,6 +262,16 @@ namespace StudioBriefcase.Controllers
 
 
             return Ok(message);
+        }
+
+
+        [HttpPost("RetrieveRazorPage")]
+        public async Task<IActionResult> RetrieveRazorPage([FromBody] LibraryMapIDsModel data)
+        {
+            //Working Example "/Library/Systems_Programming/CPP/Getting_Started/Introduction?iframe=true"
+            string path = $"/Library/{await _libraryService.GetDirectyPathMap(data.TopicID)}?iframe=true";
+
+            return Ok(path);
         }
     }
 }

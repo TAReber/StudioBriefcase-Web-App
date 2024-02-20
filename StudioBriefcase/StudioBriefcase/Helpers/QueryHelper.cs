@@ -26,7 +26,7 @@ namespace StudioBriefcase.Helpers
             IDParameters = new List<Tuple<string, uint>>();            
         }
         public void Dispose()
-        {
+        {          
             _selects.Clear();
             _joins.Clear();
             _wheres.Clear();
@@ -46,7 +46,7 @@ namespace StudioBriefcase.Helpers
                // Console.WriteLine($"{param.Item1}, {param.Item2}");
                 command.Parameters.AddWithValue($"{param.Item1}", param.Item2);
             }
-            //Console.WriteLine(command.CommandText);
+            Console.WriteLine(command.CommandText);
             Dispose();
             return command;
         }
@@ -112,8 +112,22 @@ namespace StudioBriefcase.Helpers
         public QueryHelper SelectMapID(uint topicID)
         {
             _selects.Append("SELECT c.id, l.id, s.id FROM topics t ");
-            _joins.Append("JOIN subjects s ON s.id = t.subject_id JOIN libraries l ON l.id = s.library_id JOIN categories c ON c.id = l.category_id ");
+
             _wheres.Append("WHERE t.id = @topicID ");
+            IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));
+            return this;
+        }
+
+        public QueryHelper JoinMap()
+        {
+            _joins.Append("JOIN subjects s ON s.id = t.subject_id JOIN libraries l ON l.id = s.library_id JOIN categories c ON c.id = l.category_id ");
+            return this;
+        }
+
+        public QueryHelper SelectMapName(uint topicID)
+        {
+            _selects.Append("SELECT c.category_name, l.library_name, s.subject_name, t.topic_name FROM topics t ");
+            _wheres.Append("WHERE t.id = @topicID");
             IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));
             return this;
         }
@@ -173,7 +187,7 @@ namespace StudioBriefcase.Helpers
 
                 if(extratags.Length > 0)
                 {
-                    _joins.Append(" LEFT JOIN tags_posts tp on tp.post_id = p.id LEFT join tags tg on tg.id = tp.tag_id");
+                    _joins.Append(" LEFT JOIN tags_posts tp on tp.post_id = p.id LEFT join tags tg on tg.id = tp.tag_id ");
                 }
                 
                 _wheres.Append(extratags);

@@ -48,9 +48,9 @@ const lightmodeSet = [
     { variable: '--foreground', value: '#cccccc' },
     { variable: '--text-color1', value: '#000000' },
     { variable: '--text-color2', value: '#000000' },
-    { variable: '--shadow1', value: '#000000' },
-    { variable: '--shadow2', value: '#cccccc' },
-    { variable: '--offset', value: '#cccccc' },
+    { variable: '--shadow1', value: '#548BC0' },
+    { variable: '--shadow2', value: '#942E5A' }, 
+    { variable: '--offset', value: '#777777' },
     { variable: '--menu-background', value: '#aaaaaa' }
 ];
 
@@ -59,9 +59,9 @@ const darkmodeSet = [
     { variable: '--foreground', value: '#393939' },
     { variable: '--text-color1', value: '#f6f6f6' },
     { variable: '--text-color2', value: '#ffffff' },
-    { variable: '--shadow1', value: '#888888' },
-    { variable: '--shadow2', value: '#444444' },
-    { variable: '--offset', value: '#222222' },
+    { variable: '--shadow1', value: '#F7F3DF' },
+    { variable: '--shadow2', value: '#F0DEAD' },
+    { variable: '--offset', value: '#777777' },
     { variable: '--menu-background', value: '#444444' }
 ]
 

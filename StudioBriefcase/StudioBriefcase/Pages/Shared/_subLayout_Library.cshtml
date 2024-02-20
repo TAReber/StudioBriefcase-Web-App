@@ -2,12 +2,12 @@
     Layout = "_Layout.cshtml";
     /*Style Sheet Uses ASP.NET feature called CSS Isolation. */
     <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
-    string? thisDirectory = System.IO.Path.GetDirectoryName(Context.Request.Path);
-    string[] folders = thisDirectory!.Split('\\');
-    string Category = folders[folders.Length - 3];
-    string library = folders[folders.Length - 2];
-    string subject = folders[folders.Length - 1];   
-    string topic = System.IO.Path.GetFileNameWithoutExtension(Context.Request.Path);
+     string? thisDirectory = System.IO.Path.GetDirectoryName(Context.Request.Path);
+     // string[] folders = thisDirectory!.Split('\\');//Phased out, moved to BasePageModel
+     // string Category = folders[folders.Length - 3];//Phased out, moved to BasePageModel
+     // string library = folders[folders.Length - 2];//Phased out, moved to BasePageModel
+     // string subject = folders[folders.Length - 1];//Phased Out, moved to BasePageModel
+     // string topic = System.IO.Path.GetFileNameWithoutExtension(Context.Request.Path);
     
 }
 
@@ -19,13 +19,14 @@
 <main class="box-row me-grow1 w100 c-bg" style="overflow:hidden">
 
     <div class="box-row h100">
+
         <div class="box-row c-fg expanded" id="sublayout-sidebar-navigator">
             <div class="sublayout-sidebar-scrollbar">
-                <h6 class="sublayout-link-title">@(library) Links</h6>
+                <h6 class="sublayout-link-title">@ViewData["Library"]?.ToString() Links</h6>
                 @{
                     /* Calls a function in ViewCoponents/LibraryLinkViewComponent.cs using dependency injection */
                 }
-                @await Component.InvokeAsync("PageQuickLinks", new { libraryName = @library })
+                @await Component.InvokeAsync("PageQuickLinks", new { libraryName = ViewData["Library"] })
                 @if (User.Identity?.IsAuthenticated == true && (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase)))
                 {
                     <button class="event-toggle w100" data-target="librarylinks-form">Update Links</button>
@@ -62,13 +63,31 @@
         </div>
     </div>
 
-    <div class="box-row box-justify0 w100 h100" style="overflow:auto;">
+@*     <div class="box-row box-justify0 w100 h100" style="overflow:auto;">
         <div class="box-col box-w100-margin w75">
             @RenderBody()
         </div>
 
-    </div>
+    </div> *@
+    <div class="main-content box-row h100">
+        <div class="box-row me-grow1 h100" style="overflow:auto">
 
+            <div class="box-col me-grow1" style="margin: 2% 7%;">
+                @RenderBody()
+            </div>
+            @* Button for MiniPagePartial *@
+            <div class="h100 m2">
+                <button class="mini-button event-toggle c-fg" data-target="mini-picture">|</button>
+            </div>
+        </div>
+
+
+        @* MiniPagePartial id in here*@
+        <partial name="_miniPagePartial" />
+        
+
+
+    </div>
 
 </main>
 
@@ -81,7 +100,7 @@
                 <button onclick="updateLibraryLinks()" id="updateLinksButton">Update Links</button>
                 <button id="not implemented">cancel not implemented</button>
             </div>
-            @await Component.InvokeAsync("PageQuickLinks", new { libraryName = @library, switchvalue = 1 }));
+            @await Component.InvokeAsync("PageQuickLinks", new { libraryName = ViewData["Library"], switchvalue = 1 }));
         </div>
         <div class="form-background event-toggle" data-target="librarylinks-form"></div>
     </div>
@@ -98,7 +117,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        ToggleExpanded('@subject');
+        ToggleExpanded('@ViewData["Subject"]?.ToString()');
     });
 
     //A Function that creates a single string out of JSON Obejcts and Inserts the string into a database.
@@ -135,7 +154,7 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                LibraryName: '@library',
+                LibraryName: "@ViewData["Library"]?.ToString()",
                 JsonString: JSON.stringify(objects)
             })
         })

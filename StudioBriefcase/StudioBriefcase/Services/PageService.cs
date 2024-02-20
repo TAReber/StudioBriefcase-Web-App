@@ -12,7 +12,7 @@ namespace StudioBriefcase.Services
         //PostTypeService moved to new class to manage posts that inherits from Library Service
         public PageService(IMemoryCache cache, MySqlConnection connection) : base(cache, connection)
         {
-           Console.WriteLine("PageService Constructor");
+           
            
             _connection.Open();
 

@@ -8,11 +8,11 @@ namespace StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started
 {
     public class IntroductionModel : BasePageModel
     {
+        private const uint topicID = 8;
         
-        private readonly PageService _pageService;
-        public IntroductionModel(PageService pageService) : base(8)
+        public IntroductionModel(PageService pageService) : base(topicID)
         {
-            _pageService = pageService;
+            
         }      
 
         public override void OnGet()

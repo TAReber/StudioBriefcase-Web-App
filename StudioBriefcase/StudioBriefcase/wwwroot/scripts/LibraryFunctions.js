@@ -1,8 +1,8 @@
 ﻿
-
-function MapOptionsChanged(index) {
-
-    let container = document.getElementById('SubmissionMap');
+//This function has a Duplicate function for the mini-map selectors in site.js. I'm not familiar with javascript.
+function MapOptionsChanged(targetid, index) {
+    
+    let container = document.getElementById(targetid);
     let children = container.querySelectorAll('select');
 
     let model = {

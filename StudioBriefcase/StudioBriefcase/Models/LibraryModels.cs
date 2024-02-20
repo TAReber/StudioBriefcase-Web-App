@@ -23,6 +23,9 @@ namespace StudioBriefcase.Models
         public List<ID_String_Pair_Model> list = new List<ID_String_Pair_Model>();
     }
 
+    /// <summary>
+    /// Option ID'S for Select Options, Paired with LibraryMapListModel inside LibraryMapModel
+    /// </summary>
     public class LibraryMapIDsModel
     {
         public uint CategoryID { get; set; }
@@ -30,22 +33,28 @@ namespace StudioBriefcase.Models
         public uint SubjectID { get; set; }
         public uint TopicID { get; set; }
     }
-
-    public class LibraryMapListModel : LibraryMapIDsModel {        
+    /// <summary>
+    /// Option ID'S for Select Options, Paired with LibraryMapIdsModel inside LibraryMapModel
+    /// </summary>
+    public class LibraryMapListModel {        
         public SelectorListModel Categories { get; set; } = new SelectorListModel();
         public SelectorListModel Libraries { get; set; } = new SelectorListModel();
         public SelectorListModel Subjects { get; set; } = new SelectorListModel();
         public SelectorListModel Topics { get; set; } = new SelectorListModel();
-        
-        public LibraryMapListModel(LibraryMapIDsModel ids)
+    }
+    /// <summary>
+    /// LibraryMapModel Contains the data needed to populate Select Options and Set the values.
+    /// "/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Libraries, Model.ids.LibraryID)
+    /// </summary>
+    public class LibraryMapModel
+    {
+        public LibraryMapIDsModel ids = new LibraryMapIDsModel();
+        public LibraryMapListModel lists = new LibraryMapListModel();
+        public LibraryMapModel(LibraryMapIDsModel _ids)
         {
-            CategoryID = ids.CategoryID;
-            LibraryID = ids.LibraryID;
-            SubjectID = ids.SubjectID;
-            TopicID = ids.TopicID;
+            ids = _ids;
         }
     }
-
     /// <summary>
     /// Primarily Used to for Displaying Tags on the User Interface
     /// </summary>
@@ -78,7 +87,7 @@ namespace StudioBriefcase.Models
         public bool exists = false;
         public string WebSite_URL { get; set; } = string.Empty;
         
-        public LibraryMapListModel? Map { get; set; } = null;
+        public LibraryMapModel? Map { get; set; } = null;
         public TagsModel Tags { get; set; } = new TagsModel();
         public PostIdentificationsModel Post { get; set; } = new PostIdentificationsModel();
 
@@ -115,36 +124,12 @@ namespace StudioBriefcase.Models
         public List<uint> tags { get; set; } = new List<uint>();
     }
 
-    //public class LibraryTagsModel
-    //{
-    //    LibraryTagsIDsModel Tags = new LibraryTagsIDsModel();
-    //    LibraryTagsListModel Lists = new LibraryTagsListModel();
-    //}
-
-    //public class LibraryTagsModel
-    //{
-    //    public uint id { get; set; } = 0;
-    //    public string tagName { get; set; } = string.Empty;
-
-    //}
-
-    //public class CategoryModel
-    //{
-    //    public string Name { get; set; } = string.Empty;
-    //    public string Description { get; set; } = string.Empty;
-    //}
-
-    //public class LibraryModel
-    //{
-    //    public string Name { get; set; } = string.Empty;
-    //    public string Description { get; set; } = string.Empty;
-    //}
-
-    //Model used to update the quicklinks in the database with json string
 
 
 
-
+    /// <summary>
+    /// Used to Populate the links in the navigator Side bar
+    /// </summary>
     public class SubjectModel
     {
         public string Name { get; set; } = string.Empty;
@@ -159,34 +144,6 @@ namespace StudioBriefcase.Models
     }
 
 
-
-    public class LibrarySectionModel
-    {
-        public int sectionlocation { get; set; } = 0;
-        public LibrarySectionModel(int section)
-        {
-            sectionlocation = section;
-        }
-    }
-
-    public class LibraryVideoPostModel
-    {
-        public uint videoid { get; set; }
-        public uint postid { get; set; }
-        public string link { get; set; } = string.Empty;
-        public string channelname { get; set; } = string.Empty;
-        public string channelurl { get; set; } = string.Empty;
-    }
-
-    public class LibraryPostIDValuesModel
-    {
-        public uint id { get; set; }
-        public uint topics_id { get; set; }
-        public uint post_type_id { get; set; }
-        public uint Language_id {  get; set; }
-        public uint git_id { get; set; }
-        public uint section { get; set; }
-    }
 
     
 

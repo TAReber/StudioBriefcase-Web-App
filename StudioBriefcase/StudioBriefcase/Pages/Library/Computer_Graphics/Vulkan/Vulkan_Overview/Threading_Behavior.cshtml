@@ -1,7 +1,7 @@
 ﻿@page
 @model StudioBriefcase.Pages.Library.Computer_Graphics.Vulkan.Vulkan_Overview.Threading_BehaviorModel
 @{
-    Layout = "/Pages/Shared/_subLayout_Library.cshtml";
+    Layout = ViewData["Layout"]?.ToString();
 }
 <div class="text-center">
     <h2>Introduction to Vulkan Threading Behavior</h2>

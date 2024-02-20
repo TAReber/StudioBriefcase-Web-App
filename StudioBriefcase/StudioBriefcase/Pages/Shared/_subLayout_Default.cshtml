@@ -1,11 +1,31 @@
 ﻿@{
     Layout = "_Layout.cshtml";
     <link rel="stylesheet" href="~/@(nameof(StudioBriefcase)).styles.css" />
-
 }
-<main class="box-col me-grow1 w100 c-bg" style="overflow:auto;">
-    <div class="box-col box-w100-margin main-content">
-        @RenderBody()
+
+@* The main Element Represents the Entire Area between the Header and footer defined in the _Layout.cshtml *@
+@* me-grow1 is what anchors the header and footer to the top and bottom of the page. *@
+<main class="box-col me-grow1 w100 c-bg" style="overflow:hidden;">
+
+    <div class="main-content box-row h100">
+        <div class="box-row me-grow1 h100" style="overflow:auto">
+
+            <div class="box-col me-grow1" style="margin: 2% 13%;">
+                @RenderBody()
+            </div>
+            @* Button for MiniPagePartial *@
+            <div class="h100 m2">
+                <button class="mini-button event-toggle c-fg" data-target="mini-picture">|</button>
+            </div>
+        </div>
+
+        @* MiniPagePartial id in here*@
+         <partial name="_miniPagePartial" /> 
+        
+
+
     </div>
+
+
     @*<partial name="_footer" />*@
 </main>

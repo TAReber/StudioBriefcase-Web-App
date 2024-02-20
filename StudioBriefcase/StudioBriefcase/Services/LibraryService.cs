@@ -59,53 +59,53 @@ namespace StudioBriefcase.Services
 
 
 
-        public async Task<VideoDatabaseModel> GetVideoMapData(string url)
-        {
+        //public async Task<VideoDatabaseModel> GetVideoMapData(string url)
+        //{
 
-            VideoDatabaseModel map = new VideoDatabaseModel();
-            await _connection.OpenAsync();
-
-
-            try
-            {
-                var query = new MySqlCommand("SELECT t.topic_name, s.subject_name, l.library_name, c.category_name, tp.type_name, lg.lang, v.channel_name, v.channel_id, p.git_id, p.section, p.id FROM post_type_video v  JOIN posts p ON v.post_id = p.id JOIN topics t ON p.topics_id = t.id JOIN subjects s ON t.subject_id = s.id JOIN libraries l ON s.library_id = l.id JOIN categories c ON l.category_id = c.id JOIN post_types tp ON tp.id = p.post_type_id JOIN languages lg ON lg.id = p.post_language_id WHERE v.link = @link;", _connection);
-                query.Parameters.AddWithValue("@link", url);
-                using (var reader = await query.ExecuteReaderAsync())
-                {
-                    if (await reader.ReadAsync())
-                    {
-
-                        map.sectionValue = reader.GetUInt32("section");
-                        map.topicName = reader.GetString("topic_name");
-                        map.subjectName = reader.GetString("subject_name");
-                        map.libraryName = reader.GetString("library_name");
-                        map.categoryName = reader.GetString("category_name");
-                        map.post_type = reader.GetString("type_name");
-                        map.weblink = url;
-                        map.language = reader.GetString("lang");
-                        map.channelName = reader.GetString("channel_name");
-                        map.channelID = reader.GetString("channel_id");
-                        map.gitID = reader.GetUInt32("git_id");
-                        map.postID = reader.GetUInt32("id");
-                        map.videoTags = new List<string>();
+        //    VideoDatabaseModel map = new VideoDatabaseModel();
+        //    await _connection.OpenAsync();
 
 
-                    }
-                }
+        //    try
+        //    {
+        //        var query = new MySqlCommand("SELECT t.topic_name, s.subject_name, l.library_name, c.category_name, tp.type_name, lg.lang, v.channel_name, v.channel_id, p.git_id, p.section, p.id FROM post_type_video v  JOIN posts p ON v.post_id = p.id JOIN topics t ON p.topics_id = t.id JOIN subjects s ON t.subject_id = s.id JOIN libraries l ON s.library_id = l.id JOIN categories c ON l.category_id = c.id JOIN post_types tp ON tp.id = p.post_type_id JOIN languages lg ON lg.id = p.post_language_id WHERE v.link = @link;", _connection);
+        //        query.Parameters.AddWithValue("@link", url);
+        //        using (var reader = await query.ExecuteReaderAsync())
+        //        {
+        //            if (await reader.ReadAsync())
+        //            {
 
-            }
-            catch
-            {
-                Console.WriteLine("Failed");
-            }
-            finally
-            {
+        //                map.sectionValue = reader.GetUInt32("section");
+        //                map.topicName = reader.GetString("topic_name");
+        //                map.subjectName = reader.GetString("subject_name");
+        //                map.libraryName = reader.GetString("library_name");
+        //                map.categoryName = reader.GetString("category_name");
+        //                map.post_type = reader.GetString("type_name");
+        //                map.weblink = url;
+        //                map.language = reader.GetString("lang");
+        //                map.channelName = reader.GetString("channel_name");
+        //                map.channelID = reader.GetString("channel_id");
+        //                map.gitID = reader.GetUInt32("git_id");
+        //                map.postID = reader.GetUInt32("id");
+        //                map.videoTags = new List<string>();
 
-                await _connection.CloseAsync();
-            }
 
-            return map;
-        }
+        //            }
+        //        }
+
+        //    }
+        //    catch
+        //    {
+        //        Console.WriteLine("Failed");
+        //    }
+        //    finally
+        //    {
+
+        //        await _connection.CloseAsync();
+        //    }
+
+        //    return map;
+        //}
 
         public async Task<PostTagsModel> GetPostTagsAsync(uint postID)
         {
@@ -203,30 +203,7 @@ namespace StudioBriefcase.Services
             return postID;
         }
 
-        public async Task<bool> VideoPostTypeExistsAsync(string videoUrl)
-        {
-            bool exists = false;
 
-            await _connection.OpenAsync();
-
-            var query = new MySqlCommand($"SELECT count(1) FROM post_type_video WHERE link = @link;", _connection);
-            query.Parameters.AddWithValue("@link", videoUrl);
-
-            using (var reader = query.ExecuteReader())
-            {
-                if (await reader.ReadAsync())
-                {
-                    var count = reader.GetInt32(0);
-                    if (count > 0)
-                    {
-                        exists = true;
-                        //_logger.LogError("User Already Exists in Database");
-                    }
-                }
-            }
-            await _connection.CloseAsync();
-            return exists;
-        }
 
         public async Task<string> DeletePost(uint postID, uint gitID)
         {
@@ -480,85 +457,32 @@ namespace StudioBriefcase.Services
         }
 
 
-
-
-
-        //Delete GetVideoListAsync
-        public async Task<List<string>> GetVideoListAsync(NavigationMapModel map)
-        {
-            List<string> videoList = new List<string>();
-            await _connection.OpenAsync();
-            try
-            {
-
-
-                StringBuilder query = new StringBuilder("SELECT v.link from post_type_video v Join posts p on p.id = v.post_id join topics t on t.id = p.topics_id join subjects s on s.id = t.subject_id join libraries l on l.id = s.library_id join categories c on c.id = l.category_id");
-
-                StringBuilder extratags = new StringBuilder();
-                //Tags with value of 0 (Any) kicked out on client side.
-                if (map.tags.Count > 0)
-                {
-                    for (int i = 0; i < map.tags.Count; i++)
-                    {
-                        if (extratags.Length != 0)
-                            extratags.Append($", @tag{i}");
-                        else
-                            extratags.Append($" AND tg.id IN (@tag{i}");
-                    }
-                    extratags.Append(')');
-
-                    query.Append(" LEFT join tags_posts tp on tp.post_id = p.id LEFT join tags tg on tg.id = tp.tag_id");
-                }
-
-
-                query.Append(" where c.category_name = @category and l.library_name = @library and s.subject_name = @subject and t.topic_name = @topic and p.section = @section and p.post_language_id = @language and post_type_id = 5");
-                if (extratags.Length > 0)
-                {
-                    query.Append(extratags);
-                }
-                query.Append(';');
-
-                var command = new MySqlCommand(query.ToString(), _connection);
-                command.Parameters.AddWithValue("@section", map.sectionValue);
-                command.Parameters.AddWithValue("@language", map.language);
-                Console.WriteLine(command.CommandText);
-                for (int i = 0; i < map.tags.Count; i++)
-                {
-                    command.Parameters.AddWithValue($"@tag{i}", map.tags[i]);
-                }
-
-
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        string link = reader.GetString(0);
-                        videoList.Add(link);
-                    }
-                }
-
-
-            }
-            catch
-            {
-                //TODO:: Create a Empty List
-            }
-            finally
-            {
-                await _connection.CloseAsync();
-            }
-
-
-
-            return videoList;
-        }
-
-
-
-
-
     }
 
+
+    //public async Task<bool> VideoPostTypeExistsAsync(string videoUrl)
+    //{
+    //    bool exists = false;
+
+    //    await _connection.OpenAsync();
+
+    //    var query = new MySqlCommand($"SELECT count(1) FROM post_type_video WHERE link = @link;", _connection);
+    //    query.Parameters.AddWithValue("@link", videoUrl);
+
+    //    using (var reader = query.ExecuteReader())
+    //    {
+    //        if (await reader.ReadAsync())
+    //        {
+    //            var count = reader.GetInt32(0);
+    //            if (count > 0)
+    //            {
+    //                exists = true;
+    //                //_logger.LogError("User Already Exists in Database");
+    //            }
+    //        }
+    //    }
+    //    await _connection.CloseAsync();
+    //    return exists;
+    //}
 }
 

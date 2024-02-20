@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="box-row ">
+
+    <div class="box-col mini-view c-fg" id="mini-picture">
+
+        @* Database Control Block *@
+        <div class="box-col w100 h100 c-shadow">
+            <div class="box-row box-center3 m5 w75">
+                <div class="box-col" id="mini-map">
+                    Error: Getting Content from OnContentLoaded
+                </div>
+                <button onclick="RetrieveRazorPage()">
+                    Go
+                </button>
+            </div>
+
+            @* Mini-Page Content Displayed Here *@
+@*              <div class="" id="mini-page">
+                TODO: Load in Content Area
+            </div>  *@
+             <div class="mini-container zero c-bg"> 
+                <iframe class="zero" id="mini-page" scrolling="no" src="/mini"></iframe>
+                
+             </div> 
+
+
+
+        </div>
+    </div>
+
+
+</div>

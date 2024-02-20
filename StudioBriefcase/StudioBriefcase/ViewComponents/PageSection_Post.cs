@@ -8,9 +8,8 @@ namespace StudioBriefcase.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int section)
         {
 
-            LibrarySectionModel sectionData = new LibrarySectionModel(section);
-            return View("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", sectionData);
-            //return Task.FromResult<IViewComponentResult>(View("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", sectionData));
+            return View("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", section);
+            //return Task.FromResult<IViewComponentResult>(View("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", section));
         }
     }
 }

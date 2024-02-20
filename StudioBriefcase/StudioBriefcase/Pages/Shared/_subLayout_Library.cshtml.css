@@ -14,7 +14,6 @@
 
 #sublayout-sidebar-navigator {
     width: 0px;
-
     overflow: hidden;
     transition: width 0.5s ease-in-out;
 }
@@ -28,7 +27,7 @@
     margin-right: 0px;
     margin-top: 29vh;
     outline: solid;
-    outline-color: #ff6a00;
+    outline-color: var(--menu-background);
     outline-width: 1px;
     padding: 0px;
     min-height: 50px;
@@ -37,10 +36,9 @@
     width: 12px;
     height: 33%;
     border-radius: 8px;
-    
 }
     .sublayout-sidebar-toggle:hover {
-        background-color:#a1a1a1;
+        background-color: var(--offset);
     }
 
 
@@ -59,10 +57,10 @@
     }
 
     .sublayout-sidebar-scrollbar::-webkit-scrollbar-track {
-        background-color: #ff6a00;
+        background-color: var(--menu-background); /*#ff6a00;*/
     }
 
     .sublayout-sidebar-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #ffd800;
+        background-color: var(--offset); /*#ffd800;*/
         border-radius: 2px;
     }

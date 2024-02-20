@@ -16,10 +16,11 @@
         <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
     </li>
     <li class="box-row">
-        <label class="p2" for="language">Language:</label>
-        <select class="zero" name="Language" id="menu-language" onchange="UpdateLanguage()">
-            <option value="1">English</option>           
-        </select>
+
+        <label class="p2" for="menu-language">Language:</label>
+            <select class="zero" id="menu-language" onchange="UpdateLanguage()">
+                <option value="1">English</option>
+            </select>
 
     </li>
     @if (User.Identity?.IsAuthenticated == true)
@@ -136,7 +137,7 @@
     //     let LibraryLinks = document.querySelectorAll("#language-parameter");
     //     LibraryLinks.forEach(function (link) {
     //         link.href = link.href + '?Language=' + selection;
-            
+
     //     });
 
     // }

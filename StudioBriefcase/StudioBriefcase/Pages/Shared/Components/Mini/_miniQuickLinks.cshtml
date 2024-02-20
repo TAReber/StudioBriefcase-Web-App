@@ -1,0 +1,14 @@
+﻿@model List<StudioBriefcase.Models.PageQuickLinksModel>;
+<!-- Styles Defined with CSS Isolation: Note - I didn't link the stylesheet, why do they work?' -->
+
+
+<div class="box-row box-center1 m2">
+    @foreach (var document in Model)
+    {
+        <div class="thumbnail-link ">
+            <a class="" href="@(document.SiteUrl)" target="_blank" >
+                <span>@(document.ShorthandDesc)</span>
+            </a>           
+        </div>
+    }
+</div>

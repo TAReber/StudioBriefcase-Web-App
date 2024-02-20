@@ -11,6 +11,9 @@ namespace StudioBriefcase.Services
         Task<SelectorListModel> GetSubjectListAsync(uint libraryID);
         Task<SelectorListModel> GetTopicListAsync(uint subjectID);
 
+        Task<string> GetDirectyPathMap(uint TopicID);
+        
+
         Task<LibraryTagsListModel> GetLibraryTagsAsync();
     }
 }
