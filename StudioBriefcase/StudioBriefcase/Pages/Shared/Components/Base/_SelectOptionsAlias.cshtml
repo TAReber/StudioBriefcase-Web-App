@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Tuple<StudioBriefcase.Models.SelectorAliasListModel, uint>
+
+@foreach (var item in Model.Item1.list)
+{
+    if (item.id == Model.Item2)
+    {
+        <option value="@item.id" selected>@item.text</option>
+    }
+    else
+    {
+        <option value="@item.id">@item.text</option>
+    }
+}

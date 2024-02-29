@@ -167,6 +167,10 @@
             color: white;
         }
 
+        .thumbnail-link:hover .thumbnail-edit {
+            display: block;
+        }
+
 .thumbnail-text {
     margin: 0;
     padding: 0;
@@ -187,6 +191,22 @@
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
     z-index: 200;
+}
+
+.thumbnail-edit {
+    color:yellow;
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+summary::marker {
+    font-size: 1.5em;
+    content: "📬";   
+}
+[open] summary::marker {
+    content: "📭";
 }
 
 .thumbnail-btn {
@@ -418,7 +438,6 @@
     }
 
 .mini-view {
-   
     width: 0px;
     transition: width 0.4s ease-in-out;
     overflow-x: hidden;

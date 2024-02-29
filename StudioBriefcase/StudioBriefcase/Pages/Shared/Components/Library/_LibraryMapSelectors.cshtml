@@ -8,20 +8,27 @@
 @model StudioBriefcase.Models.LibraryMapModel
 
 
-<select style="width:150px;" type="text" data-table="categories" data-column="category_id" id="PostInspect--category" value=@Model.ids.CategoryID onchange="MapOptionsChanged('SubmissionMap',0)">
-    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Categories, Model.ids.CategoryID))
-</select>
+    <div class="box-row">
+        <select style="width:150px;" type="text" data-table="categories" data-column="category_id" id="PostInspect--category" value=@Model.ids.CategoryID onchange="MapOptionsChanged('PostInspect',0)">
+            @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Categories, Model.ids.CategoryID))
+        </select>
 
-<select style="width:150px;" type="text" data-table="libraries" data-column="library_id" id="PostInspect-library" value="@Model.ids.LibraryID" onchange="MapOptionsChanged('SubmissionMap',1)">
-    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Libraries, Model.ids.LibraryID))
-</select>
+        <select style="width:150px;" type="text" data-table="libraries" data-column="library_id" id="PostInspect-library" value="@Model.ids.LibraryID" onchange="MapOptionsChanged('PostInspect',1)">
+            @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Libraries, Model.ids.LibraryID))
+        </select>
+    </div>
 
-<select style="width:150px;" type="text" data-table="subjects" data-column="subject_id" id="PostInspect-subjects" value="@Model.ids.SubjectID" onchange="MapOptionsChanged('SubmissionMap',2)">
-    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Subjects, Model.ids.SubjectID))
-</select>
+    <div class="box-row">
+        <select style="width:150px;" type="text" data-table="subjects" data-column="subject_id" id="PostInspect-subjects" value="@Model.ids.SubjectID" onchange="MapOptionsChanged('PostInspect',2)">
+            @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Subjects, Model.ids.SubjectID))
+        </select>
 
-<select style="width:150px;" type="text" data-table="topics" id="PostInspect-topic" value="@Model.ids.TopicID">
-    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Topics, Model.ids.TopicID))
-</select>
+        <select style="width:150px;" type="text" data-table="topics" id="PostInspect-topic" value="@Model.ids.TopicID">
+            @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Topics, Model.ids.TopicID))
+        </select>
+    </div>
+
+
+
 
 

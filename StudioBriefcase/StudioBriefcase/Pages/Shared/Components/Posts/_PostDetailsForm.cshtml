@@ -8,20 +8,20 @@ Button to claim the post if its
         <div class="box-row box-center3 p5">
             <span class="w75 text-sm" id="logresult-container">Success/Fail Message Appear Here</span>
 
-@*             <div class="box-row">
-                <button>Claim Post</button>
-                @if (Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
-                {
-                    //Button that gets the post GitId from database, Validate displayed Channel_ID post and video data gituser
-                    <button>Sync Posts</button>
-                }
+            @*             <div class="box-row">
+            <button>Claim Post</button>
+            @if (Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
+            {
+            //Button that gets the post GitId from database, Validate displayed Channel_ID post and video data gituser
+            <button>Sync Posts</button>
+            }
             </div> *@
 
         </div>
-        
+
         @* Post Data TODO, Rigth now Default Data is from Post_Type_Video Table. *@
 
-        @if(Model.exists)
+        @if (Model.exists)
         {
             <div class="m3 p3 c-fg">
                 <div class="p3">
@@ -38,7 +38,7 @@ Button to claim the post if its
                 <span>TODO: Post Exists - Maybe Create add the Preview of the Post?</span>
                 <div id="PostInspect-postid" data-id="@Model.Post.id">Post ID: @Model.Post.id</div>
                 <div></div>
-                
+
                 @*                 <span class="text-sm">Link: @(Model.weblink)</span>
             <span class="text-sm">Channel: @(Model.channelName)</span>
             <span class="text-sm">Channel Link: @(Model.channelID)</span> *@
@@ -46,7 +46,7 @@ Button to claim the post if its
 
 
             </div>
-            
+
         }
         else
         {
@@ -54,11 +54,16 @@ Button to claim the post if its
 
         }
 
-         @* <form method="post" action="/api/librarylink/Index"> *@
-        
-        <div class="box-col" id="SubmissionMap">
-            
+        @* <form method="post" action="/api/librarylink/Index"> *@
+
+        <div class="box-col" id="PostInspect-map">
+            @* PostInspect-category, postInspect-library, postInspect-subjects, postInspect-topic *@
             @await Html.PartialAsync("~/Pages/Shared/Components/Library/_LibraryMapSelectors.cshtml", Model.Map)
+
+            <div class="box-col">
+                <label for="sectionValue">Section:</label>
+                <input style="width:50px;" type="number" name="sectionValue" id="PostInspect-section" value="@Model.Post.section" required>
+            </div>
 
         </div>
 
@@ -67,24 +72,20 @@ Button to claim the post if its
             <div class="box-col p4 show">
 
 
-                <div class="box-row">
-                    <label for="weblink">Link: </label>
-                    <input style="width:fit-content" type="text" name="weblink" id="PostInspect-link" value="@Model.WebSite_URL" required><br>
+                <div class="box-row box-center3">
+                    <input class="w100" type="text" name="weblink" id="PostInspect-link" value="@Model.WebSite_URL" placeholder="Enter web url" required><br>
                 </div>
-                <div class="box-row">
-                    <label for="sectionValue">Section Value:</label>
-                    <input style="width:50px;" type="number" name="sectionValue" id="PostInspect-section" value="@Model.Post.section" required>
-                </div>
-                <div class="bow-row">
-                    <label for="PostType">Type of Post:</label>
-                    <select name="Language" id="PostInspect-posttype" data-itemid="@Model.Post.post_type_id">
+
+                <div class="box-row box-center3">
+                    <label for="PostInspect-PostType">Type:</label>
+                    <select class="" name="Language" id="PostInspect-posttype" data-itemid="@Model.Post.post_type_id">
                         <partial name="\Components\Posts\_PostTypeOptions" />
                     </select>
                 </div>
-                <div class="box-row">
-                    <label class="p2" for="language">Language:</label>
-                    <select class="zero" name="Language" id="PostInspect-language" >
-                        <option value="1">English</option>
+                <div class="box-row box-center3">
+                    <label class="" for="PostInspect-language">Language:</label>
+                    <select class="w75" name="Language" id="PostInspect-language">
+                        @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.language.options, Model.language.selectedID))
                     </select>
 
                 </div>
@@ -99,18 +100,18 @@ Button to claim the post if its
 
 
         </div>
-@*         @if(User.Identity?.IsAuthenticated == true)
+        @*         @if(User.Identity?.IsAuthenticated == true)
         {
-            //If the post is public or the gitID is the same the user Will have access to update and delete buttons
-            @if (Model.gitID == 0 || Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
-            { *@
-                <div class="box-row">
-                    <button onclick="InsertLinkToDatabase()">Insert</button>
-                    <button data-postID="@Model.Post.id" onclick="DeletePost(this)">Delete</button>
-                </div>
-@*             }
+        //If the post is public or the gitID is the same the user Will have access to update and delete buttons
+        @if (Model.gitID == 0 || Model.gitID.ToString() == @User.FindFirst("sub")?.Value)
+        { *@
+        <div class="box-row">
+            <button onclick="InsertLinkToDatabase()">Add</button>
+            <button data-postID="@Model.Post.id" onclick="DeletePost(this)">Delete</button>
+        </div>
+        @*             }
         } *@
-       
+
         @* </form> *@
 
     </div>

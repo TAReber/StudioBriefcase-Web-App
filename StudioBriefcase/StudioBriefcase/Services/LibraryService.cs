@@ -22,7 +22,7 @@ namespace StudioBriefcase.Services
         {
             _postTypeService = postTypeService;
             _tagsCacheKey = "tags";
-
+            
             _connection.Open();
             
         }
@@ -435,8 +435,6 @@ namespace StudioBriefcase.Services
         //Refactored to use QueryHelper
         public async Task<List<string>> GetPostLinksAsync(NavigationMapModel map)
         {
-
-
             List<string> videoList = new List<string>();
 
             MySqlCommand command = new QueryHelper().SelectPostLinks($"post_type_{map.postType}")

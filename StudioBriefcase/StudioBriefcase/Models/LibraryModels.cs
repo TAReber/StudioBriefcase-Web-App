@@ -2,26 +2,35 @@
 
 namespace StudioBriefcase.Models
 {
-
-    /// <summary>
-    /// Model used in the Index.cs pages, To be phased out for datadriven approach
-    /// </summary>
-    public class staticlibraryLinkModel //Good
+    public class JavascriptMapIDsModel
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public LibraryMapIDsModel map { get; set; } = new LibraryMapIDsModel();
+        public uint LanguageID { get; set; }
     }
 
-    public class ID_String_Pair_Model
-    {
-        public uint id { get; set; }
-        public string text { get; set; } = string.Empty;
-    }
 
     public class SelectorListModel
     {
         public List<ID_String_Pair_Model> list = new List<ID_String_Pair_Model>();
     }
+
+    public class SelectorAliasListModel
+    {
+        public List<ID_String_Alias_Pair_Model> list = new List<ID_String_Alias_Pair_Model>();
+    }
+
+
+    public class LanguageModel
+    {
+        public uint selectedID { get; set; } = 0;
+        public SelectorListModel options = new SelectorListModel();
+
+        public LanguageModel() { }
+        public LanguageModel(uint languageID) {
+            selectedID = languageID;
+        }
+    }
+
 
     /// <summary>
     /// Option ID'S for Select Options, Paired with LibraryMapListModel inside LibraryMapModel
@@ -50,6 +59,7 @@ namespace StudioBriefcase.Models
     {
         public LibraryMapIDsModel ids = new LibraryMapIDsModel();
         public LibraryMapListModel lists = new LibraryMapListModel();
+        public LibraryMapModel() { }
         public LibraryMapModel(LibraryMapIDsModel _ids)
         {
             ids = _ids;
@@ -87,15 +97,27 @@ namespace StudioBriefcase.Models
         public bool exists = false;
         public string WebSite_URL { get; set; } = string.Empty;
         
-        public LibraryMapModel? Map { get; set; } = null;
+        public LibraryMapModel Map { get; set; }
         public TagsModel Tags { get; set; } = new TagsModel();
-        public PostIdentificationsModel Post { get; set; } = new PostIdentificationsModel();
+        public LanguageModel language { get; set; }
+
+        public PostIdentificationsModel Post { get; set; }
 
         public PostInspectModel(string url)
         {
             WebSite_URL = url;
+            language = new LanguageModel();
+            Map = new LibraryMapModel();
+
+            Post = new PostIdentificationsModel();
         }
 
+    }
+
+    public class MiniViewDataModel
+    {
+        public LibraryTagsListModel tags { get; set; } = new LibraryTagsListModel();
+        public SelectorListModel languages { get; set; } = new SelectorListModel();
     }
 
     public class PostIdentificationsModel
@@ -125,6 +147,19 @@ namespace StudioBriefcase.Models
     }
 
 
+
+    public class SubLayoutNavigationModel
+    {
+        public uint languageID;
+        public ID_String_Alias_Pair_Model? topic = null;
+        public ID_String_Alias_Pair_Model? subject = null;
+
+        public List<SubjectModel> Links { get; set; } = new List<SubjectModel>();
+        public SubLayoutNavigationModel(uint _languageID)
+        {
+            languageID = _languageID;
+        }
+    }
 
 
     /// <summary>

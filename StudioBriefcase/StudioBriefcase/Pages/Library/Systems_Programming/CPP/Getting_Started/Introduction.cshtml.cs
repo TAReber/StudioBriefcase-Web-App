@@ -7,19 +7,19 @@ using System.Runtime.CompilerServices;
 namespace StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started
 {
     public class IntroductionModel : BasePageModel
-    {
+    {       
         private const uint topicID = 8;
         
-        public IntroductionModel(PageService pageService) : base(topicID)
+        public IntroductionModel(PageService pageService) : base(pageService, topicID)
         {
             
         }      
 
-        public override void OnGet()
+        public async override Task<IActionResult?> OnGet(string language)
         {
-            base.OnGet();
-            
+            await base.OnGet(language);
 
+            return Page();
         }
     }
 }

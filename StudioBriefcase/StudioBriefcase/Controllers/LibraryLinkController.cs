@@ -24,27 +24,25 @@ namespace StudioBriefcase.Controllers
         }
 
         [HttpPost("InitializeMiniMapSelectors")]
-        public async Task<IActionResult> InitializeMiniMapSelectors([FromBody] LibraryMapIDsModel targetIDs)
+        public async Task<IActionResult> InitializeMiniMapSelectors([FromBody] JavascriptMapIDsModel targetIDs)
         {
             
             //I want to cache the ID values on client side, pass them to server. If IDs are 0, Create new lists.
-            LibraryMapModel map = new LibraryMapModel(targetIDs);
-            if(targetIDs.CategoryID == 0)
+            LibraryMapModel map = new LibraryMapModel(targetIDs.map);
+            if(targetIDs.map.CategoryID == 0)
             {
-                map.lists.Categories = await _libraryService.GetCategoryListAsync();
-                map.lists.Libraries = await _libraryService.GetLibraryListAsync(map.lists.Categories.list[0].id);
-                map.lists.Subjects = await _libraryService.GetSubjectListAsync(map.lists.Libraries.list[0].id);
-                map.lists.Topics = await _libraryService.GetTopicListAsync(map.lists.Subjects.list[0].id);
+                map.lists.Categories = await _libraryService.GetCategoryListAsync(targetIDs.LanguageID);
+                map.lists.Libraries = await _libraryService.GetLibraryListAsync(map.lists.Categories.list[0].id, targetIDs.LanguageID);
+                map.lists.Subjects = await _libraryService.GetSubjectListAsync(map.lists.Libraries.list[0].id, targetIDs.LanguageID);
+                map.lists.Topics = await _libraryService.GetTopicListAsync(map.lists.Subjects.list[0].id, targetIDs.LanguageID);
             }
             else
             {
-                map.lists.Categories = await _libraryService.GetCategoryListAsync();
-                map.lists.Libraries = await _libraryService.GetLibraryListAsync(targetIDs.CategoryID);
-                map.lists.Subjects = await _libraryService.GetSubjectListAsync(targetIDs.LibraryID);
-                map.lists.Topics = await _libraryService.GetTopicListAsync(targetIDs.SubjectID);
+                map.lists.Categories = await _libraryService.GetCategoryListAsync(targetIDs.LanguageID);
+                map.lists.Libraries = await _libraryService.GetLibraryListAsync(targetIDs.map.CategoryID, targetIDs.LanguageID);
+                map.lists.Subjects = await _libraryService.GetSubjectListAsync(targetIDs.map.LibraryID, targetIDs.LanguageID);
+                map.lists.Topics = await _libraryService.GetTopicListAsync(targetIDs.map.SubjectID, targetIDs.LanguageID);
             }
-
-
 
             return PartialView("~/Pages/Shared/Components/Page/_Page_MiniSelects.cshtml", map);
         }
@@ -61,51 +59,49 @@ namespace StudioBriefcase.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost("UpdateLibraryOptions")]
-        public async Task<IActionResult> UpdateLibraryOptions([FromBody] LibraryMapIDsModel data)
+        public async Task<IActionResult> UpdateLibraryOptions([FromBody] JavascriptMapIDsModel data)
         {
-            LibraryMapModel temp = new LibraryMapModel(data);
-
-            //Console.WriteLine($"CategoryID: {data.CategoryID}, LibraryID: {data.LibraryID}, SubjectID: {data.SubjectID}, TopicID: {data.TopicID}");
-
-            temp.lists.Categories = await _libraryService.GetCategoryListAsync();
-            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
-            if (data.LibraryID == 0)
+            LibraryMapModel temp = new LibraryMapModel(data.map);
+              
+            temp.lists.Categories = await _libraryService.GetCategoryListAsync(data.LanguageID);
+            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.map.CategoryID, data.LanguageID);
+            if (data.map.LibraryID == 0)
             {
                 temp.ids.LibraryID = temp.lists.Libraries.list[0].id;
             }
 
-            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID);
-            if (data.SubjectID == 0)
+            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID, data.LanguageID);
+            if (data.map.SubjectID == 0)
             {
                 temp.ids.SubjectID = temp.lists.Subjects.list[0].id;
             }
 
-            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID);
+            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID, data.LanguageID);
 
             return PartialView("~/Pages/Shared/Components/Page/_Page_MiniSelects.cshtml", temp);
         }
 
         [HttpPost("GetLibraryOptions")]
-        public async Task<IActionResult> GetLibraryOptions([FromBody] LibraryMapIDsModel data)
+        public async Task<IActionResult> GetLibraryOptions([FromBody] JavascriptMapIDsModel data)
         {
-            LibraryMapModel temp = new LibraryMapModel(data);
+            LibraryMapModel temp = new LibraryMapModel(data.map);
 
-            //Console.WriteLine($"CategoryID: {data.CategoryID}, LibraryID: {data.LibraryID}, SubjectID: {data.SubjectID}, TopicID: {data.TopicID}");
+            Console.WriteLine($"CategoryID: {data.map.CategoryID}, LibraryID: {data.map.LibraryID}, SubjectID: {data.map.SubjectID}, TopicID: {data.map.TopicID}");
 
-            temp.lists.Categories = await _libraryService.GetCategoryListAsync();
-            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.CategoryID);
-            if (data.LibraryID == 0)
+            temp.lists.Categories = await _libraryService.GetCategoryListAsync(data.LanguageID);
+            temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.map.CategoryID, data.LanguageID);
+            if (data.map.LibraryID == 0)
             {
                 temp.ids.LibraryID = temp.lists.Libraries.list[0].id;
             }
 
-            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID);
-            if (data.SubjectID == 0)
+            temp.lists.Subjects = await _libraryService.GetSubjectListAsync(temp.ids.LibraryID, data.LanguageID);
+            if (data.map.SubjectID == 0)
             {
                 temp.ids.SubjectID = temp.lists.Subjects.list[0].id;
             }
 
-            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID);
+            temp.lists.Topics = await _libraryService.GetTopicListAsync(temp.ids.SubjectID, data.LanguageID);
 
 
             //return PartialView("~/Pages/Shared/Components/Library/_LibrarySelectorOptions", temp);
@@ -139,7 +135,7 @@ namespace StudioBriefcase.Controllers
         [HttpPost("GetPostDetailsForm")]
         public async Task<IActionResult> GetPostDetailsForm([FromBody] ClientSideSendingData clientData)
         {
-
+            
             uint TopicID = clientData.topicID;
             string viewstring = "~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml"; //"~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml and _PostCreationForm.cshtml"
 
@@ -157,21 +153,29 @@ namespace StudioBriefcase.Controllers
                 if (model.Post != null)
                 {                  
                     model.Tags.ids = await _libraryService.GetPostTagsAsync(postID);
-                    
+
+
                 }
 
+                model.language = new LanguageModel(model.Post!.post_language_id);
+                
             }
             else {
                 model.Post.section = clientData.sectionID;
-                model.Post.post_language_id = clientData.language;
+                model.Post.post_language_id = clientData.language; //Phase Out of Model
+                model.language = new LanguageModel(clientData.language);
             }
 
+            model.language.options = await _libraryService.GetLanguages();
+
             model.Map = new LibraryMapModel(await _libraryService.BuildMapFromTopicID(TopicID));
-            model.Map.lists.Categories = await _libraryService.GetCategoryListAsync();
-            model.Map.lists.Libraries = await _libraryService.GetLibraryListAsync(model.Map.ids.CategoryID);
-            model.Map.lists.Subjects = await _libraryService.GetSubjectListAsync(model.Map.ids.LibraryID);
-            model.Map.lists.Topics = await _libraryService.GetTopicListAsync(model.Map.ids.SubjectID);
+            model.Map.lists.Categories = await _libraryService.GetCategoryListAsync(model.language.selectedID);
+            model.Map.lists.Libraries = await _libraryService.GetLibraryListAsync(model.Map.ids.CategoryID, model.language.selectedID);
+            model.Map.lists.Subjects = await _libraryService.GetSubjectListAsync(model.Map.ids.LibraryID, model.language.selectedID);
+            model.Map.lists.Topics = await _libraryService.GetTopicListAsync(model.Map.ids.SubjectID, model.language.selectedID);
             //viewstring = "~/Pages/Shared/Components/Posts/_PostCreationForm.cshtml";
+
+
 
             //return PartialView(viewstring, pair);
             return PartialView(viewstring, model);
@@ -184,6 +188,7 @@ namespace StudioBriefcase.Controllers
         {
 
             string SuccessMessage = string.Empty;
+
 
             if (uint.TryParse(User.FindFirst("sub")?.Value, out uint id))
             {
@@ -266,10 +271,11 @@ namespace StudioBriefcase.Controllers
 
 
         [HttpPost("RetrieveRazorPage")]
-        public async Task<IActionResult> RetrieveRazorPage([FromBody] LibraryMapIDsModel data)
+        public async Task<IActionResult> RetrieveRazorPage([FromBody] ID_String_Pair_Model data)
         {
+            
             //Working Example "/Library/Systems_Programming/CPP/Getting_Started/Introduction?iframe=true"
-            string path = $"/Library/{await _libraryService.GetDirectyPathMap(data.TopicID)}?iframe=true";
+            string path = $"/Library/{await _libraryService.GetDirectyPathMap(data.id)}?iframe=true";
 
             return Ok(path);
         }

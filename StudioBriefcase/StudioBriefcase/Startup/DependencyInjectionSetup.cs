@@ -33,11 +33,13 @@ namespace StudioBriefcase.Startup
             services.AddTransient<ICustodianService, CustodianService>();
 
             //Creates a reusable instance per HTTP request
-            services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
+            
             services.AddScoped<LibraryService>(); // If the same viewComponent is invoked multiple times, it automatically uses a scoped instance.
             services.AddScoped<PostTypeService>();
+            services.AddScoped<UserService>(); //Mainly Used with Settings Menu pages
             services.AddScoped<PageService>();
 
+            //I Forgot I added this, now I don't know if I need it or not.
             services.AddControllersWithViews();
 
             services.AddHttpClient("youtube", client =>
@@ -54,6 +56,8 @@ namespace StudioBriefcase.Startup
                 //    options.PageViewLocationFormats.Add("/Views/{0}" + RazorViewEngine.ViewExtension);
                 //    //options.PageViewLocationFormats.Add("/Pages/Shared/{0}" + RazorViewEngine.ViewExtension);
             });
+
+            
 
 
             return services;

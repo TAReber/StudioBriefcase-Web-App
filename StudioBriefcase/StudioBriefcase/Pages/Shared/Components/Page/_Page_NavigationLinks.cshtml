@@ -4,10 +4,33 @@
     Created for StudioBriefcase by:  Tyler Andrew Reber
 *@
 
-@model List<StudioBriefcase.Models.SubjectModel>;
+@* @model List<StudioBriefcase.Models.SubjectModel>; *@
+@model StudioBriefcase.Models.SubLayoutNavigationModel;
+
+@if(Model.languageID != 0)
+{
+     <details class="">
+        <summary></summary>
+        <form method="post" asp-page-handler="UpdateSubjectAlias">
+            <label>@(Model.subject?.text)</label>
+            <input type="text" name="aliasname" value="@(Model.subject?.alias)" autocomplete="off" placeholder="@(Model.subject?.text)">
+            <input type="text" name="mapid" value="@(Model.subject?.id)" readonly hidden>
+            <input type="text" name="langid" value="@Model.languageID" readonly hidden>
+            <input type="submit" value="Save">
+        </form>
+        <form method="post" asp-page-handler="UpdateTopicAlias">
+            <label>@(Model.topic?.text)</label>
+            <input type="text" name="aliasname" value="@(Model.topic?.alias)" autocomplete="off" placeholder="@(Model.topic?.text)">          
+            <input type="text" name="mapid" value="@(Model.topic?.id)" readonly hidden>
+            <input type="text" name="langid" value="@Model.languageID" readonly hidden>
+            <input type="submit" value="Save">
+        </form>
+    </details> 
+}
 
 <ul class="navigation-subject-list">
-    @foreach (var subject in Model)
+
+    @foreach (var subject in Model.Links)
     {
         <li>
             <div>

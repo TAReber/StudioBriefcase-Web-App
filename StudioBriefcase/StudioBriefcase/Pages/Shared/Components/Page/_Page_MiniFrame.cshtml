@@ -3,6 +3,8 @@
 *@
 @{
 }
+@model StudioBriefcase.Models.MiniViewDataModel;
+
 <div class="box-row ">
 
     <div class="box-col mini-view c-fg" id="mini-picture">
@@ -15,7 +17,7 @@
                 </div>
                 <select class="zero" id="mini-language">
                     <option value="0">Master</option>
-                    @* @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.options, (uint)0)) *@
+                     @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.languages, (uint)0)) 
                 </select>
                 <button onclick="RetrieveRazorPage()">
                     Go
@@ -23,13 +25,13 @@
             </div>
 
             @* Mini-Page Content Displayed Here *@
-@*              <div class="" id="mini-page">
-                TODO: Load in Content Area
+            @*              <div class="" id="mini-page">
+            TODO: Load in Content Area
             </div>  *@
-             <div class="mini-container zero c-bg"> 
+            <div class="mini-container zero c-bg">
                 <iframe class="zero" id="mini-page" scrolling="no" src=""></iframe>
-                
-             </div> 
+
+            </div>
 
 
 

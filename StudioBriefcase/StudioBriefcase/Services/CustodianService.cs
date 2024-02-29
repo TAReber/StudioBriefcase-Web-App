@@ -12,15 +12,14 @@ namespace StudioBriefcase.Services
 
         public async Task SetLibraryQuickLinksAsync(string libraryName, string jsonString)
         {
-            Console.WriteLine("SetLibraryQuickLinksAsync");
 
-            //await _connection.OpenAsync(); //CONNECTION TEST1
+            await _connection.OpenAsync(); //CONNECTION TEST1
             var query = new MySqlCommand($"UPDATE library_links SET links = @jsonString WHERE library_id = (SELECT id FROM libraries WHERE library_name = @libraryName);", _connection);
             query.Parameters.AddWithValue("@jsonString", jsonString);
             query.Parameters.AddWithValue("@libraryName", libraryName);
 
             await query.ExecuteNonQueryAsync();
-            //await _connection.CloseAsync();
+            await _connection.CloseAsync();
             _cache.Remove(libraryName);
         }   
 

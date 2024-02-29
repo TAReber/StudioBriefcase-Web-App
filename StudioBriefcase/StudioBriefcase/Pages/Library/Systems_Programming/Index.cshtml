@@ -1,19 +1,32 @@
-﻿@page
+﻿@page "{language?}"
 @model StudioBriefcase.Pages.Library.Systems_Programming.IndexModel
 @{
     Layout = "/Pages/Shared/_subLayout_Default.cshtml";
 }
-<div class="whitespace"></div>
+<br />
 
 <div class="box-wraprow box-5col box-center0">
 
      @foreach (var library in Model.LibraryList)
     {
         <div class="thumbnail-link">
-            <a id="language-parameter" asp-page="/Library/Systems_Programming/@(library.Name)/Getting_Started/Introduction">
-                <img src="~/images/Library/Systems_Programming/@(library.Name)/@(library.Name).png" alt="@(library.Name)_thumbnail" class="thumbnail-img">
+            <a id="language-parameter" asp-page="/Library/Systems_Programming/@(library.map.text)/Getting_Started/Introduction">
+                <img src="~/images/Library/Systems_Programming/@(library.map.text)/@(library.map.text).png" alt="@(library.alias.name)_thumbnail" class="thumbnail-img">
             </a>
-            <div class="thumbnail-text"> @library.Description </div>
+            <div class="thumbnail-text"> @library.alias.description </div>
+            @if (Model.LanguageID != 0)
+            {
+                <details class="thumbnail-edit">
+                    <summary></summary>
+                    <form method="post" asp-page-handler="UpdateAlias">
+                        <input type="text" name="aliasName" value="@(library.alias.name)" autocomplete="off" placeholder="@(library.map.text)">
+                        <input type="text" name="aliasDescription" value="@(library.alias.description)" autocomplete="off" placeholder="@(library.alias.description)">
+                        <input type="text" name="mapid" value="@(library.map.id)" readonly hidden>
+                        <input type="text" name="langid" value="@Model.LanguageID" readonly hidden>
+                        <input type="submit" value="Save">
+                    </form>
+                </details>
+            }
         </div>
     } 
 

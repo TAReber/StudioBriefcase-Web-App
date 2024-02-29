@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{language?}"
 @model StudioBriefcase.Pages.Library.IndexModel
 @{
     Layout = "/Pages/Shared/_subLayout_Default.cshtml";
@@ -11,10 +11,24 @@
     @foreach (var category in Model.CategoryList)
     {
         <div class="thumbnail-link">
-            <a asp-area="" asp-page="/Library/@(category.Name)/Index">
-                <img src="~/images/Library/@(category.Name)/@(category.Name).png" alt="@(category.Name) + _thumbanil" class="thumbnail-img">
+            <a asp-area="" id="language-parameter" asp-page="/Library/@(category.map.text)/Index">
+                <img src="~/images/Library/@(category.map.text)/@(category.map.text).png" alt="@(category.alias.name) + _thumbanil" class="thumbnail-img">
             </a>
-            <div class="thumbnail-text"> @(category.Description) </div>
+            <div class="thumbnail-text"> @(category.alias.description) </div>
+            @if(Model.LanguageID != 0)
+            {
+                <details class="thumbnail-edit">
+                    <summary></summary>
+                    <form method="post"  asp-page-handler="UpdateAlias">
+                        <input type="text" name="aliasName" value="@(category.alias.name)" placeholder="@(category.map.text)" autocomplete="off">
+                        <input type="text" name="aliasDescription" value="@(category.alias.description)" placeholder="@(category.alias.description)" autocomplete="off">
+                        <input type="text" name="mapid" value="@(category.map.id)" readonly hidden>
+                        <input type="text" name="langid" value="@Model.LanguageID" readonly hidden>
+                        <input type="submit" value="Save">
+                    </form>
+                </details>
+            }
+
         </div>
     }
 

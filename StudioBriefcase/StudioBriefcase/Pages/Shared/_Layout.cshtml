@@ -45,7 +45,7 @@ This keeps the footer at the bottom of the screen for short content*@
                             <a class="theme-link text-lg" asp-area="" asp-Page="/Connect/Index">Connect</a>
                         </li>
                         <li class="me-block">
-                            <a class="theme-link text-lg" asp-area="" asp-page="/Library/Index">Library</a>
+                            <a class="theme-link text-lg" id="language-parameter" asp-area="" asp-page="/Library/Index">Library</a>
                         </li>
                         <li class="me-block">
                             <a class="theme-link text-lg" asp-area="" asp-page="/About/Index">About</a>
@@ -62,7 +62,8 @@ This keeps the footer at the bottom of the screen for short content*@
                         <img class="icon-square-media me-justify zero c-fg" src="~/images/External/Icons/github-mark.png" alt="Menu Icon" />
                         </button> *@
                         <div class="box-col me-absolute c-menu menu-window" id="header-menu">
-                            <partial name="_menuPartial" />
+                            @* <partial name="_menuPartial" /> *@
+                            @await Component.InvokeAsync("Page_Menu");
                         </div>
 
                     </div>
@@ -105,6 +106,7 @@ This keeps the footer at the bottom of the screen for short content*@
 
 
     <script src="~/scripts/site.js"></script>
+    <script src="~/scripts/MainLayout.js"></script>
     <script src="~/scripts/ColorModes.js"></script>
     @*jquery Added for Ajax to fetch api data*@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

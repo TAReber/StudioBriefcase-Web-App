@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudioBriefcase.Models;
+using StudioBriefcase.Services;
 
 namespace StudioBriefcase.Pages.Library.Internet_Technology.Web_Development.Getting_Started
 {
@@ -8,13 +9,15 @@ namespace StudioBriefcase.Pages.Library.Internet_Technology.Web_Development.Gett
     {
         private const uint topicID = 4;
 
-        public IntroductionModel() : base(topicID)
+        public IntroductionModel(PageService pageService) : base(pageService, topicID)
         {
         }
 
-        public override void OnGet()
-        {
-            base.OnGet();
+        public async override Task<IActionResult?> OnGet(string language)
+        {           
+            var page = base.OnGet(language);
+
+            return await page;
         }
     }
 }

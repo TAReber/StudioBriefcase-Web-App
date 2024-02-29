@@ -1,22 +1,22 @@
 ﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    //Map Selectors in the Mini Layout
 *@
 @{
 }
 @model StudioBriefcase.Models.LibraryMapModel
 
 <div class="box-row w100">
-    <select style="width:150px;" type="text" id="mini-category" value=@Model.ids.CategoryID onchange="MapOptionsChangedDuplicate('mini-map',0)">
+    <select style="width:150px;" type="text" id="mini-category" value=@Model.ids.CategoryID onchange="MapOptionsChangedDuplicate('mini',0)">
         @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Categories, Model.ids.CategoryID))
     </select>
 
-    <select style="width:150px;" type="text" id="mini-library" value="@Model.ids.LibraryID" onchange="MapOptionsChangedDuplicate('mini-map',1)">
+    <select style="width:150px;" type="text" id="mini-library" value="@Model.ids.LibraryID" onchange="MapOptionsChangedDuplicate('mini',1)">
         @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Libraries, Model.ids.LibraryID))
     </select>
 </div>
 
 <div class="box-row w100">
-    <select style="width:150px;" type="text" id="mini-subject" value="@Model.ids.SubjectID" onchange="MapOptionsChangedDuplicate('mini-map',2)">
+    <select style="width:150px;" type="text" id="mini-subject" value="@Model.ids.SubjectID" onchange="MapOptionsChangedDuplicate('mini',2)">
         @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.lists.Subjects, Model.ids.SubjectID))
     </select>
 

@@ -53,7 +53,7 @@
                 </div>
                 
                 <div class="p2"></div>
-                @await Component.InvokeAsync("PageNavigation", new { path = @thisDirectory })
+                @await Component.InvokeAsync("PageNavigation", new { topicID =  ViewData["TopicID"], languageID = ViewData["LanguageID"] })
 
                 <div class="whitespace"></div>
             </div>
@@ -71,7 +71,6 @@
     </div> *@
     <div class="main-content box-row h100">
         <div class="box-row me-grow1 h100" style="overflow:auto">
-
             <div class="box-col me-grow1" style="margin: 2% 7%;">
                 @RenderBody()
             </div>
@@ -83,10 +82,8 @@
 
 
         @* MiniPagePartial id in here*@
-        <partial name="_miniPagePartial" />
-        
-
-
+        @* <partial name="_miniPagePartial" /> *@
+        @await Component.InvokeAsync("Page_MiniFrame");
     </div>
 
 </main>
@@ -116,14 +113,14 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        ToggleExpanded('@ViewData["Subject"]?.ToString()');
-    });
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     ToggleExpanded('@ViewData["Subject"]?.ToString()');
+    // });
 
     //A Function that creates a single string out of JSON Obejcts and Inserts the string into a database.
     function updateLibraryLinks(event) {
         //console.log("The javascript updateLibraryLinks function was called");
-        console.log("Custodian Quicklinks client function");
+        //console.log("Custodian Quicklinks client function");
         let item = [];
         let inputFields = document.querySelectorAll(".link-input");
         let objects = [];

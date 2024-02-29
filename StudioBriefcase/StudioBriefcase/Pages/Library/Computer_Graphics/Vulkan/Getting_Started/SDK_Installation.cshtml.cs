@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using StudioBriefcase.Models;
+using StudioBriefcase.Services;
 
 namespace StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Getting_Started
 {
@@ -8,15 +9,17 @@ namespace StudioBriefcase.Pages.Library.ComputerGraphics.Vulkan.Getting_Started
     {
         private const uint topicID = 2;
 
-        public SDK_InstallationModel() : base(topicID)
+        public SDK_InstallationModel(PageService pageService) : base(pageService, topicID)
         {
 
         }
 
 
-        public override void OnGet()
+        public async override Task<IActionResult?> OnGet(string language)
         {
-            base.OnGet();
+            await base.OnGet(language);
+
+            return Page();
         }
     }
 }

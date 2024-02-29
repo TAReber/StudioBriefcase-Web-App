@@ -171,7 +171,7 @@ function InsertLinkToDatabase() {
     let LibraryMapModel = {
         sectionID: document.getElementById('PostInspect-section').value,
         topicID: document.getElementById('PostInspect-topic').value,
-        language: document.getElementById('menu-language').value,
+        language: document.getElementById('PostInspect-language').value,
         url: document.getElementById('PostInspect-link').value,
         post_type: document.getElementById('PostInspect-posttype').value,
 
@@ -206,7 +206,6 @@ function InsertLinkToDatabase() {
         });
 
 }
-
 
 
 

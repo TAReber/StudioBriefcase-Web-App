@@ -1,0 +1,12 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model StudioBriefcase.Models.LanguageModel
+
+<label class="p2" for="menu-language">Language:</label>
+<select class="zero" id="menu-language" onchange="UpdateLanguage()">
+    @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.options, Model.selectedID))
+</select>

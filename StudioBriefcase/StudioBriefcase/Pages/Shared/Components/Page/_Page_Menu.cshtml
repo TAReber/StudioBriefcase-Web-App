@@ -2,6 +2,7 @@
     Episode 3 - Color Management System, Realtime Color Updates
 *@
 @using StudioBriefcase.Models;
+@model StudioBriefcase.Models.LanguageModel
 @{
 
 }
@@ -16,7 +17,11 @@
         <button class="menu-btn menu-btn-link event-toggle c-fg" data-target="user-form"><span class="text-sm" style="color:inherit">Settings</span></button>
     </li>
     <li class="box-row">
-         @Component.InvokeAsync("Page_LanguageSelect");
+        <label class="p2" for="menu-language">Language:</label>
+        <select class="zero" id="menu-language" onchange="UpdateLanguage()">
+            <option value="0">Master</option>
+            @await Html.PartialAsync("/Pages/Shared/Components/Base/_SelectOptions.cshtml", Tuple.Create(Model.options, (uint)0))
+        </select>
     </li>
     @if (User.Identity?.IsAuthenticated == true)
     {
@@ -120,67 +125,3 @@
     <div class="form-background event-toggle" data-target="user-form" />
 
 </div>
-
-<script>
-
-    // const localStorage_Language = 'user_language';
-
-    // function UpdateLanguage() {
-    //     let selection = document.getElementById("menu-language").value;
-    //     localStorage.setItem(localStorage_Language, selection);
-
-    //     let LibraryLinks = document.querySelectorAll("#language-parameter");
-    //     LibraryLinks.forEach(function (link) {
-    //         link.href = link.href + '?Language=' + selection;
-
-    //     });
-
-    // }
-
-    // document.addEventListener("DOMContentLoaded", () => {
-
-    //     let language_selection = localStorage.getItem(localStorage_Language);
-    //     if (language_selection != null) {
-    //         document.getElementById("menu-language").value = language_selection;
-    //     }
-    //     else { //default settings to English, value 1
-    //         document.getElementById("menu-language").value = 'English';
-    //     }
-
-    // });
-
-
-    function updateUserRole(event) {
-        event.stopPropagation();
-
-        var selectedRole = document.getElementById('Menu_RoleDropdown').value;
-        var userId = "test";
-
-        fetch('/api/user/UpdateUserClass', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                Id: userId,
-                userClass: selectedRole
-            })
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error("Fetch Operation failed in _menuPartial.cshtml:", error);
-            });
-    }
-
-
-</script>
-
-

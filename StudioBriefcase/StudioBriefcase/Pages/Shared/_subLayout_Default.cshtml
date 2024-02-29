@@ -20,8 +20,8 @@
         </div>
 
         @* MiniPagePartial id in here*@
-         <partial name="_miniPagePartial" /> 
-        
+         @* <partial name="_miniPagePartial" />  *@
+         @await Component.InvokeAsync("Page_MiniFrame");
 
 
     </div>

@@ -15,14 +15,12 @@ namespace StudioBriefcase.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            LibraryMapIDsModel targetID = new LibraryMapIDsModel();
-            LibraryMapModel map = new LibraryMapModel(targetID);
-            map.lists.Categories = await _pageService.GetCategoryListAsync();
-            map.lists.Libraries = await _pageService.GetLibraryListAsync(map.lists.Categories.list[0].id);
-            map.lists.Subjects = await _pageService.GetSubjectListAsync(map.lists.Libraries.list[0].id);
-            map.lists.Topics = await _pageService.GetTopicListAsync(map.lists.Subjects.list[0].id);
+           
+            MiniViewDataModel model = new MiniViewDataModel();
+            model.tags = await _pageService.GetLibraryTagsAsync();
+            model.languages = await _pageService.GetLanguages();
 
-            return View("~/Pages/Shared/Components/Library/_LibraryMapSelectors.cshtml");
+            return View("~/Pages/Shared/Components/Page/_Page_MiniFrame.cshtml", model);
         }
 
     }

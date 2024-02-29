@@ -46,7 +46,7 @@ namespace StudioBriefcase.Helpers
                // Console.WriteLine($"{param.Item1}, {param.Item2}");
                 command.Parameters.AddWithValue($"{param.Item1}", param.Item2);
             }
-            Console.WriteLine(command.CommandText);
+            //Console.WriteLine(command.CommandText);
             Dispose();
             return command;
         }
@@ -100,6 +100,13 @@ namespace StudioBriefcase.Helpers
             return this;
         }
 
+        public QueryHelper WhereAnd(string column, uint data)
+        {
+            _wheres.Append($"AND {column} = @{column} ");
+            IDParameters.Add(new Tuple<string, uint>($"@{column}", data));
+            return this;
+        }
+
         public QueryHelper Order(string column, string direction = "ASC")
         {
             _wheres.Append($"ORDER BY {column} {direction} ");
@@ -124,6 +131,32 @@ namespace StudioBriefcase.Helpers
             return this;
         }
 
+
+        public QueryHelper UpdateAlias(string tableName, uint map_id, uint language_id)
+        {
+            _selects.Append($"UPDATE {tableName}_languages ");
+            _wheres.Append($"WHERE map_id = @mapid AND language_id = @langID ");
+            IDParameters.Add(new Tuple<string, uint>("@mapid", map_id));
+            IDParameters.Add(new Tuple<string, uint>("@langID", language_id));
+            return this;
+        }
+
+        public QueryHelper SetAlias(string name, string description)
+        {
+            _joins.Append($"SET alias_name = @alias, alias_description = @description ");
+            Parameters.Add(new Tuple<string, string>("alias", name));
+            Parameters.Add(new Tuple<string, string>("description", description));
+            return this;
+        }
+
+        public QueryHelper SetAlias(string name)
+        {
+            _joins.Append($"SET alias_name = @alias ");
+            Parameters.Add(new Tuple<string, string>("alias", name));
+            return this;
+        }
+
+
         public QueryHelper SelectMapName(uint topicID)
         {
             _selects.Append("SELECT c.category_name, l.library_name, s.subject_name, t.topic_name FROM topics t ");
@@ -143,12 +176,26 @@ namespace StudioBriefcase.Helpers
             return this;
         }
 
+        /// <summary>
+        /// Joins the Post Table to the Command, and adds the where clause to the command with the supplied parameters.
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="languageID"> Treats Zero as Wildcard by excluding the table from the query.</param>
+        /// <param name="section"></param>
+        /// <returns></returns>
         public QueryHelper JoinPosts(uint topicID, uint languageID, uint section)
         {
             _joins.Append($"JOIN posts p ON p.id = pt.post_id ");
-            _wheres.Append("WHERE p.topics_id = @topicID AND p.post_language_id = @languageID AND p.section = @section ");
-            IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));
-            IDParameters.Add(new Tuple<string, uint>("@languageID", languageID));
+            if (languageID == 0)
+            {
+                _wheres.Append("WHERE p.topics_id = @topicID AND p.section = @section ");
+            }
+            else
+            {
+                _wheres.Append("WHERE p.topics_id = @topicID AND p.post_language_id = @languageID AND p.section = @section ");
+                IDParameters.Add(new Tuple<string, uint>("@languageID", languageID));
+            }          
+            IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));          
             IDParameters.Add(new Tuple<string, uint>("@section", section));
             return this;
         }
@@ -214,6 +261,9 @@ namespace StudioBriefcase.Helpers
             _wheres.Append("; SELECT LAST_INSERT_ID()");
             return this;
         }
+
+
+
     }
 
 

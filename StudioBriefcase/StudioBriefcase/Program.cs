@@ -41,6 +41,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 
+
+
 if (isVerified)
     app.MapLoginEndPoints();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudioBriefcase.Models;
 using StudioBriefcase.Services;
 
 namespace StudioBriefcase.ViewComponents
@@ -17,12 +18,22 @@ namespace StudioBriefcase.ViewComponents
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public async Task<IViewComponentResult> InvokeAsync(string path)
+        public async Task<IViewComponentResult> InvokeAsync(uint topicID, uint languageID)
         {
 
-            var listdata = await _pageService.GetSubjectListAsync(path);
+            SubLayoutNavigationModel listData = new SubLayoutNavigationModel(languageID);
+            if(languageID == 0)
+            {
+                listData.Links = await _pageService.MakeSubLayoutNavigationLinksAsync(topicID);
+            }
+            else
+            {
+                listData = await _pageService.MakeSubLayoutNavigationLinksAsync(topicID, languageID);
+            }
 
-            return View("~/Pages/Shared/Components/Page/_Page_NavigationLinks.cshtml", listdata);
+            
+
+            return View("~/Pages/Shared/Components/Page/_Page_NavigationLinks.cshtml", listData);
         }
     }
 }
