@@ -10,16 +10,14 @@
 
 }
 
+/*.event-edit-basicsegment {
+}*/
+
 .event-toggle:hover{
     cursor:pointer;
 }
 
-
-
-/*Due to the top down design, it made sense to create a class
-  that to create space between the array of <div> sections in main-content.
-This can simply spacing issues without using margins.
-*/
+/*was stupid - phasing out*/
 .whitespace{
     width:100%;
     height: 2rem;

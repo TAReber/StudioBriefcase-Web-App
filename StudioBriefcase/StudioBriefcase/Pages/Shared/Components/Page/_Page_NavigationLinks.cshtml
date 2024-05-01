@@ -10,7 +10,7 @@
 @if(Model.languageID != 0)
 {
      <details class="">
-        <summary></summary>
+        <summary class="summary-icon-book"></summary>
         <form method="post" asp-page-handler="UpdateSubjectAlias">
             <label>@(Model.subject?.text)</label>
             <input type="text" name="aliasname" value="@(Model.subject?.alias)" autocomplete="off" placeholder="@(Model.subject?.text)">

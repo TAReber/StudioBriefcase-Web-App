@@ -1,14 +1,9 @@
 ﻿@page "{language?}"
 @model StudioBriefcase.Pages.Library.Systems_Programming.CPP.Getting_Started.IntroductionModel
+
 @{
-    //studioBriefcase/Pages/Library/Systems_Programming/CPP/Getting_Started/Introduction.cshtml
-    //Layout = "/Pages/Shared/_subLayout_Library.cshtml";
-
-    // or specify a different layout
-
-    Layout = ViewData["Layout"]?.ToString();
-    
-
+    //
+    Layout = ViewData["Layout"]?.ToString();    
 }
 
 <div>
@@ -17,10 +12,11 @@
 <div>
     <p>Because they tutorial doesn't exist, instead I will provide link to other sources.</p>
 </div>
+@await Html.PartialAsync("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", 1)
+@await Html.PartialAsync("~/Pages/Shared/Components/Page/_PageSection_Post.cshtml", 2)
 
-@await Component.InvokeAsync("PageSection_Post", new { section = 1 })
-@await Component.InvokeAsync("PageSection_Post", new { section = 2 })
-
+@await Component.InvokeAsync("Page_Content_BasicSegment", new Tuple<StudioBriefcase.Models.PageDataMap, uint>(Model.datamap, 1))
+@await Component.InvokeAsync("Page_Content_BasicSegment", new Tuple<StudioBriefcase.Models.PageDataMap, uint>(Model.datamap, 2))
 
 <div>
     <h5>C++ Standard Library References</h5>
@@ -92,5 +88,4 @@
     </ul>
 </div>
 
-
-<div class="whitespace"></div>
+<br />

@@ -368,5 +368,31 @@ namespace StudioBriefcase.Services
             };
         }
 
+
+        /// <summary>
+        /// Uses the Map and table suffix to get the records from a table that begins with "post_type_"
+        /// Available suffixes are "video", "website", "article"
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ID_String_Alias_Pair_Model>> GetPostTypeRecord(PageDataMap map, string posttype)
+        {
+            List<ID_String_Alias_Pair_Model> links = new List<ID_String_Alias_Pair_Model>();
+
+            MySqlCommand command = new QueryHelper().SelectPostRecord("website")
+                .JoinPosts(map._topicID, map._languageID).Build(_connection);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                await reader.ReadAsync();
+                links.Add(new ID_String_Alias_Pair_Model
+                {
+                    id = reader.GetFieldValue<uint>(0),
+                    text = reader.GetString(1),
+                    alias = reader.GetString(2)
+                });
+
+            }
+            return links;
+        }
     }
 }

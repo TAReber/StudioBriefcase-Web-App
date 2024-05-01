@@ -80,6 +80,8 @@ function VideoButtonTest(button) {
     })
         .then(response => response.json())
         .then(data => {
+            const main = document.getElementById("viewport" + val);
+            main.innerHTML = "";
             for (let i = 0; i < data.length; i++) {
                 CreateVideoPreview(val, data[i]);
             }

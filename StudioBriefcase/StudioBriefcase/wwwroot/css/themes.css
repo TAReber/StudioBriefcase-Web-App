@@ -14,6 +14,7 @@
     font-size: 1.6rem;
 }
 
+
 .header-title-box-media {
     width: fit-content;
     margin: 0 1rem;
@@ -48,7 +49,26 @@
     left: 0;
 }
 
+.header-logo {
+}
 
+    .header-logo:hover {
+        opacity: 0.8;
+    }
+
+
+.header-logo-utficon {
+    font-size: 2.8rem;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.header-logo-font {
+    font-family: Consolas, monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: left;
+}
 
 .main-content {
     /*align-self: center;*/
@@ -63,6 +83,18 @@
     height: 1.5rem;
 }
 
+.tools-content {
+    min-width:150px;
+    border: 1px solid var(--offset);
+    border-radius: 5px;
+    transition: all 0.4s ease-in-out;
+    left:0px;
+}
+
+    .tools-content.expanded {
+        left:40px;
+        position: absolute;
+    }
 
 .menu-window {
     border-radius: 0.35rem;
@@ -194,20 +226,15 @@
 }
 
 .thumbnail-edit {
-    color:yellow;
+    color: yellow;
     display: none;
     position: absolute;
     top: 10px;
     left: 10px;
 }
 
-summary::marker {
-    font-size: 1.5em;
-    content: "📬";   
-}
-[open] summary::marker {
-    content: "📭";
-}
+
+
 
 .thumbnail-btn {
     position: absolute;
@@ -285,10 +312,18 @@ summary::marker {
     text-align: left;
 }
 
+
 .accordion-target-horizontal {
+    /*display:flex;*/
+
+    transition: width 0.4s ease-in-out;
+    overflow: hidden;
+    direction: rtl;
+    width: 0px;
 }
 
     .accordion-target-horizontal.expanded {
+        width: 100%;
     }
 
 .accordion-target-vertical {
@@ -302,6 +337,103 @@ summary::marker {
     .accordion-target-vertical.expanded {
         height: 100%;
     }
+
+
+details {
+    display: inline-block;
+    top: 0px;
+    right: 0px;
+}
+
+.summary-icon-book::marker {
+    font-size: 1.3em;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    content: "📘";
+}
+
+[open] .summary-icon-book::marker {
+    content: "📖";
+}
+
+.summary-icon {
+
+}
+
+.summary-icon-wrench::marker {
+    content: "🔧";
+}
+
+.summary-icon-wrench:hover {
+    color: var(--offset);
+}
+
+[open] .summary-icon-wrench::marker {
+    transform: scaleX(-1);
+}
+
+.summary-icon-questionmark::marker {
+    content: "❓";
+}
+
+.summary-icon-questionmark:hover {
+    color: var(--offset);
+}
+
+[open] .summary-icon-questionmark::marker {
+    transform: scaleX(-1);
+}
+
+.summary-icon-about::marker {
+    content: "🙈";
+}
+.summary-icon-about:hover {
+    color: var(--offset);
+}
+.summary-icon-about:hover::marker {
+    content: "🙊";
+    
+}
+[open] .summary-icon-about::marker {
+    content: "🙉";
+}
+
+.summary-icon-link {
+    font-size: 1.5em;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    content: "🔗";
+}
+
+[open] .summary-icon-link::marker {
+    content: "🔗";
+}
+
+.icon-save::marker {
+    font-size: 1.2em;
+    top: 0px;
+    right: 0px;
+    content: "💾";
+}
+
+.icon-save:hover::marker {
+    font-size: 1.3em;
+}
+
+.icon-pen::marker {
+    font-size: 1.2em;
+    content: "🖋";
+}
+
+[open] .icon-pen:hover::marker {
+    content: "🖋";
+    display: block;
+}
+
+
+
 
 .form {
     visibility: hidden;

@@ -1,6 +1,11 @@
 ﻿
 /* This Function for Unique Target toggles */
 document.addEventListener('DOMContentLoaded', () => {
+    Event_AddExpandToggles();
+    
+});
+
+function Event_AddExpandToggles() {
     let toggles = document.querySelectorAll('.event-toggle');
 
     for (let i = 0; i < toggles.length; i++) {
@@ -14,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ToggleExpanded(targetid);
         });
     }
+}
 
-});
 function ToggleExpanded(elementId) {
     let container = document.getElementById(elementId);
     container.classList.toggle('expanded');
@@ -85,7 +90,6 @@ function MapOptionsChangedDuplicate(targetid, index) {
 
         });
 }
-
 
 
 

@@ -15,21 +15,33 @@
     @*Helper Styles to add visual Assistance to the development process*@
     <link rel="stylesheet" href="~/css/helperStyles.css" />
 
+    <link rel="stylesheet" href="~/css/DocyDrip-TEOStyles.css" />
+
     @* Default Colors used in the website and altered values used in darkmode *@
     <partial name="_colors" />
+    <link rel="stylesheet" href="~/css/ColorStyles.css" />
 
 </head>
 
 @*vh100 is defined here so main can flex-grow the remaining space in the window
 This keeps the footer at the bottom of the screen for short content*@
-<body class="box-col box-justify3 c-bg zero " style="height:100vh;">
+<body class="box-col box-justify3 c-bg zero vh100">
 
     <header class="header-style w100 c-fg c-shadow">
         <nav class="max-w100">
             <div class="box-wraprow box-center3">
                 <div class="box-row box-center3 header-title-box-media">
-                    <a class="box-center0 text-lg" asp-area="" asp-page="/Index">
-                        <img src="~/images/internal/StudioBriefcaseBanner.png" alt="Site_Logo" class="m3" style="max-width:225px;">
+
+                    <a class="header-logo box-center0" asp-area="" asp-page="/Index">
+                        <div class="box-row box-center0">
+                            <span class="header-logo-utficon">💼</span>
+                            <div class="box-col header-logo-font">
+                                <span>Studio</span>
+                                <span>Briefcase</span>
+                            </div>
+                        </div>
+
+                        @*  <img src="~/images/internal/StudioBriefcaseBanner.png" alt="Site_Logo" class="m3" style="max-width:225px;"> *@
                     </a>
                     <div class="header-title-box-btn-media">
                         <button class="me-pushend theme-avatar event-toggle c-menu" data-target="layout-navbtn">
@@ -42,17 +54,43 @@ This keeps the footer at the bottom of the screen for short content*@
 
                     <ul class="box-row zero mx20">
                         <li class="me-block">
-                            <a class="theme-link text-lg" asp-area="" asp-Page="/Connect/Index">Connect</a>
+                            <a class="theme-link text-lg" id="language-parameter" asp-area="" asp-page="/Library/Index">📚library</a>
                         </li>
                         <li class="me-block">
-                            <a class="theme-link text-lg" id="language-parameter" asp-area="" asp-page="/Library/Index">Library</a>
+                            <details class="theme-link text-lg" style="position:relative">
+                                <summary class="summary-icon-wrench event-toggle" data-target="layout-tools">Tools</summary>
+                                <div class="box-col tools-content zero c-fg" id="layout-tools">
+                                    <span class="text-center">Docy Drip</span>
+                                    <hr class="w100" />
+                                    <span class=""><a class="theme-link text-lg" asp-area="" asp-Page="/Tools/DocyDrip/TEO">📝TEO</a></span>
+                                </div>
+                            </details>
                         </li>
                         <li class="me-block">
-                            <a class="theme-link text-lg" asp-area="" asp-page="/About/Index">About</a>
+                            <details class="theme-link text-lg" style="position:relative">
+                                <summary class="summary-icon-about event-toggle" data-target="layout-support">Support</summary>
+                                <div class="box-col tools-content zero c-fg" id="layout-support">
+                                    <span class="zero"><a class="theme-link text-lg" asp-area="" asp-Page="/Connect/Index">🌐Connect</a></span>
+                                    <span><a class="theme-link text-lg" asp-area="" asp-page="/Support/Index">🧻Support</a></span>
+                                </div>
+                            </details>
                         </li>
                         <li class="me-block">
-                            <a class="theme-link text-lg" asp-area="" asp-page="/Support/Index">Support</a>
+                            <details class="theme-link text-lg" style="position:relative">
+                                <summary class="summary-icon-questionmark event-toggle" data-target="layout-about">About</summary>
+                                <div class="box-col tools-content zero c-fg" id="layout-about">
+                                    <span><a class="theme-link text-lg" asp-area="" asp-page="/About/Index">🧬Author Bio</a></span>
+                                </div>
+                            </details>
                         </li>
+
+
+                        @*                         <li class="me-block">
+                        <a class="theme-link text-lg" asp-area="" asp-page="/About/Index">about</a>
+                        </li> *@
+                        @*                         <li class="me-block">
+                        <a class="theme-link text-lg" asp-area="" asp-page="/Support/Index">🙊support</a>
+                        </li> *@
                     </ul>
 
                     <div class="box-col container-relative mx20">
@@ -76,22 +114,13 @@ This keeps the footer at the bottom of the screen for short content*@
     </header>
 
 
-
-
-
-
     @* <Main> Element is handled in subLayout because I believed letting a subLayout
     have control of main styles would simply implementing layout specific behaviors.    *@@*
     I'm might back track on this tucking the main element inside the sublayout.
     When I plug this site wide picture inside a picture. Its going to compete for space with the main element. *@
 
-    
+
     @RenderBody() @* LeftSide *@
-   
-
-
-    
-
 
 
     <footer class="box-col w100 zero c-fg">
@@ -106,6 +135,7 @@ This keeps the footer at the bottom of the screen for short content*@
 
 
     <script src="~/scripts/site.js"></script>
+    <script src="~/scripts/DocyDrip-TEO.js"></script>
     <script src="~/scripts/MainLayout.js"></script>
     <script src="~/scripts/ColorModes.js"></script>
     @*jquery Added for Ajax to fetch api data*@

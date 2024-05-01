@@ -1,0 +1,43 @@
+﻿.c-bg {
+    background-color: var(--background);
+    color: var(--text-color1);
+}
+
+.c-fg {
+    background-color: var(--foreground);
+    color: var(--text-color2);
+}
+
+.c-shadow {
+    box-shadow: 0 1px 3px 0 var(--shadow1), 0 2px 5px 0 var(--shadow2);
+}
+
+.c-menu {
+    background-color: var(--menu-background);
+    color: var(--text-color1);
+}
+
+
+.c-offset {
+    background-color: var(--offset);
+    color: var(--text-color1);
+}
+
+    .c-offset.expanded {
+        background-color: var(--menu-background);
+        color: var(--text-color2);
+    }
+
+a {
+    text-decoration: none;
+    color: var(--shadow1);
+}
+
+    a:visited {
+        color: var(--shadow2);
+    }
+
+    a:hover {
+        color: var(--offset); /* #a1a1a1;*/
+    }
+

@@ -13,6 +13,8 @@ namespace StudioBriefcase.Services
         Task<List<Map_Alias_Pair_Model>> GetCategoryAliasIntros(uint languageID);
         Task<List<Map_Alias_Pair_Model>> GetLibraryAliasIntros(uint CategoryID, uint languageID);
 
+        Task<List<ID_String_Alias_Pair_Model>> GetPostTypeRecord(PageDataMap map, string table_suffix);
+        
 
         //Task<PageMapModel> GetPageMapID(string category, string library, string subject, string topic);
     }

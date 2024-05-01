@@ -164,6 +164,16 @@ namespace StudioBriefcase.Helpers
             IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));
             return this;
         }
+        /// <summary>
+        /// Selects the post id, link and alias from the post type table
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public QueryHelper SelectPostRecord(string table)
+        {
+            _selects.Append($"SELECT pt.id, pt.link, pt.alias FROM post_type_{table} ");
+            return this;
+        }
 
         /// <summary>
         /// Initializes a query to select a list of links from a post type table.
@@ -183,20 +193,34 @@ namespace StudioBriefcase.Helpers
         /// <param name="languageID"> Treats Zero as Wildcard by excluding the table from the query.</param>
         /// <param name="section"></param>
         /// <returns></returns>
-        public QueryHelper JoinPosts(uint topicID, uint languageID, uint section)
+        public QueryHelper JoinPosts(uint topicID, uint languageID, uint section = 0)
         {
             _joins.Append($"JOIN posts p ON p.id = pt.post_id ");
-            if (languageID == 0)
+            _wheres.Append("WHERE p.topics_id = @topicID ");
+
+            IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));
+            if (languageID != 0)
             {
-                _wheres.Append("WHERE p.topics_id = @topicID AND p.section = @section ");
-            }
-            else
-            {
-                _wheres.Append("WHERE p.topics_id = @topicID AND p.post_language_id = @languageID AND p.section = @section ");
+                _wheres.Append("AND p.post_language_id = @languageID ");
                 IDParameters.Add(new Tuple<string, uint>("@languageID", languageID));
-            }          
-            IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));          
-            IDParameters.Add(new Tuple<string, uint>("@section", section));
+            }
+            if (section != 0)
+            {
+                _wheres.Append("AND p.section = @section ");
+                IDParameters.Add(new Tuple<string, uint>("@section", section));
+            }
+
+
+            //if (languageID == 0)
+            //{
+            //    _wheres.Append("WHERE p.topics_id = @topicID AND p.section = @section ");
+            //}
+            //else
+            //{
+            //    _wheres.Append("WHERE p.topics_id = @topicID AND p.post_language_id = @languageID AND p.section = @section ");
+            //    IDParameters.Add(new Tuple<string, uint>("@languageID", languageID));
+            //}                               
+            //IDParameters.Add(new Tuple<string, uint>("@section", section));
             return this;
         }
 
@@ -245,7 +269,7 @@ namespace StudioBriefcase.Helpers
         }
 
 
-        public QueryHelper InsertPost(uint topicID, uint posttype, uint language_id, uint gitid, uint section)
+        public QueryHelper InsertPost(uint topicID, uint posttype, uint language_id, uint gitid = 0, uint section = 0)
         {
             _selects.Append("INSERT INTO posts (topics_id, post_type_id, post_language_id, git_id, section) VALUES (@topicID, @posttype, @language_id, @gitid, @section)");
             IDParameters.Add(new Tuple<string, uint>("@topicID", topicID));

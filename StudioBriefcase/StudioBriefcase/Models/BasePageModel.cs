@@ -12,14 +12,16 @@ namespace StudioBriefcase.Models
     public class BasePageModel : PageModel
     {
         private PageService _pageService;
-        private uint _topicID;
-        public uint LanguageID { get; set; } = 0;
+        //private uint _topicID;
+        public PageDataMap datamap { get; set; }
+        //public uint LanguageID { get; set; } = 0;
 
 
         public BasePageModel(PageService pageservice, uint topicID)
         {
             _pageService = pageservice;
-            _topicID = topicID;           
+            datamap = new PageDataMap(topicID);
+            //_topicID = topicID;           
         }
 
 
@@ -29,10 +31,10 @@ namespace StudioBriefcase.Models
             //uint langID = 0;
             if (language != null)
             {
-                LanguageID = await _pageService.LanguagesIDexists(language);
+                datamap._languageID = await _pageService.LanguagesIDexists(language);
 
                 // If the language is not found, default to Master Language
-                if (LanguageID == 0)
+                if (datamap._languageID == 0)
                 {
                     string path = Request.Path.Value!;
                     string defaultPath = path.Replace($"/{language}", "");
@@ -67,13 +69,14 @@ namespace StudioBriefcase.Models
             ViewData["Subject"] = dbmap![4];
             ViewData["Topic"] = dbmap![5];
             //ViewData["Language"] = dbmap[6] ?? "Master";
-            ViewData["LanguageID"] = LanguageID;
-            ViewData["TopicID"] = _topicID;
+            ViewData["LanguageID"] = datamap._languageID;
+            ViewData["TopicID"] = datamap._topicID;
         }
 
         public async Task<IActionResult> OnPostUpdateSubjectAlias(string aliasName, uint mapid, uint langid)
         {
-            LanguageID = langid;
+            datamap = new PageDataMap(mapid);
+            datamap._languageID = langid;
             CreateSubLayoutViewData();
 
             await _pageService.UpdateMapAliasNameAsync("subjects", mapid, langid, aliasName);
@@ -84,12 +87,23 @@ namespace StudioBriefcase.Models
 
         public async Task<IActionResult> OnPostUpdateTopicAlias(string aliasName, uint mapid, uint langid)
         {
-            LanguageID = langid;
+            datamap = new PageDataMap(mapid);
+            datamap._languageID = langid;
             CreateSubLayoutViewData();
 
             await _pageService.UpdateMapAliasNameAsync("topics", mapid, langid, aliasName);
 
             return Page();
+        }
+    }
+
+    public class PageDataMap
+    {
+        public uint _topicID { get; set; }
+        public uint _languageID { get; set; }
+        public PageDataMap(uint topicID)
+        {
+            _topicID = topicID;
         }
     }
 

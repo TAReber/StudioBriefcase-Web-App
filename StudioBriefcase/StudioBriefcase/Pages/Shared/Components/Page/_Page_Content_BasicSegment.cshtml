@@ -1,0 +1,43 @@
+﻿@{
+}
+@model uint 
+
+
+<div class="teo-mastercontainer zero" id="EditableSegement@(Model)">
+
+    <div class="box-col w100 box-center3 zero">
+        <div class="box-row w100">
+            <span class="zero text-lg w100" id="EditorHeader" contenteditable="false"><b>@(Model) Fancy Description Title </b></span>
+            <details >
+                <summary class="summary-icon-book event-docydrip-teo" data-target="EditableSegement@(Model)"></summary>
+            </details>
+        </div>
+
+        <div class="box-wraprow box-center0 teo-button-container" id="EditorButtons">
+
+            <!-- Text Undo/Redo-->
+@*          <button class="Editor-btn" id="undo"><b>&#8630</b></button>
+            <button class="Editor-btn" id="redo"><b>&#8631</b></button>
+            
+            <!-- Special Formatting -->
+            <button class="Editor-btn" id="link"><b>&#9939</b></button>
+            <button class="Editor-btn" id="unlink" style="text-decoration:line-through"><b>&#9939</b></button>
+
+            <select class="Editor-select" id="typeface"></select>
+            <select class="Editor-select" id="font-size"></select>
+                    
+            <button class="Editor-btn" id="copy">C</button>
+            <details><summary class="icon-save"></summary></details> *@
+        </div>
+
+    </div>
+
+    <div class="teo-editorbody" id="docydrip-teo-body" contenteditable="false">
+
+    </div>
+
+    <div class="w100" id="EditorFooter">
+        <span>Edited by: Tyler Reber</span>
+    </div>
+
+</div>

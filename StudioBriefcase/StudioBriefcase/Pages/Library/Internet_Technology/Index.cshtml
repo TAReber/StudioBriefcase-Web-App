@@ -18,7 +18,7 @@
             @if (Model.LanguageID != 0)
             {
                 <details class="thumbnail-edit">
-                    <summary></summary>
+                    <summary class="summary-icon-book"></summary>
                     <form method="post" asp-page-handler="UpdateAlias">
                         <input type="text" name="aliasName" value="@(library.alias.name)" autocomplete="off" placeholder="@(library.map.text)">
                         <input type="text" name="aliasDescription" value="@(library.alias.description)" autocomplete="off" placeholder="@(library.alias.description)">
