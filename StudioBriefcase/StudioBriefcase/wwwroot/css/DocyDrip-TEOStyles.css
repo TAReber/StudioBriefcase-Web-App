@@ -1,26 +1,47 @@
-﻿.event-docydrip-teo {
+﻿.DocyDrip-TEO-Selector-Event {
+    width: fit-content;
+    height: fit-content;
+    padding: 0px;
+    margin: 0px;
+    font-size: 5rem;
+    border-radius: 8px;
 }
 
-.teo-mastercontainer {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 5px;
-}
+    .DocyDrip-TEO-Selector-Event:hover {
+        background-color: azure;
+        opacity: 0.1;
+    }
 
-    .teo-mastercontainer.active {
-        width: 100%;
-        max-width: 100%;
-        padding: 2px;
-        box-shadow: 0px 0px 5px 0px #8ca;
+    .DocyDrip-TEO-Selector-Event.Active {
+        border: 2px solid red;
     }
 
 
-.teo-editorbody {
-    max-width: 100%;
-    width: 100%;
+
+.DocyDrip.TEO.ButtonContainer {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
-    .teo-editorbody.active {
+.DocyDrip-TEO-ObjectCreator::marker {
+    content: "📘";
+}
+
+[open] .DocyDrip-TEO-ObjectCreator::marker {
+    content: "📖";
+}
+
+.DocyDrip-TEO-Editable-Container {
+    font-family: "Arial";
+    min-height: 50px;
+    border: 1px solid black;
+}
+
+    .DocyDrip-TEO-Editable-Container.Active {
         max-width: 100%;
         width: 99%;
         border-radius: 5px;
@@ -47,19 +68,23 @@
     font-weight: bold;
     text-align: center;
     text-decoration: none;
-    border: 1px solid #ccc;
+    border: 1px;
     border-radius: 4px;
-    color: #333;
+
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 rte-btn:hover {
-
+    background-color: #ddd;
+    color: #555;
+    border-color: #bbb;
 }
 
 rte-btn:active {
-
+    background-color: #bbb;
+    color: #333;
+    border-color: #999;
 }
 
 p {
@@ -68,9 +93,6 @@ p {
 }
 
 
-span {
-    /*white-space: pre;*/
-}
 
 li {
     width: fit-content;
@@ -125,7 +147,7 @@ li {
 
 @keyframes c-highlight-2 {
     from {
-        outline: 1px solid var(--shadow2);
+        outline: 1px solid #953;
     }
 
     to {

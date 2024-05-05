@@ -4,26 +4,51 @@
     Layout = "/Pages/Shared/_subLayout_Default.cshtml";
 }
 
-<h5>Docy Drip - Text Editor Object</h5>
-<div class="teo-mastercontainer" id="docydrip-test1">
-    <div class="box-col">
-        <div class="box-row">
-            <span contenteditable="false"><b>Web Rich Text Editor Progress</b></span>
-            <details class="">
-                <summary class="summary-icon-book event-docydrip-teo" data-target="docydrip-test1"></summary>
-            </details>
-        </div>
-    </div>
+<h5 class="text-center">Docy Drip - TEO </h5>
+<h6 class="text-center">Text Editor Object</h6>
+<span class="text-center"><a href="https://github.com/TAReber/DocyDrip" target="_blank">Github</a></span>
+<br />
+<div class="box-col">
+	<div class="box-row box-center1">
+		<span class="text-center justify-center" style="height: 100px; width:100px;">click the paper and pen</span>
+		<button class="DocyDrip-TEO-Selector-Event">📝</button>
+		<span class="text-center justify-center" style="height: 100px; width:100px;">Update Values to load different editors</span>
+	</div>
+	<br>
+	<div class="box-row box-center1">
 
-    <div class="teo-editorbody c-fg" id="docydrip-teo-body" contenteditable="false">
-        <h2 class="justify-center"><span class=""><b>DocyDrip</b></span></h2>
-        <h4 class="justify-center"><span class="">Alpha Release of </span><span class=""><i>TEO, Text Editor Object.</i></span><span class=""><br></span></h4>
-        <h6 class="justify-center"><span class="">Text Editor Class that creates an object that initializes and manages all buttons, events and custom behaviors to in an isolated Environment removes them all when done as if the text editor functionality was never part of the DOM tree to begin with.</span></h6>
-        <p class="justify-center"><span class="">Free, public Opensource under the MIT license -&nbsp;https://github.com/TAReber/DocyDrip</span><span class=""><br></span><span class="">Test it out at&nbsp;https://www.studiobriefcase.com/Tools/DocyDrip/TEO</span></p>
-    </div>
+		<div class="box-col">
+			<input type="text" id="input1" value="1023" />
+			<input type="submit" value="Change Top TEO" onclick="update_one(this)">
+		</div>
+		<div class="box-col">
+			<input type="text" id="input2" value="362" />
+			<input type="submit" value="Change Middle TEO" onclick="update_two(this)">
+		</div>
+		<div class="box-col">
+			<input type="text" id="input3" value="724">
+			<input type="submit" value="Change Bottom TEO" onclick="update_three(this)">
+		</div>
 
-    <div class="w100" id="EditorFooter">
-        <span>Edited by: Tyler Reber</span>
-    </div>
+	</div>
+
+</div>
+<br>
+<br>
+<div class="box-col c-bg">
+	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="1023" id='001'>
+		<p><span>Editor 1 - Editor Now Support 6 tags, font color, background color, font faces and font size.</span></p>
+		<p><span>Still Some Bugs if Selecting off the content editable Area</span></p>
+	</div>
+	<br>
+	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="362" id='002'>
+		<p><span>Editor2 - Bit Operators are now used to load unique versions of the editor based on the requirements of the input field.</span></p>
+		<p><span>UI Will be worked on, I'm only 1 person and this was a big challenge.</span></p>
+	</div>
+	<br>
+	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="724" id='003'>
+		<p><span>MIT License, Free, in a public repository on Github</a></span></p>
+		<p><span>Current Version is a Alpha Release and needs more testing done.</span></p>
+	</div>
 
 </div>
