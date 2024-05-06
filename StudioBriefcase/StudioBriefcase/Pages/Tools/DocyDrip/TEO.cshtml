@@ -18,7 +18,7 @@
 	<div class="box-row box-center1">
 
 		<div class="box-col">
-			<input type="text" id="input1" value="1023" />
+			<input type="text" id="input1" value="511" />
 			<input type="submit" value="Change Top TEO" onclick="update_one(this)">
 		</div>
 		<div class="box-col">
@@ -36,19 +36,35 @@
 <br>
 <br>
 <div class="box-col c-bg">
-	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="1023" id='001'>
-		<p><span>Editor 1 - Editor Now Support 6 tags, font color, background color, font faces and font size.</span></p>
-		<p><span>Still Some Bugs if Selecting off the content editable Area</span></p>
-	</div>
-	<br>
-	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="362" id='002'>
-		<p><span>Editor2 - Bit Operators are now used to load unique versions of the editor based on the requirements of the input field.</span></p>
-		<p><span>UI Will be worked on, I'm only 1 person and this was a big challenge.</span></p>
-	</div>
-	<br>
-	<div class="DocyDrip-TEO-Editable-Container c-fg" data-TEO-BitCode="724" id='003'>
-		<p><span>MIT License, Free, in a public repository on Github</a></span></p>
-		<p><span>Current Version is a Alpha Release and needs more testing done.</span></p>
+
+	<div class="box-col w100 c-bg">
+
+		<div class="DocyDrip-TEO-UI-Anchor">
+			<div class="DocyDrip-TEO-Editable-Container" data-TEO-BitCode="511" id='001'>
+				<p><span>Top Editor - Can now Initalize Editors with different Features Enabled.</span></p>
+				<p><span>Known Bug: White space characters can appear in between p and span tags.</span></p>
+				<p><span>Solution to address this I think will be to just to double traverse when one is found to the next sibling, because trying to figure out when and how these whitespace character are put into them in the DOM tree will be a longtime nightmare. My algorithm already has traversal logic system that can handle this with ease.</span></p>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="DocyDrip-TEO-UI-Anchor">
+			<div class="DocyDrip-TEO-Editable-Container" data-TEO-BitCode="362" id='002'>
+				<p><span>Editor2 - Bit Operators are now used to load unique versions of the editor based on the requirements of the input field.</span></p>
+				<p class=""><span class="">Value 0: Loads - No UI Enabled</span><span><br></span><span class="">Value 1: Loads Bold, Italic, Underline</span><span><br></span><span class="">Value 2: Loads Strikethrough, SubScript and Superscripts</span><span><br></span><span class="">Value 4: Loads Color Selector</span><span><br></span><span class="">Value 8: Loads Background Color Selector</span><span><br></span><span class="">Value 16: Loads Font Size Selector</span><span><br></span><span class="">Value 32: Loads Font Face Selector</span><span><br></span><span class="">Value 64: Loads Loads Header Block Selector</span><span><br></span><span class="">Value 128: Loads Indents and Justifies</span><span><br></span><span class="">Value 256: Loads List Buttons</span><span><br></span><span class="">Value 511: Loads Everythings</span><span><br></span><span class="">Value 512: No UI Enabled</span></p>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="DocyDrip-TEO-UI-Anchor">
+			<div class="DocyDrip-TEO-Editable-Container" data-TEO-BitCode="724" id='003'>
+				<p><span>MIT License, Free, in a public repository on Github</a></span></p>
+				<p><span>Current Version is a Alpha Release and needs more testing done.</span></p>
+			</div>
+		</div>
+
 	</div>
 
 </div>
