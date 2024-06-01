@@ -15,8 +15,6 @@
     @*Helper Styles to add visual Assistance to the development process*@
     <link rel="stylesheet" href="~/css/helperStyles.css" />
 
-    <link rel="stylesheet" href="~/css/DocyDrip-TEOStyles.css" />
-
     @* Default Colors used in the website and altered values used in darkmode *@
     <partial name="_colors" />
     <link rel="stylesheet" href="~/css/ColorStyles.css" />
@@ -72,6 +70,7 @@ This keeps the footer at the bottom of the screen for short content*@
                                 <div class="box-col tools-content zero c-fg" id="layout-support">
                                     <span class="zero"><a class="theme-link text-lg" asp-area="" asp-Page="/Connect/Index">🌐Connect</a></span>
                                     <span><a class="theme-link text-lg" asp-area="" asp-page="/Support/Index">🧻Support</a></span>
+                                    <span><a class="theme-link text-lg" asp-area="" asp-page="/Support/History">⛽History</a></span>
                                 </div>
                             </details>
                         </li>
@@ -135,10 +134,8 @@ This keeps the footer at the bottom of the screen for short content*@
 
 
     <script src="~/scripts/site.js"></script>
-    <script src="~/scripts/DocyDrip-TEO.js"></script>
     <script src="~/scripts/MainLayout.js"></script>
     <script src="~/scripts/ColorModes.js"></script>
-    <script src="~/scripts/ToolDemoScripts.js"></script>
     @*jquery Added for Ajax to fetch api data*@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     @RenderSection("Scripts", required: false)

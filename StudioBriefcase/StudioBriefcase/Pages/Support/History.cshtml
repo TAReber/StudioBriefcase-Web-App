@@ -1,0 +1,25 @@
+﻿@page
+@model StudioBriefcase.Pages.Support.HistoryModel
+@{
+    Layout = "/Pages/Shared/_subLayout_Default.cshtml";
+}
+
+<div class="w100">
+    <h6>Patch Archive</h6>
+    <div class="accordion w100">
+        <partial name="/Pages/Shared/Components/patches/20240601_patch.cshtml" />
+        <partial name="/Pages/Shared/Components/patches/20240201_patch.cshtml" />
+        <partial name="/Pages/Shared/Components/patches/20231201_patch.cshtml" />
+        <partial name="/Pages/Shared/Components/patches/20230805_patch.cshtml" />
+        <partial name="/Pages/Shared/Components/patches/20230701_patch.cshtml" />
+        <partial name="/Pages/Shared/Components/patches/20230401_patch.cshtml" />
+    </div>
+</div>
+
+
+<h5>2024 Kick Start was a big failure</h5>
+<p>Lessons Learned: Not an area I'm capable of. I was too embarrased to talk about my kickstarter on social media accounts.</p>
+<h5 class="w100 text-center"><a href="https://www.kickstarter.com/projects/pigboogerstudio/wwwstudiobriefcasecom">kickstarter Link</a></h5>
+<div>
+    <partial name="/Pages/Shared/Components/Donations/2024/2024Fundraiser.cshtml" />
+</div>
