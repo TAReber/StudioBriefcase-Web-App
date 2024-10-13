@@ -135,7 +135,7 @@ namespace StudioBriefcase.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("FAILED THE COMMAND THINGS");
+                Console.WriteLine($"FAILED THE COMMAND THINGS, {ex}");
             }
             finally
             {

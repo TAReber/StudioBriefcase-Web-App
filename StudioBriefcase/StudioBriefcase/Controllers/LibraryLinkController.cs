@@ -26,10 +26,10 @@ namespace StudioBriefcase.Controllers
         [HttpPost("InitializeMiniMapSelectors")]
         public async Task<IActionResult> InitializeMiniMapSelectors([FromBody] JavascriptMapIDsModel targetIDs)
         {
-            
+
             //I want to cache the ID values on client side, pass them to server. If IDs are 0, Create new lists.
             LibraryMapModel map = new LibraryMapModel(targetIDs.map);
-            if(targetIDs.map.CategoryID == 0)
+            if (targetIDs.map.CategoryID == 0)
             {
                 map.lists.Categories = await _libraryService.GetCategoryListAsync(targetIDs.LanguageID);
                 map.lists.Libraries = await _libraryService.GetLibraryListAsync(map.lists.Categories.list[0].id, targetIDs.LanguageID);
@@ -62,7 +62,7 @@ namespace StudioBriefcase.Controllers
         public async Task<IActionResult> UpdateLibraryOptions([FromBody] JavascriptMapIDsModel data)
         {
             LibraryMapModel temp = new LibraryMapModel(data.map);
-              
+
             temp.lists.Categories = await _libraryService.GetCategoryListAsync(data.LanguageID);
             temp.lists.Libraries = await _libraryService.GetLibraryListAsync(data.map.CategoryID, data.LanguageID);
             if (data.map.LibraryID == 0)
@@ -135,7 +135,7 @@ namespace StudioBriefcase.Controllers
         [HttpPost("GetPostDetailsForm")]
         public async Task<IActionResult> GetPostDetailsForm([FromBody] ClientSideSendingData clientData)
         {
-            
+
             uint TopicID = clientData.topicID;
             string viewstring = "~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml"; //"~/Pages/Shared/Components/Posts/_PostDetailsForm.cshtml and _PostCreationForm.cshtml"
 
@@ -149,18 +149,22 @@ namespace StudioBriefcase.Controllers
             if (postID != 0)
             {
                 model.exists = true;
-                model.Post = await _libraryService.GetPostIDValues(postID);
-                if (model.Post != null)
-                {                  
+
+                var Post = await _libraryService.GetPostIDValues(postID);
+                
+                if (Post != null)
+                {
+                    model.Post = Post;
                     model.Tags.ids = await _libraryService.GetPostTagsAsync(postID);
 
 
                 }
 
                 model.language = new LanguageModel(model.Post!.post_language_id);
-                
+
             }
-            else {
+            else
+            {
                 model.Post.section = clientData.sectionID;
                 model.Post.post_language_id = clientData.language; //Phase Out of Model
                 model.language = new LanguageModel(clientData.language);
@@ -251,18 +255,18 @@ namespace StudioBriefcase.Controllers
             //If the user is an Admin or Moderator, set gitID to 0 to treat the ID value as public status.
             //if (User.Identity?.IsAuthenticated == true)
             //{
-                //uint gitID;
-                //if (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    //IF user is admin or moderator, we can treat the query as if the post is a public entry
-                //    gitID = 0;
-                //}
-                //else
-                //{
-                //    uint.TryParse(User.FindFirst("sub")?.Value, out gitID);
-                //}
+            //uint gitID;
+            //if (String.Equals(User.FindFirst("privilege")?.Value, "Admin", StringComparison.OrdinalIgnoreCase) || String.Equals(User.FindFirst("privilege")?.Value, "Moderator", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    //IF user is admin or moderator, we can treat the query as if the post is a public entry
+            //    gitID = 0;
+            //}
+            //else
+            //{
+            //    uint.TryParse(User.FindFirst("sub")?.Value, out gitID);
+            //}
 
-                message = await _libraryService.DeletePost(postID.uinttype, 0);
+            message = await _libraryService.DeletePost(postID.uinttype, 0);
             //}
 
 
@@ -273,7 +277,7 @@ namespace StudioBriefcase.Controllers
         [HttpPost("RetrieveRazorPage")]
         public async Task<IActionResult> RetrieveRazorPage([FromBody] ID_String_Pair_Model data)
         {
-            
+
             //Working Example "/Library/Systems_Programming/CPP/Getting_Started/Introduction?iframe=true"
             string path = $"/Library/{await _libraryService.GetDirectyPathMap(data.id)}?iframe=true";
 

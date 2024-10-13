@@ -13,11 +13,10 @@ namespace StudioBriefcase.ViewComponents
             _pageService = pageService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(Tuple<PageDataMap, uint> data)
+        public Task<IViewComponentResult> InvokeAsync(Tuple<PageDataMap, uint> data)
         {
-           
-            
-            return View("~/Pages/Shared/Components/Page/_Page_Content_BasicSegment.cshtml", data.Item2);
+            var view = View("~/Pages/Shared/Components/Page/_Page_Content_BasicSegment.cshtml", data.Item2);
+            return Task.FromResult<IViewComponentResult>(view);
         }
     }
 }
